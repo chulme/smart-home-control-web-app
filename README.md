@@ -15,18 +15,19 @@ An account supports multiple 'Netflix-styled' profiles for different home-dwelle
 ![Sitemap](https://i.imgur.com/27Xk0zd.png)
 
 ## Installation
-To host the EcoWatt application, you must first install Node.js on the server
-https://nodejs.org/
+To host the EcoWatt application, you must first install [Node.js](https://nodejs.org/) on the server.
 
 After installing Node.js, download the application source files featured on this repo.
 
-After downloading the application source files, open the terminal and navigate to the
-application source folder  and run
+After downloading the application source files, open the terminal and navigate to the application source folder and run:
+```
 npm install
+```
 This will install all the necessary Node.js modules to host the application.
-After this step, the server is now ready to host the application. Enter the following to
-start hosting
-
+After this step, the server is now ready to host the application. Enter the following to start hosting:
+```
+npm start
+```
 ## Screenshots
 Below are a handful of screenshots of the application, showcasing the main pages and features of EcoWatt.
 
