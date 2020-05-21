@@ -10,7 +10,7 @@ The system is intended to mutually work with the "Esteem Smart home". The system
 
 It alerts the users if the energy consumption is high and provides suggestions for optimal energy use. It thus makes the user aware of their energy needs and incentivizes users to adapt to sustainable choices.
 
-It also provides in-depth information access to some users while restricting others. The system should be used by all members of the household, irrespective of age.
+An account supports multiple 'Netflix-styled' profiles for different home-dwellers. This allows the application to provide in-depth information access to some users while restricting others.
 
 ![Sitemap](https://i.imgur.com/27Xk0zd.png)
 
