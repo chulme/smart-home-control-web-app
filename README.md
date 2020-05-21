@@ -3,7 +3,7 @@ A web application to control a simulated smart-home, with an emphasis on sustain
 
 This project was completed for the 3rd Year Software Engineering Group Project by 9 students from Heriot-Watt University, with students from the Edinburgh and Dubai campuses.
 
-My contribution to this project was a hardware implementation, which allowed the application to interface with various sensors and actuators eg. temperature sensor, marketing, documentation and testing.
+My main contributions to this project was software design, project management, a hardware implementation ie. allowing the application to interface with various sensors and actuators, marketing, documentation and testing.
 
 ## Overview
 The main aim of the system is to monitor energy generation and consumption and display the analyzed data.
