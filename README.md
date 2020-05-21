@@ -1,4 +1,4 @@
-# Eco-Watt
+# EcoWatt
 A web application to control a simulated smart-home, with an emphasis on sustainable behaviour.
 
 This project was completed by 9 students from Heriot-Watt University, with students from the Edinburgh and Dubai campuses.
@@ -28,7 +28,8 @@ After this step, the server is now ready to host the application. Enter the foll
 start hosting
 
 ## Screenshots
-Below are a few screenshots of the main application pages.
+Below are a handful of screenshots of the application, showcasing the main pages and features of EcoWatt.
+
 ![Register](https://i.imgur.com/YHOzjPD.png)
 
 ![Home](https://i.imgur.com/1kFQK0B.png)
