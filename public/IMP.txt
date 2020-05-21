@@ -1,0 +1,135 @@
+ash-manager-1
+riki-monkey-1
+user-permission-house_id
+
+add room?
+whats the house id?
+currently logged in manager i.e ash -> id
+
+while(true){
+
+   random1: {100,150,125,170} //day
+   random2: {0,4,5,2,1} //night
+
+    if(time>=6 && time <= 18)
+    generated_energy+= random_value1;
+
+     if(time>18 && time <6)
+    generated_energy+= random_value2;
+
+
+
+}
+
+while(true){
+
+
+available_energy= generated_energy - current_usage;
+
+}
+
+//threshhold energy needed to calc savings, else no savings
+//if off, no energy
+
+while(true){
+
+every min : 
+
+select devices with status ON grpby house_id
+
+
+}
+global stored_energy = 100;
+
+//Gen bulb consumption
+from 1 to 24 (1 reading per hour)
+{
+    value: 1,
+    time: time
+}
+update stored_energy-=value
+
+
+[{
+    roomid:1
+    prop1: prop1
+    prop2L prop2
+},
+{
+    roomid:2
+    prop1: prop1
+    prop2L prop2
+}]
+
+[
+    {
+        deviceid:1
+        roomid:1
+    },
+    {
+        deviceid:2
+        roomid:2
+    }
+]
+
+POTENTIAL CODE:
+
+count(devices where roomid=current-roomid)
+                <!-- <% var roomDevices = devices.filter(function(device){return ""+device.roomNo == ""+room._id}); %> -->
+                <!-- <%= roomDevices.length %> -->
+
+browseRooms/icons
+ <% room.roomDevices.forEach(function(device){ %>
+                <img src= "<%= device.icon %>" alt="icon" />
+                <% }) %>
+
+rooms/1234
+
++ edit(delete)
+
+/qrc
+
+/devices/scan-qr - GET
+/devices/scan-network - GET
+
+/device - POST
+
+ <%  
+
+                        <% result.devices.forEach(function(devInfo){ %>
+                            <% if (device.deviceID==devInfo._id){ %>
+                                <i class="status flaticon-power text-ecogreen"></i>
+                                <% }else{ %>
+                                 <i class="status flaticon-power"></i>
+                                 <% } %>
+                    <div class="col-sm">
+                        <button class="btn-block border-0 shadow pr-4 pl-4 mb-3 bg-white rounded changeStatus"  value="<%= device._id %>">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class=" fa-2x text-ecogreen mr-2"></i>
+                                    <h4><%= device.deviceName %></h4>
+                                </div>
+                                <%= device.status %>                               
+                            </div>
+                        </button>
+                    </div>   
+
+
+
+                     <% result.group.forOf(function(room){ %>
+                <% room.forEach(function(dev){ %>
+                    <% result.rooms.forEach(function(roomInfo){ %>
+                        <% if (dev.roomID==roomInfo._id){ %>
+                            <p class=""><%= roomInfo.roomName %></p>
+                           
+                            <% result.devices.forEach(function(deviceInfo){ %>
+                                <% if (dev.deviceID==deviceInfo._id){ %>
+                                    <h4><%= deviceInfo.deviceName %></h4>
+                                <% }else{ %>
+                                <% } %>
+                            <% } %>
+                        <% }else{ %>
+                        <% } %>
+                    <% } %>
+                <% } %>
+            <% } %>

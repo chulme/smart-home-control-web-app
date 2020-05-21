@@ -1,0 +1,69 @@
+@font-face {
+    font-family: 'eco watt';
+    src: url('../fonts/eco-watt.eot');
+    src: url('../fonts/eco-watt.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/eco-watt.woff') format('woff'),
+         url('../fonts/eco-watt.ttf') format('truetype'),
+         url('../fonts/eco-watt.svg#eco-watt') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+[class*='eco-']:before{
+	display: inline-block;
+   font-family: 'eco watt';
+   font-style: normal;
+   font-weight: normal;
+   line-height: 1;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale
+}
+.eco-015-curtain:before{content:'\0041';}
+.eco-016-desk-lamp:before{content:'\0042';}
+.eco-017-door:before{content:'\0043';}
+.eco-018-dressing-table:before{content:'\0044';}
+.eco-019-fan:before{content:'\0045';}
+.eco-020-fence:before{content:'\0046';}
+.eco-021-fridge:before{content:'\0047';}
+.eco-022-garage:before{content:'\0048';}
+.eco-023-recycle-bin:before{content:'\0049';}
+.eco-024-house:before{content:'\004a';}
+.eco-025-iron:before{content:'\004b';}
+.eco-026-ironing-board:before{content:'\004c';}
+.eco-027-key:before{content:'\004d';}
+.eco-028-kitchen:before{content:'\004e';}
+.eco-029-ceiling-light:before{content:'\004f';}
+.eco-030-mailbox:before{content:'\0050';}
+.eco-031-microwave:before{content:'\0051';}
+.eco-032-mirror:before{content:'\0052';}
+.eco-033-oven:before{content:'\0053';}
+.eco-034-phone:before{content:'\0054';}
+.eco-035-picture:before{content:'\0055';}
+.eco-036-pillow:before{content:'\0056';}
+.eco-037-rug:before{content:'\0057';}
+.eco-038-sink:before{content:'\0058';}
+.eco-039-armchair:before{content:'\0059';}
+.eco-040-stairs:before{content:'\005a';}
+.eco-041-work-table:before{content:'\0061';}
+.eco-042-tea-pot:before{content:'\0062';}
+.eco-043-television:before{content:'\0063';}
+.eco-044-wc:before{content:'\0064';}
+.eco-045-towels:before{content:'\0065';}
+.eco-046-television:before{content:'\0066';}
+.eco-014-coffee-machine:before{content:'\0067';}
+.eco-047-vacuum-cleaner:before{content:'\0068';}
+.eco-048-wardrobe:before{content:'\0069';}
+.eco-049-washing-machine:before{content:'\006a';}
+.eco-050-window:before{content:'\006b';}
+.eco-001-air-conditioner:before{content:'\006c';}
+.eco-002-alarm-clock:before{content:'\006d';}
+.eco-003-armchair:before{content:'\006e';}
+.eco-004-baby-crib:before{content:'\006f';}
+.eco-005-bathroom:before{content:'\0070';}
+.eco-006-bedroom:before{content:'\0071';}
+.eco-007-lamp:before{content:'\0072';}
+.eco-008-library:before{content:'\0073';}
+.eco-009-bucket:before{content:'\0074';}
+.eco-010-plug:before{content:'\0075';}
+.eco-011-chair:before{content:'\0076';}
+.eco-012-chest:before{content:'\0077';}
+.eco-013-clock:before{content:'\0078';}

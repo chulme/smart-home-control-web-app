@@ -1,0 +1,97 @@
+body {
+    background-color: #222;
+    color: #ffff;
+}
+
+.bg-ecogreen-green {
+    background-image: linear-gradient(180deg, #222 0%, #beee00 100%);
+}
+
+.bg-ecogreen-orange{
+    background-image: linear-gradient(180deg, #222 0%, #ffc811 100%);
+}
+  
+.bg-ecogreen-red{
+    background-image: linear-gradient(180deg, #2220 0%, #ff6506 100%);
+}
+
+.text-dark {
+    color: #444 !important;
+}
+
+a.btn-light {
+    color: #ffff !important;
+    background-color: #444 !important;
+    border-color: #444 !important;
+}
+
+button.btn-light {
+    color: #ffff !important;
+    background-color: #444 !important;
+    border-color: #444 !important;
+}
+
+.bg-white {
+    color: #ffff !important;
+    background-color: #222 !important;
+}
+
+.device-card > .bg-white {
+    color: #ffff !important;
+    background-color: #303030 !important;
+}
+
+.bg-light {
+    color: #ffff !important;
+    background-color: #303030 !important;
+}
+
+
+a.bg-light:hover,
+a.bg-light:active,
+a.bg-light:focus {
+    color: #ffff !important;
+    background-color: #555 !important;
+}
+
+/* a.bg-white:hover,
+a.bg-white:active {
+    color: #ffff !important;
+    background-color: #555 !important;
+} */
+
+.tab-bar {
+    color: #ffff !important;
+    background-color: #222 !important;
+}
+
+.bg-dark {
+    background-color: #222 !important;
+}
+
+li.bg-white {
+    background-color: #222 !important;
+}
+
+.btn-white {
+    background-color: #444;
+}
+
+.switch-on-off{
+    background-color: #444 !important;
+}
+
+.form-control {
+    color: #ffff !important;
+    background-color: #444 !important;
+}
+
+.user-name,
+#energy-score {
+    color: #ffff !important;
+}
+
+input[type="text"] {
+    color: #ffff !important;
+    background-color: #222 !important;
+}
