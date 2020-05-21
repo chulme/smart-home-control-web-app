@@ -1,0 +1,77 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Rooms - New', stylesheets: ['/stylesheets/jquery.fonticonpicker.min.css', '/stylesheets/jquery.fonticonpicker.bootstrap.min.css']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Rooms add section starts -->
+    <div class="rooms-add-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'rooms', resourceId: '', report: '', heading: 'Add Room', description: 'Add a new room', backLink: '/rooms', options: {add:false, edit:false, report: false}}); %>    
+
+        <!-- rooms add form starts -->
+        <div class="h-100 rooms-add-form overflow-auto container container-fluid-margin">
+            <form action="/rooms" method="POST">
+                <div class="form-group">
+                    <label class="h4 font-weight-bold" for="room-name">Room Name</label>
+                    <input type="text" name="roomName" class="form-control form-control-lg border-0" id="room-name" aria-describedby="room-name" placeholder="Room Name" pattern="[A-Za-z0-9]" required>
+                </div>
+
+            <label class="h4 font-weight-bold" for="room-name">Select Icon</label>
+            <!-- SELECT element -->
+                <br>
+                <select id="myselect" name="myselect" class="myselect">
+                    <option value="">No icon</option>
+                    <option>eco-015-curtain</option>
+                    <option>eco-016-desk-lamp</option>
+                    <option>eco-017-door</option>
+                    <option>eco-006-bedroom</option>
+                    <option>eco-038-sink</option>
+                    <option>eco-004-baby-crib</option>
+                    <option>eco-018-dressing-table</option>
+                    <option>eco-019-fan</option>
+                    <option>eco-020-fence</option>
+                    <option>eco-021-fridge</option>
+                    <option>eco-022-garage</option>
+                    <option>eco-023-recycle-bin</option>
+                    <option>eco-024-house</option>
+                    <option>eco-025-iron</option>
+                    <option>eco-026-ironing-board</option>
+                    <option>eco-027-key</option>
+                    <option>eco-028-kitchen</option>
+                    <option>eco-005-bathroom</option>
+                    <option>eco-029-ceiling-light</option>
+                    <option>eco-030-mailbox</option>
+                    <option>eco-031-microwave</option>
+                    <option>eco-032-mirror</option>
+                    <option>eco-033-oven</option>
+                    <option>eco-034-phone</option>
+                    <option>eco-035-picture</option>
+                
+                </select>
+
+        <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Add Room</button>
+            </form>
+        </div>
+        <!-- rooms add form ends -->
+    </div>
+    <!-- Rooms add section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+
+<script type="text/javascript">
+    // Make sure to fire only when the DOM is ready
+    jQuery(document).ready(function($) {
+        $('#myselect').fontIconPicker({
+            emptyIcon : false,
+            theme: 'fip-bootstrap'
+        });
+    });
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<%- include('../partials/footer', {scripts: ['/javascripts/jquery.fonticonpicker.min.js']}) %>

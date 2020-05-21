@@ -1,0 +1,1221 @@
+<%- include('../partials/header', {title: 'houseReport', scripts: ['https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js', 'https://cdn.jsdelivr.net/npm/chart.js@2.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4']}); %>
+<!-- Include header -->
+<%- include('../partials/header', {title: 'deviceReport'}); %>
+
+<!-- Import nav bar -->
+<%- include('../partials/nav', {page: 'reports'}); %>
+
+<div class="container mt-4">
+	<!-- Container starts -->
+	<div class="container-fluid">
+		<!-- Routines add section starts -->
+		<div class="report-section mb-2">
+			<div class="section-header">
+				<img src="" alt="" id="chart-img">
+				<h2 class="text-ecogreen font-weight-bold">Energy Report for the House</h2>
+				<div class="d-flex justify-content-between align-items-top">
+					<p class="text-secondary">View the total energy consumption of the house</p>
+					<!-- <i class="fa fa-plus-circle fa-3x fa-fw btn-ecogreen" aria-hidden="true"></i> -->
+				</div>
+				<div class="dropdown show bg-ecogreen-solid">
+					<a class="btn dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+						Select Report Type
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a class="dropdown-item" href="/reports/allRoomsReport">All Rooms Report</a>
+						<a class="dropdown-item" href="/reports/allRoutinesReport">All Routines Report</a>
+						<a class="dropdown-item" href="/reports/userReport">All Users Report</a>
+						<a class="dropdown-item" href="/reports/peakTimeReport">Peak Prediction Report</a>
+						<a class="dropdown-item" href="/leaderBoards">Users Leader Board</a>
+						<a class="dropdown-item" href="/scoreBoard">Home Leader Board</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Tabs -->
+		<section id="tabs mt-4">
+			<div class="container mt-4">
+				<div class="row">
+					<div class="col-sm-12">
+						<nav>
+							<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+								<a class="nav-item nav-link  active" id="today" data-toggle="tab" href="#nav-home"
+									role="tab" aria-controls="nav-home" aria-selected="true">Today</a>
+								<a class="nav-item nav-link" id="week" data-toggle="tab" href="#nav-profile" role="tab"
+									aria-controls="nav-profile" aria-selected="false">This Week</a>
+								<a class="nav-item nav-link" id="month" data-toggle="tab" href="#nav-contact" role="tab"
+									aria-controls="nav-contact" aria-selected="false">This Month</a>
+							</div>
+						</nav>
+						<div class="d-flex tab-content py-3 justify-content-center text-center" id="nav-tabContent">
+							<div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+								aria-labelledby="nav-home-tab">
+
+								<h4 class="m-3">Energy Consumption Statistics</h4>
+
+								<div class="Info mt-2">
+									<h6 class="font-weight-bold">Energy Information for the day</h6>
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Generated
+															Energy</h6>
+														<p class="card-text"><span class="text-secondary" id="gen"> 5340
+																W</span> kW </p>
+													</div>
+													<div>
+														<i class="fal fa-solar-panel fa-3x"></i>
+													</div>
+
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Consumed
+															Energy</h6>
+														<p class="card-text"><span class="text-secondary" id="con"> 2758
+																W </span> kW </p>
+													</div>
+													<div>
+														<i class="fal fa-plug fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="card bg-ecogreen-solid m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Net
+															Available Energy</h6>
+														<p class="card-text"> <span class="text-secondary" id="net">
+																2582 kW</span> kW </p>
+													</div>
+
+													<div>
+														<i class="fal fa-3x fa-battery-half "></i>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<canvas id="chartToday" width="300" height="400"></canvas>
+								<button id="chart-today-download" class="btn p-1 btn-ecogreen">Download</button>
+								<button id="chart-today-share" class="btn p-1 btn-ecogreen">Share</button>
+								<div id="fb-root"></div>
+
+								<h4 class="m-3">Energy Generation Statistics</h4>
+								<div id="compare"></div>
+
+							</div>
+							<div class="tab-pane fade" id="nav-profile" role="tabpanel"
+								aria-labelledby="nav-profile-tab">
+
+								<div class="row">
+								<div class="col-sm-12">
+									<div class="card bg-eco-esteem  m-2">
+										<div
+											class="card-body d-flex justify-content-between align-items-center">
+											<div class="">
+												<h6 class="card-title text-light font-weight-bold">Net Energy Savings for the week </h6>
+												<p class="card-text"><span id="netWeek"
+														class="text-light" value="0">0</span> kW </p>
+												<p class="card-text"><span id="netWeekCost"
+														class="text-light"></span> <i class="fal fa-pound-sign "></i> </p>
+
+											</div>
+											<div>
+												<i class="fal fa-coins fa-3x"></i>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+								<div class="Info mt-2">
+									<h6 class="font-weight-bold">Energy Consumption Info for the Week</h6>
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Total
+															Consumption for the Week </h6>
+														<p class="card-text"><span id="totalCWeek"
+																class="text-secondary"></span> kW </p>
+															
+													</div>
+													<div>
+														<i class="fal fa-battery-bolt fa-3x"></i>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Min
+															Consumption in the Week was</h6>
+														<p class="card-text"><span id="minCWeek"
+																class="text-secondary"></span> kW</p>on <span
+															id="weekCMinDay" class="text-secondary"></span> </p>
+													</div>
+													<div>
+														<i class="fal fa-battery-empty fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Max
+															Consumption in the Week</h6>
+														<p class="card-text"><span id="maxCWeek"
+																class="text-secondary"></span> kW</p>on <span
+															id="weekCMaxDay" class="text-secondary"></span> </p>
+													</div>
+
+													<div>
+														<i class="fal fa-battery-full fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Average
+															Consumption for the Week</h6>
+														<p class="card-text"> <span id="avgCWeek"
+																class="text-secondary"></span> kW </p>
+													</div>
+
+													<div>
+														<i class="fal fa-battery-half fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<h6>Get week energy usage analytics via email</h6>
+								<button id="week-email" class="btn btn-ecogreen border-0 mb-3">Email Report</button>
+								<h4 class="m-3">Energy Consumption Statistics</h4>
+								<canvas id="chartWeek" width="300" height="500"></canvas>
+
+
+								<div class="Info mt-2">
+									<h6 class="font-weight-bold">Generation Information for the Week</h6>
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Total
+															Generation for the Week </h6>
+														<p class="card-text"><span id="totalGWeek"
+																class="text-secondary"></span> kW </p>
+															
+													</div>
+													<div>
+														<i class="fal fa-battery-bolt fa-3x"></i>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Min
+															Generation in the Week was</h6>
+														<p class="card-text"><span id="minGWeek"
+																class="text-secondary"></span> kW</p>on <span
+															id="weekGMinDay" class="text-secondary"></span> </p>
+													</div>
+													<div>
+														<i class="fal fa-battery-empty fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Max
+															Generation for the Week</h6>
+														<p class="card-text"><span id="maxGWeek"
+																class="text-secondary"></span> kW</p>on <span
+															id="weekGMaxDay" class="text-secondary"></span> </p>
+													</div>
+
+													<div>
+														<i class="fal fa-battery-full fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="card bg-ecogreen-solid m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-secondary font-weight-bold">Average
+															Generation for the Week</h6>
+														<p class="card-text"> <span id="avgGWeek"
+																class="text-secondary"></span> kW </p>
+													</div>
+
+													<div>
+														<i class="fal fa-battery-half fa-3x"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<h4 class="m-3">Energy Generation Statistics</h4>
+								<canvas id="genWeek" width="300" height="500"></canvas>
+</div>
+							
+							<div class="tab-pane fade" id="nav-contact" role="tabpanel"
+								aria-labelledby="nav-contact-tab">
+
+								
+
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="card bg-eco-esteem  m-2">
+												<div
+													class="card-body d-flex justify-content-between align-items-center">
+													<div class="">
+														<h6 class="card-title text-light font-weight-bold">Net Energy Savings for the Month </h6>
+														<p class="card-text"><span id="netMonth"
+																class="text-light" value="0">0</span> kW </p>
+														<p class="card-text"><span id="netMonthCost"
+																class="text-light"></span> <i class="fal fa-pound-sign "></i> </p>
+		
+													</div>
+													<div>
+														<i class="fal fa-coins fa-3x"></i>
+													</div>
+		
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="Info mt-2">
+										<div class="row">
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid  m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Total
+																Consumption for the Month </h6>
+															<p class="card-text"><span id="totalCMonth"
+																	class="text-secondary"></span> kW </p>
+														</div>
+														<div>
+															<i class="fal fa-battery-bolt fa-3x"></i>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid  m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Min
+																Consumption for the Month was</h6>
+															<p class="card-text"><span id="minCMonth"
+																	class="text-secondary"></span> kW</p>on <span
+																id="monthCMinDay" class="text-secondary"></span> </p>
+														</div>
+														<div>
+															<i class="fal fa-battery-empty fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Max
+																Consumption for the Month was</h6>
+															<p class="card-text"><span id="maxCMonth"
+																	class="text-secondary"></span> kW</p>on <span
+																id="monthCMaxDay" class="text-secondary"></span> </p>
+														</div>
+
+														<div>
+															<i class="fal fa-battery-full fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">
+																Average Consumption for the Month</h6>
+															<p class="card-text"> <span id="avgCMonth"
+																	class="text-secondary"></span> kW </p>
+														</div>
+
+														<div>
+															<i class="fal fa-battery-half fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<h4 class="m-3">Energy Consumption Statistics</h4>
+									<canvas id="chartMonth" width="300" height="500"></canvas>
+
+
+
+									<div class="Info mt-2">
+										<div class="row">
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid  m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Total
+																Generation for the Month </h6>
+															<p class="card-text"><span id="totalGMonth"
+																	class="text-secondary"></span> kW </p>
+														</div>
+														<div>
+															<i class="fal fa-battery-bolt fa-3x"></i>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid  m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Min
+																Generation for the Month was</h6>
+															<p class="card-text"><span id="minGMonth"
+																	class="text-secondary"></span> kW</p>on <span
+																id="monthGMinDay" class="text-secondary"></span> </p>
+														</div>
+														<div>
+															<i class="fal fa-battery-empty fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">Max
+																Generation for the Month was</h6>
+															<p class="card-text"><span id="maxGMonth"
+																	class="text-secondary"></span> kW</p>on <span
+																id="monthGMaxDay" class="text-secondary"></span> </p>
+														</div>
+
+														<div>
+															<i class="fal fa-battery-full fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="card bg-ecogreen-solid m-2">
+													<div
+														class="card-body d-flex justify-content-between align-items-center">
+														<div class="">
+															<h6 class="card-title text-secondary font-weight-bold">
+																Average Generation for the Month</h6>
+															<p class="card-text"> <span id="avgGMonth"
+																	class="text-secondary"></span> kW </p>
+														</div>
+
+														<div>
+															<i class="fal fa-battery-half fa-3x"></i>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<h4 class="m-3">Energy Generation Statistics</h4>
+									<canvas id="genMonth" width="300" height="500"></canvas>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+
+			</div>
+		</section>
+		<!-- Container ends -->
+	</div>
+
+	<script>
+
+
+		window.fbAsyncInit = function () {
+			FB.init({
+				appId: '1360103734187202',
+				status: true,
+				cookie: true,
+				xfbml: true
+			});
+		};
+		(function () {
+			var e = document.createElement('script');
+			e.async = true;
+			e.src = document.location.protocol +
+				'//connect.facebook.net/en_US/all.js';
+			document.getElementById('fb-root').appendChild(e);
+		}());
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#share_button').click(function (e) {
+				e.preventDefault();
+				FB.ui({
+					method: 'feed',
+					name: 'Share Report',
+					link: 'https://ecowatt.azurewebsites.net/',
+					picture: 'https://ecowatt.azurewebsites.net/images/badge.png',
+					caption: 'Badge Image',
+					description: "Badge Image Desc",
+					message: ""
+				});
+			});
+		});
+	</script>
+
+	<script>
+		document.getElementById("week").addEventListener("click", week);
+		document.getElementById("month").addEventListener("click", month);
+		document.getElementById("week").addEventListener("click", weekGen);
+		document.getElementById("month").addEventListener("click", monthGen);
+
+		// Share Email
+		// week-email on click
+		$("#week-email").click(function(){
+		let chartWeek, genWeek;
+		Chart.helpers.each(Chart.instances, function(instance){
+			console.log(instance.chart.canvas.id)
+			if(instance.chart.canvas.id == 'chartWeek')
+			chartWeek =  instance.chart;
+			if(instance.chart.canvas.id == 'genWeek')
+			genWeek =  instance.chart;
+		});
+		console.log(chartWeek, genWeek);
+		let chartWeekBase64Data = chartWeek.toBase64Image().replace(/^data:image\/(png|jpg);base64,/, "");;
+		let genWeekBase64Data = genWeek.toBase64Image().replace(/^data:image\/(png|jpg);base64,/, "");;
+		
+		let chartWeekBlob = base64ToBlob(chartWeekBase64Data, 'image/png');
+		let genWeekBlob = base64ToBlob(genWeekBase64Data, 'image/png');
+
+		var formData = new FormData();
+		formData.append("titles", "Energy Consumption Statistics");
+		formData.append("pictures", chartWeekBlob, "week_consumption.png");
+		formData.append("titles", "Energy Generation Statistics");
+		formData.append("pictures", genWeekBlob, "week_generation.png");
+
+		$.ajax({
+    		type: "POST", 
+    		url: '/reports/email', 
+			data: formData,
+    		processData: false,
+			contentType: false,
+			success: function(response) {
+				console.log(response);
+			},
+			error: function(errResponse) {
+				console.log(errResponse);
+			}
+		});
+		});
+
+		async function getWeekData() {
+			const response = await fetch("/api/devicePerWeek");
+			const energy = await response.json();
+			const data = energy.energyWeek.sum;
+			var total = 0;
+
+			const y = [0, 0, 0, 0, 0, 0, 0];
+			var x = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+			data.forEach(obj => {
+				y[obj._id] = obj.energySum / 1000;
+				total += obj.energySum / 1000;
+			});
+
+			$("#totalCWeek").html(total);
+
+			var first = parseInt($("#netWeek").html());
+			if(first==0){
+				$("#netWeek").html(total);
+			}
+			else{
+				$("#netWeek").html(first-total);
+				$("#netWeekCost").html((first-total)*0.13);
+			}
+
+			const maxVal = Math.max(...y);
+			$("#maxCWeek").html(maxVal);
+			console.log("lol")
+			console.log(maxVal)
+			console.log(x[y.indexOf(maxVal)])
+			$("#weekCMaxDay").html(x[y.indexOf(maxVal)]);
+
+			const minVal = Math.min(...y);
+			$("#minCWeek").html(minVal);
+			$("#weekCMinDay").html(x[y.indexOf(minVal)]);
+
+			const average = total / x.length;
+			$("#avgCWeek").html(average);
+
+			return {
+				x,
+				y
+			};
+		}
+
+		async function week() {
+
+			const ctx = document.getElementById('chartWeek').getContext('2d');
+			// var gradientFill = ctx.createLinearGradient(100, 0, 500, 0);
+			// gradientFill.addColorStop(0, "#0a8364");
+			// gradientFill.addColorStop(1, "#4fbc57");
+			// gradientFill.addColorStop(2, "#82d63f");
+			// gradientFill.addColorStop(1, "#beee00");
+			// gradientFill.addColorStop(4, "#beee00");
+
+			const temp = await getWeekData();
+			const myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: temp.x,
+					datasets: [{
+						label: 'Energy This Week kW',
+						data: temp.y,
+						fill: false,
+						borderColor: '#bee000',
+						backgroundColor: "#bee000",
+						borderWidth: 1
+					}]
+				}
+			});
+		}
+
+		async function getWeekGen() {
+			const response = await fetch("/api/generationWeek");
+			const energy = await response.json();
+			const data = energy.energyWeek.sum;
+			var total = 0;
+			var i = 0;
+
+			const y = [0, 0, 0, 0, 0, 0, 0];
+			var x = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+			data.forEach(obj => {
+				if (!isNaN(obj.energySum)) {
+					y[obj._id] = obj.energySum / 1000;
+					total += obj.energySum / 1000;
+				}
+				i++;
+			});
+
+			$("#totalGWeek").html(total);
+			var first = parseInt($("#netWeek").html());
+			if(first==0){
+				$("#netWeek").html(total);
+			}
+			else{
+				$("#netWeek").html(total-first);
+				$("#netWeekCost").html((total-first)*0.13);
+
+			}
+			
+
+			const maxVal = Math.max(...y);
+			$("#maxGWeek").html(maxVal);
+			console.log("lol")
+			console.log(maxVal)
+			console.log(x[y.indexOf(maxVal)])
+
+			$("#weekGMaxDay").html(x[y.indexOf(maxVal)]);
+
+			const minVal = Math.min(...y);
+			$("#minGWeek").html(minVal);
+			$("#weekGMinDay").html(x[y.indexOf(minVal)]);
+
+			const average = total / i;
+			$("#avgGWeek").html(average);
+
+			return {
+				x,
+				y
+			};
+		}
+
+		async function weekGen() {
+			const ctx = document.getElementById('genWeek').getContext('2d');
+			const temp = await getWeekGen();
+			const myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: temp.x,
+					datasets: [{
+						label: 'Energy Generated This Week',
+						data: temp.y,
+						fill: false,
+						borderColor: '#0a8364',
+						backgroundColor: '#0a8364',
+						borderWidth: 1
+					}]
+				}
+			});
+		}
+
+
+		async function getMonthData() {
+			const response = await fetch("/api/devicePerMonth");
+			const energy = await response.json();
+			const data = energy.energyMonth.sum;
+			const month = energy.energyMonth.month;
+
+			const y = [];
+			var x = [];
+			var str = data[0]._id
+			var name = str.split(" ");
+			name[0] = name[0].substring(0, name[0].length);
+			var total = 0;
+			var i = 0;
+
+
+			for (let index = 1; index <= month; index++) {
+				var date = index.toString().concat(" ", name[0]);
+				x.push(date);
+				y.push(0);
+
+			}
+
+			data.forEach(obj => {
+				y[moment(obj._id).format('D') - 1] = obj.energySum / 1000;
+				total += obj.energySum / 1000;
+				i++;
+			});
+
+			$("#totalCMonth").html(total);
+			var first = parseInt($("#netMonth").html());
+			if(first==0){
+				$("#netMonth").html(total);
+			}
+			else{
+				$("#netMonth").html(first-total);
+				$("#netMonthCost").html((first-total)*0.13);
+			}
+
+			const maxVal = Math.max(...y);
+			$("#maxCMonth").html(maxVal);
+			$("#monthCMaxDay").html(x[y.indexOf(maxVal)]);
+
+			const minVal = Math.min(...y);
+			$("#minCMonth").html(minVal);
+			$("#monthCMinDay").html(x[y.indexOf(minVal)]);
+
+			const average = total / i;
+			$("#avgCMonth").html(average);
+
+			return {
+				x,
+				y
+			};
+		}
+
+		async function month() {
+			const ctx = document.getElementById('chartMonth').getContext('2d');
+			const temp = await getMonthData();
+			const myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: temp.x,
+					datasets: [{
+						label: 'Energy This Month',
+						data: temp.y,
+						fill: false,
+						borderColor: 'rgba(190, 224, 0, 1)',
+						backgroundColor: 'rgba(190, 224, 0, 1)',
+						borderWidth: 1
+					}]
+				},
+				plugins: {
+					zoom: {
+						pan: {
+							enabled: true,
+							mode: 'x',
+							speed: 10,
+							threshold: 10
+						},
+						zoom: {
+							enabled: true,
+							mode: 'y'
+						}
+					}
+				}
+			});
+		}
+
+		async function getMonthGen() {
+			const response = await fetch("/api/generationMonth");
+			const energy = await response.json();
+			const data = energy.energyMonth.sum;
+			const month = energy.energyMonth.month;
+
+			const y = [];
+			var x = [];
+			var str = data[0]._id
+			var name = str.split(" ");
+			name[0] = name[0].substring(0, name[0].length);
+			var total = 0;
+
+
+			for (let index = 1; index <= month; index++) {
+				var date = index.toString().concat(" ", name[0]);
+				x.push(date);
+				y.push(0);
+
+			}
+
+			data.forEach(obj => {
+				console.log(obj.energySum)
+				if (!isNaN(obj.energySum)) {
+					y[moment(obj._id).format('D') - 1] = obj.energySum / 1000;
+					total += obj.energySum / 1000;
+				}
+			});
+
+			$("#totalGMonth").html(total);
+			$("#totalCMonth").html(total);
+			var first = parseInt($("#netMonth").html());
+			if(first==0){
+				$("#netMonth").html(total);
+			}
+			else{
+				$("#netMonth").html(total-first);
+				$("#netMonthCost").html((total-first)*0.13);
+			}
+
+			const maxVal = Math.max(...y);
+			$("#maxGMonth").html(maxVal);
+			$("#monthGMaxDay").html(x[y.indexOf(maxVal)]);
+
+			const minVal = Math.min(...y);
+			$("#minGMonth").html(minVal);
+			$("#monthGMinDay").html(x[y.indexOf(minVal)]);
+
+			const average = total / x.length;
+			$("#avgGMonth").html(average);
+
+			return {
+				x,
+				y
+			};
+		}
+
+		async function monthGen() {
+			const ctx = document.getElementById('genMonth').getContext('2d');
+			const temp = await getMonthGen();
+			const myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: temp.x,
+					datasets: [{
+						label: 'Energy This Month',
+						data: temp.y,
+						fill: false,
+						borderColor: "#0a8364",
+						backgroundColor: "#0a8364",
+						borderWidth: 1
+					}]
+				},
+				plugins: {
+					zoom: {
+						pan: {
+							enabled: true,
+							mode: 'x',
+							speed: 10,
+							threshold: 10
+						},
+						zoom: {
+							enabled: true,
+							mode: 'y'
+						}
+					}
+				}
+			});
+		}
+
+		async function getEnergy() {
+
+
+			const response = await fetch("/api/energyVsTime");
+			const energy = await response.json();
+
+
+			const data = energy.energy.sum;
+			const result = {};
+			result.sum = data[0].energySum;
+
+			return result;
+		}
+
+
+
+		var chartColors = {
+			ecogreen: 'rgba(190, 224, 0, 1)'
+		};
+
+
+		async function onRefresh(chart) {
+
+			micron.getEle("#con").interaction("bounce").duration(".45").timing("ease-out");
+
+			const resultData = await getEnergy();
+			let conVal = parseInt($("#con").html());
+			conVal = resultData.sum / 1000;
+			$("#con").html(conVal);
+
+			let genVal = parseInt($("#gen").html());
+
+			let netVal = parseInt($("#net").html());
+			$("#net").html(Math.round(genVal - conVal));
+
+			// $('#net').change(function(e) {
+			// 				micron.getEle("#net").interaction("bounce").duration(".45").timing("ease-out"); 
+			// });
+
+			chart.config.data.datasets.forEach(function (dataset) {
+				dataset.data.push({
+					x: Date.now(),
+					y: resultData.sum
+				});
+			});
+
+
+
+		}
+
+		var color = Chart.helpers.color;
+
+		var config = {
+			type: 'line',
+			data: {
+				datasets: [{
+					label: 'Energy Per Unit Time in W',
+					backgroundColor: color(chartColors.ecogreen).alpha(0.5).rgbString(),
+					borderColor: chartColors.ecogreen,
+					fill: false,
+					lineTension: 0,
+					data: []
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Energy Usage for the day'
+				},
+				scales: {
+					xAxes: [{
+						type: 'realtime',
+						realtime: {
+							duration: 20000,
+							refresh: 1000,
+							delay: 2000,
+							onRefresh: onRefresh
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				},
+				tooltips: {
+					mode: 'nearest',
+					intersect: false
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				}
+			}
+		};
+
+		window.onload = function () {
+			var ctx = document.getElementById('chartToday').getContext('2d');
+			window.myChart = new Chart(ctx, config);
+
+			$("#chart-today-download").click(function () {
+				let base64Data = myChart.toBase64Image();
+				downloadBase64File(base64Data, 'test.jpeg')
+			});
+
+			$("#chart-today-share").click(function () {
+				let base64Data = myChart.toBase64Image().replace(/^data:image\/(png|jpg);base64,/, "");
+				console.log(base64Data);
+
+				let blob = base64ToBlob(base64Data, 'image/png');
+
+				var formData = new FormData();
+				formData.append("picture", blob, "node_icon.png");
+
+				$.ajax({
+					type: "POST",
+					url: '/reports/share',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						console.log(response);
+						FB.ui({
+							method: 'feed',
+							name: 'My Energy Consumption',
+							link: `https://ecowatt.azurewebsites.net/uploads/${response.filename}`,
+							picture: `https://ecowatt.azurewebsites.net/uploads/${response.filename}`,
+							caption: 'My Energy Consumption',
+							description: "My Energy Consumption from EcoWatt",
+							message: "Hey! This Is My Energy Consumption "
+						});
+					},
+					error: function (errResponse) {
+						console.log(errResponse);
+					}
+				})
+			});
+		};
+
+
+		FusionCharts.ready(async function () {
+			const response = await fetch("/api/generationToday");
+			console.log("Upojbkbk")
+
+			const data = await response.json();
+			console.log(data)
+
+			const consumption = await data.energy.consumption;
+			const generation = await data.energy.generation;
+			const genSum = await data.energy.genSum;
+			const conSum = await data.energy.conSum;
+
+			$("#gen").html(Math.round(genSum) / 1000);
+			$("#con").html(Math.round(conSum / 1000));
+			$("#net").html(Math.round(genSum - conSum) / 1000);
+
+			const cat = [];
+			const d1 = [];
+			const d2 = [];
+
+			console.log("QWERTYrtyuio")
+			console.log(consumption)
+			console.log(generation)
+
+			consumption.forEach(obj => {
+
+				cat.push(obj._id); //time
+
+				d1.push(obj.energySum); //consumption
+
+				d2.push(0); //gen
+
+			});
+
+			console.log('D!!!!')
+			console.log(d1)
+
+			generation.forEach(obj => {
+
+				if (cat.includes(obj._id)) {
+
+					d2.splice(cat.indexOf(obj._id), 0, obj.eSum * 1000);
+				}
+
+			});
+
+
+			for (let i = 0; i < cat.length; i++) {
+				const catItem = {
+					"label": cat[i]
+				};
+				const d1Item = {
+					"value": d1[i]
+				};
+				const d2Item = {
+					"value": d2[i] / 1000
+				};
+
+				cat[i] = catItem;
+				d1[i] = d1Item;
+				d2[i] = d2Item;
+
+			}
+
+			// console.log(cat)
+			// console.log(d1)
+			// console.log(d2)
+
+
+			var revenueChart = new FusionCharts({
+				type: 'scrollcombidy2d',
+				renderAt: 'compare',
+				width: '350',
+				height: '600',
+				dataFormat: 'json',
+				dataSource: {
+					"chart": {
+						"theme": "fusion",
+						"caption": "Consumption vs Generation of the House",
+						"subCaption": data.energy.date,
+						"xAxisname": "Time",
+						"pYAxisName": "Energy (in kiloWatts)",
+						"numberSuffix": " W",
+						"showValues": "1",
+						"numVisiblePlot": "12",
+						"flatScrollBars": "1",
+						"scrollheight": "10"
+					},
+					"categories": [{
+						"category": cat
+					}],
+					"dataset": [{
+							"seriesName": "Consumption",
+							"color": "#beee00",
+							"renderAs": "area",
+							"showValues": "0",
+							"data": d1
+
+						},
+						{
+							"seriesName": "Generation",
+							"color": "#0a8364",
+							"renderAs": "line",
+							"showValues": "0",
+							"data": d2
+						}
+					]
+				}
+			}).render();
+
+		});
+
+
+		// Parameters:
+		// contentType: The content type of your file. 
+		//              its like application/pdf or application/msword or image/jpeg or
+		//              image/png and so on
+		// base64Data: Its your actual base64 data
+		// fileName: Its the file name of the file which will be downloaded. 
+
+		function downloadBase64File(base64Data, fileName) {
+			const linkSource = base64Data;
+			const downloadLink = document.createElement("a");
+			downloadLink.href = linkSource;
+			downloadLink.download = fileName;
+			downloadLink.click();
+		}
+
+		function base64ToBlob(base64, mime) {
+			mime = mime || '';
+			var sliceSize = 1024;
+			var byteChars = window.atob(base64);
+			var byteArrays = [];
+
+			for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+				var slice = byteChars.slice(offset, offset + sliceSize);
+
+				var byteNumbers = new Array(slice.length);
+				for (var i = 0; i < slice.length; i++) {
+					byteNumbers[i] = slice.charCodeAt(i);
+				}
+
+				var byteArray = new Uint8Array(byteNumbers);
+
+				byteArrays.push(byteArray);
+			}
+
+			return new Blob(byteArrays, {
+				type: mime
+			});
+		}
+
+		
+// 		$(window).bind("load", function() { 
+
+// 	const total= parseInt($("#totalGWeek").html());
+
+// 	const conWeek= parseInt($("#totalCWeek").html());
+// 			console.log("hoolooooo")
+// 			console.log(total-conWeek,total,conWeek)
+// 			$("#netWeek").html(total-conWeek);
+// 			$("#netWeekCost").html((total-conWeek)*0.0.13);
+//  });
+
+
+	</script>
+</div>
+<!-- Include footer -->
+<% include ../partials/footer %>

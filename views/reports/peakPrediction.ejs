@@ -1,0 +1,342 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'deviceReport', scripts: ['https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js', 'https://cdn.jsdelivr.net/npm/chart.js@2.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4']}); %>
+
+
+<!-- Import nav bar -->
+<%- include('../partials/nav', {page: 'reports'}); %>
+
+
+<div class="container mt-4">
+<!-- Container starts -->
+<div class="container-fluid">
+    <!-- Routines add section starts -->
+    <div class="report-section mb-2">
+        <div class="section-header">
+          <h2 class="text-ecogreen font-weight-bold">Daily Energy Consumption Peak Time Prediction</h2>
+            <div class="d-flex justify-content-between align-items-top">
+            <p class="text-secondary">Predicted Probabilities of devices being switched on at various times in the day</p>
+            <!-- <i class="fa fa-plus-circle fa-3x fa-fw btn-ecogreen" aria-hidden="true"></i> -->
+        </div>
+    </div>
+</div>
+<div class="dropdown show bg-ecogreen-solid">
+  <a class="btn dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Report Type
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="/reports/allRoomsReport">All Rooms Report</a>
+    <a class="dropdown-item" href="/reports/allRoutinesReport">All Routines Report</a>
+    <a class="dropdown-item" href="/reports/userReport">All Users Report</a>
+    <a class="dropdown-item" href="/reports/houseReport">House Report</a>
+    <a class="dropdown-item" href="/leaderBoards">Users Leader Board</a>
+    <a class="dropdown-item" href="/scoreBoard">Home Leader Board</a>
+  </div>
+  </div>
+
+<!-- Tabs -->
+<section id="tabs">
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+			
+				<div class="py-3 text-center" >
+
+                    <h4 class= "m-2">Probabilities of Devices vs Time</h4>
+            <div id="chart-container-2"  class="text-center" width="300" height="500">FusionCharts will render here</div>
+            <div id="tableView" class="grayBorder" width="700"></div>
+
+</div>
+            </div>
+            <div class="col">
+				<div class="tab-content py-3  text-center align-text-center" >
+
+            <h4 class= "m-2">Probabilities of Rooms vs Time</h4>
+
+            <div id="chart-container" class="text-center" width="300" height="500">Room Probabilities/div>
+            <div id="tableView" class="grayBorder" width="700"></div>
+					
+				</div>
+			
+			</div>
+        </div>
+		</div>
+        
+	</div>
+</section>
+<!-- Container ends -->
+<div class="container mt-4  text-center">
+    <h4 class= "m-2">Peak Consumption Time Per Room</h4>
+
+<table id="myTable" class="table py-3 text-center">
+  
+      <tbody>
+      </tbody>
+
+    </table>
+</div>
+</div>
+
+<script>
+
+    $().ready(async function(){
+
+const response = await fetch("/routines/probsRoom");
+        
+const energy =  await response.json();
+console.log("WERTYUIOLKMNBVCX")
+console.log(energy)
+
+var table = document.getElementById("myTable");
+var rooms = energy.roomData;
+
+for (let i = 0; i < rooms.length; i++) {
+    const room = rooms[i];
+    $('#myTable').append(`<tr><td>${room.roomName}</td><td>${room.roomMaxTime}</td></tr>`);
+
+}
+    });
+
+FusionCharts.ready(async function() {
+
+  const response = await fetch("/routines/probs");
+        
+const energy =  await response.json();
+console.log("KAJKNHJVCYCJHKBNKN")
+console.log(energy);
+  var getDataFromChart,
+    productPriceChart = new FusionCharts({
+      type: 'selectscatter',
+      id: 'chartId',
+      renderAt: 'chart-container-2',
+      width: '350',
+      height: '600',
+      dataFormat: 'json',
+      dataSource: {
+        "chart": {
+          //Theme
+          "theme": "fusion",
+          "caption": "Predicted Device Switch On Time Probabilities",
+          "subcaption": "Using Neural Network",
+          "yaxisname": "Probability",
+          "xaxisname": "Time",
+          "ynumbersuffix": " %",
+          "showcanvasborder": "1",
+          "canvasborderthickness": "0.4",
+          "canvasborderalpha": "50",
+   
+          "showformbtn": "1",
+          "formAction": "#",
+          "submitdataasxml": "1"
+        },
+        "categories": [{
+          "verticallinecolor": "666666",
+          "verticallinethickness": "1",
+          "alpha": "40",
+          "category": energy.category
+        }],
+        "dataset": energy.dataset
+      },
+      events: {
+        "beforeRender": function(evtObj, argObj) {
+          // creating div for controllers
+          var controllers = document.createElement('div');
+          controllers.setAttribute('id', 'controllers');
+          controllers.style.display = "inline-block";
+          controllers.innerHTML = "<div id='tableView' style='width:300px;display:none;margin-left:0px;max-height:250px;overflow:scroll;border: 1px solid #CCCCCC;margin: 3px;float: left;display:none; color: #666666;font-family:'Arial','Helvetica';font-size: 12px;'></div>";
+          //Display container div and write table
+          argObj.container.parentNode.insertBefore(controllers, argObj.container.nextSibling);
+          /*
+           * getDataFromChart method prepares the
+           * tabular string from selection and
+           * write in a div and display it.
+           */
+          getDataFromChart = function() {
+            var i,
+              j,
+              str,
+              ds = "",
+              dataArr,
+              flagData = false,
+              objDataset = evtObj.sender.getJSONData && evtObj.sender.getJSONData().dataset,
+              tableContainer = document.getElementById("tableView");
+
+            //Form tabular string
+            str = "<div style='margin:3px;font-family:'Arial','Helvetica';font-size: 12px;'> </div>";
+            str += '<table border="1" cellpadding="1" cellspacing="0" bordercolor="#ffffff" width="70%">';
+            for (i in objDataset) {
+              dataArr = objDataset[i].data;
+              if (dataArr.length > 0) {
+                flagData = true;
+                str += '    <tr>';
+                str += '        <td width="20%" style="font-weight: bold;font-size: 14px;vertical-align: top;text-align:right;padding: 3px" color="' + objDataset[i].color + '">' + objDataset[i].seriesname + '</td>';
+
+                ds = '<table border="1" cellpadding="1" cellspacing="0" bordercolor="' + objDataset[i].color + '" width="70%">';
+                ds += '<tr>';
+                ds += '<td width="20%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Id</td>';
+                ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Probability</td>';
+                ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Time</td>';
+                ds += '</tr>';
+                for (j = 0; j < dataArr.length; j++) {
+                  var id = String(dataArr[j].id),
+                    time = String(dataArr[j].x),
+                    prob = String(dataArr[j].y);
+
+                  ds += '<tr>';
+                  ds += '<td width="20%" align="center">' + id + '</td>';
+                  ds += '<td width="40%" align="center">' + prob + ' </td>';
+                  ds += '<td width="40%" align="center">' + time + '</td>';
+                  ds += '</tr>';
+                }
+                ds += '</table>';
+                str += '        <td width="80%" style="padding: 3px">' + ds + '</td>';
+                str += '    </tr>';
+              }
+
+            }
+            str += '</table>';
+            if (!flagData) {
+              str = "No Data Selected";
+            }
+            tableContainer.style.display = "block";
+            tableContainer.innerHTML = str;
+          }
+        },
+        "beforeDataSubmit": function(evtObj, argObj) {
+          getDataFromChart();
+
+        },
+        "dataRestored": function(evtObj, argObj) {
+          document.getElementById("tableView").style.display = "none";
+          document.getElementById("tableView").innerHTML = "";
+        }
+      }
+    });
+  productPriceChart.render();
+});
+
+
+
+FusionCharts.ready(async function() {
+
+const response = await fetch("/routines/probsRoom");
+      
+const energy =  await response.json();
+console.log("KAJKNHJVCYCJHKBNKN")
+console.log(energy)
+
+var getDataFromChart,
+  productPriceChart = new FusionCharts({
+    type: 'selectscatter',
+    id: 'chartId',
+    renderAt: 'chart-container',
+    width: '350',
+    height: '600',
+    dataFormat: 'json',
+    dataSource: {
+      "chart": {
+        //Theme
+        "theme": "fusion",
+        "caption": "Predicted Device Switch On Time Probabilities",
+        "subcaption": "Using Neural Network",
+        "yaxisname": "Probability",
+        "xaxisname": "Time",
+        "ynumbersuffix": " %",
+        "showcanvasborder": "1",
+        "canvasborderthickness": "0.4",
+        "canvasborderalpha": "50",
+        "showformbtn": "1",
+        "formAction": "#",
+        "submitdataasxml": "1"
+      },
+      "categories": [{
+        "verticallinecolor": "666666",
+        "verticallinethickness": "1",
+        "alpha": "40",
+        "category": energy.category
+      }],
+      "dataset": energy.dataset
+    },
+    events: {
+      "beforeRender": function(evtObj, argObj) {
+        // creating div for controllers
+        var controllers = document.createElement('div');
+        controllers.setAttribute('id', 'controllers');
+        controllers.style.display = "inline-block";
+        controllers.innerHTML = "<div id='tableView' style='width:300px;display:none;margin-left:0px;max-height:250px;overflow:scroll;border: 1px solid #CCCCCC;margin: 3px;float: left;display:none; color: #666666;font-family:'Arial','Helvetica';font-size: 12px;'></div>";
+        //Display container div and write table
+        argObj.container.parentNode.insertBefore(controllers, argObj.container.nextSibling);
+        /*
+         * getDataFromChart method prepares the
+         * tabular string from selection and
+         * write in a div and display it.
+         */
+        getDataFromChart = function() {
+          var i,
+            j,
+            str,
+            ds = "",
+            dataArr,
+            flagData = false,
+            objDataset = evtObj.sender.getJSONData && evtObj.sender.getJSONData().dataset,
+            tableContainer = document.getElementById("tableView");
+
+          //Form tabular string
+          str = "<div style='margin:3px;font-family:'Arial','Helvetica';font-size: 12px;'> </div>";
+          str += '<table border="1" cellpadding="1" cellspacing="0" bordercolor="#ffffff" width="100%">';
+          for (i in objDataset) {
+            dataArr = objDataset[i].data;
+            if (dataArr.length > 0) {
+              flagData = true;
+              str += '    <tr>';
+              str += '        <td width="20%" style="font-weight: bold;font-size: 14px;vertical-align: top;text-align:right;padding: 3px" color="' + objDataset[i].color + '">' + objDataset[i].seriesname + '</td>';
+
+              ds = '<table border="1" cellpadding="1" cellspacing="0" bordercolor="' + objDataset[i].color + '" width="50%">';
+              ds += '<tr>';
+              ds += '<td width="20%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Id</td>';
+              ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Probability</td>';
+              ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Time</td>';
+              ds += '</tr>';
+              for (j = 0; j < dataArr.length; j++) {
+                var id = String(dataArr[j].id),
+                  time = String(dataArr[j].x),
+                  prob = String(dataArr[j].y);
+
+                ds += '<tr>';
+                ds += '<td width="20%" align="center">' + id + '</td>';
+                ds += '<td width="40%" align="center">' + prob + ' </td>';
+                ds += '<td width="40%" align="center">' + time + ' </td>';
+                ds += '</tr>';
+              }
+              ds += '</table>';
+              str += '        <td width="80%" style="padding: 3px">' + ds + '</td>';
+              str += '    </tr>';
+            }
+
+          }
+          str += '</table>';
+          if (!flagData) {
+            str = "No Data Selected";
+          }
+          tableContainer.style.display = "block";
+          tableContainer.innerHTML = str;
+        }
+      },
+      "beforeDataSubmit": function(evtObj, argObj) {
+        getDataFromChart();
+
+      },
+      "dataRestored": function(evtObj, argObj) {
+        document.getElementById("tableView").style.display = "none";
+        document.getElementById("tableView").innerHTML = "";
+      }
+    }
+  });
+productPriceChart.render();
+});
+
+
+
+    </script>
+    </div>
+<% include ../partials/footer %>
+

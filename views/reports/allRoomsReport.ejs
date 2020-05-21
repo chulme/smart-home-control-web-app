@@ -1,0 +1,703 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'allRoomsReport', scripts: ['https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js', 'https://cdn.jsdelivr.net/npm/chart.js@2.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4']}); %>
+
+
+<!-- Import nav bar -->
+<%- include('../partials/nav', {page: 'reports'}); %>
+
+
+<div class="container mt-4">
+<!-- Container starts -->
+<div class="container-fluid">
+    <!-- Routines add section starts -->
+    <div class="report-section mb-2">
+        <div class="section-header">
+            <h2 class="text-ecogreen font-weight-bold">Energy Report for All Rooms</h2>
+            <div class="d-flex justify-content-between align-items-top">
+            <p class="text-secondary">View Energy Consumption comparison for each room</p>
+            <!-- <i class="fa fa-plus-circle fa-3x fa-fw btn-ecogreen" aria-hidden="true"></i> -->
+        </div>
+    </div>
+</div>
+
+<div class="dropdown show bg-ecogreen-solid m-2">
+  <a class="btn dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Report Type
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="/reports/houseReport">House Report</a>
+    <a class="dropdown-item" href="/reports/allRoutinesReport">All Routines Report</a>
+    <a class="dropdown-item" href="/reports/userReport">All Users Report</a>
+    <a class="dropdown-item" href="/reports/peakTimeReport">Peak Prediction Report</a>
+    <a class="dropdown-item" href="/leaderBoards">Users Leader Board</a>
+    <a class="dropdown-item" href="/scoreBoard">Home Leader Board</a>
+  </div>
+  </div>
+
+<div class="map">
+  <div class="dx-viewport" >
+    <div class="demo-container">
+        <div id="vector-map"></div>
+    </div>
+    </div>
+</div>
+
+
+<!-- Tabs -->
+<section id="tabs">
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+				<nav>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link  active" id="today" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Today</a>
+						<a class="nav-item nav-link" id="week" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">This Week</a>
+						<a class="nav-item nav-link" id="month" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">This Month</a>
+					</div>
+				</nav>
+				<div class="d-flex tab-content py-3 justify-content-center" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+           
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All rooms Energy Information for the today</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Room consuming Min energy today was</h6>
+                    <p class="card-text"><span id="todayMinDev" class="text-secondary"></span> : <span id="minDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Room consuming Max energy today was</h6>
+                      <p class="card-text"><span id="todayMaxDev" class="text-secondary"></span> : <span id="maxDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+            <canvas id="allRoomsToday" width="250" height="250"></canvas>
+
+
+
+					</div>
+					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            
+            
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All Rooms Energy Information for the Week</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Room consuming Min energy in the Week was</h6>
+                    <p class="card-text"><span id="weekMinDev" class="text-secondary"></span> : <span id="minWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Room consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="weekMaxDev" class="text-secondary"></span> : <span id="maxWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+            <canvas id="allRoomsWeek" width="250" height="500"></canvas>
+                 
+					</div>
+					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+             
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All Rooms Energy Information for the Month</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Room consuming Min energy in the Month was</h6>
+                    <p class="card-text"><span id="monthMinDev" class="text-secondary"></span> : <span id="minMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Room consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="monthMaxDev" class="text-secondary"></span> : <span id="maxMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+						<canvas id="allRoomsMonth" width="250" height="500"></canvas>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+        </div>
+        
+        
+	</div>
+</section>
+<!-- Container ends -->
+</div>
+
+<script>
+	document.getElementById("week").addEventListener("click", week);
+	document.getElementById("month").addEventListener("click", month);
+   document.getElementById("today").addEventListener("click", setup);
+  
+  window.addEventListener('load', setup);
+
+
+$(async function(){
+    $("#vector-map").dxVectorMap({
+        // maxZoomFactor: 1,
+        
+        // zoomEnabled : true,
+        projection: {
+            to: function (coordinates) {
+                return [coordinates[0] / 100, coordinates[1] / 100];
+            },
+    
+            from: function (coordinates) {
+                return [coordinates[0] * 100, coordinates[1] * 100];
+            }
+        },
+        layers: [{
+            hoverEnabled: false,
+            // dataSource: ,
+            name: "building"
+        },{
+            color: "rgba(190, 224, 0, 1)",
+            borderWidth: 1,
+            label: {
+                enabled: true,
+                dataField: "name"
+            },
+            hoveredColor: '#0a8364',
+            dataSource: await sendData(),
+            name: "rooms"
+        }],
+        tooltip: {
+            enabled: true,
+            customizeTooltip: function (arg) {
+                if(arg.layer.name === "rooms")
+                    return { text: "Energy Consumed: " + arg.attribute("square") + " W" };
+            }
+        }
+    });
+});
+
+var buildingData = {
+    type: "FeatureCollection",
+    features: [
+        {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [10, -80],
+                    [-80, -80],
+                    [-80, 80],
+                    [40, 80],
+                    [40, -20],
+                    [100, -20],
+                    [100, -80],
+                    [30, -80],
+                    [30, -74],
+                    [34, -74],
+                    [34, -68],
+                    [40, -68],
+                    [40, -74],
+                    [94, -74],
+                    [94, -26],
+                    [40, -26],
+                    [40, -60],
+                    [34, -60],
+                    [34, 74],
+                    [-74, 74],
+                    [-74, 30],
+                    [10, 30],
+                    [10, 24],
+                    [-74, 24],
+                    [-74, -24],
+                    [10, -24],
+                    [10, -30],
+                    [-74, -30],
+                    [-74, -74],
+                    [10, -74],
+                    
+                ]]
+            }
+        }
+    ]
+};
+
+async function sendData(){
+
+const dataRooms = await getData();
+
+var roomsData = {
+    type: "FeatureCollection",
+    features: [
+        {
+            type: "Feature",
+            properties: {
+                name: dataRooms.x[0],
+                square: dataRooms.y[0]
+            },
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [-74, -30],
+                    [34, -30],
+                    [34, -74],
+                    [-74, -74]
+                ]]
+            }
+        }, {
+            type: "Feature",
+            properties: {
+                name: dataRooms.x[1],
+                square: dataRooms.y[1]
+            },
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [-74, 24],
+                    [34, 24],
+                    [34, -24],
+                    [-74, -24]
+                ]]
+            }
+        }, {
+            type: "Feature",
+            properties: {
+                name: dataRooms.x[2],
+                square: dataRooms.y[2]
+            },
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [-74, 74],
+                    [34, 74],
+                    [34, 30],
+                    [-74, 30]
+                ]]
+            }
+        },{
+            type: "Feature",
+            properties: {
+                name: dataRooms.x[3],
+                square: dataRooms.y[3]
+            },
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [94, 10],
+                    [190, 10],
+                    [190, -74],
+                    [94, -74]
+                ]]
+            }
+        }, {
+            type: "Feature",
+            properties: {
+                name: dataRooms.x[4],
+                square: dataRooms.y[4]
+            },
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [40, -26],
+                    [94, -26],
+                    [94, -74],
+                    [40, -74]
+                ]]
+            }
+        }
+    ]
+};
+
+return roomsData;
+
+}
+      async function setup() {
+
+        const ctx = document.getElementById('allRoomsToday').getContext('2d');
+        const globalTemps = await getData();
+        const myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: globalTemps.x,
+            datasets: [
+              {
+                label: 'Energy in Watts',
+                data: globalTemps.y,
+                fill: false,
+                backgroundColor: [
+                'rgba(190, 224, 0, 1)',
+                '#0a8364', '#50E314',
+                '#3F951B', '#227500',
+                '#8EF364', '#6DCA03',
+                '#1A9A03'
+              ],
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {}
+        });
+	  }
+
+ async function getData() {
+
+		const response = await fetch("/api/allRoomsToday");
+		const roomData = await response.json();
+		console.log("123456789");
+	
+		const data = roomData.roomData.energy;
+    const rooms = roomData.roomData.rooms;
+    console.log(data)
+    console.log(rooms)
+
+        const x = [];
+        const y = [];
+
+      for (let i = 0; i < rooms.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(rooms[i]._id == data[j]._id){
+
+            x.push(rooms[i].roomName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(rooms[i].roomName);
+            y.push(0);
+         }
+        }
+      }
+
+    console.log("QOQOQOOQOOQOO")
+    console.log(x);
+    console.log(y);
+
+    const maxVal =  Math.max(...y);
+    $("#maxDayDevVal").html(maxVal);
+    $("#todayMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minDayDevVal").html(minVal);
+    $("#todayMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+
+   }
+
+   async function getWeekData() {
+		const response = await fetch("/api/allRoomsWeek");
+		const energy = await response.json();
+    const data = energy.energyWeek.sum;	
+    const rooms = energy.energyWeek.rooms;	
+
+		   const x = [];
+        const y = [];
+
+        for (let i = 0; i < rooms.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(rooms[i]._id == data[j]._id){
+
+            x.push(rooms[i].roomName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(rooms[i].roomName);
+            y.push(0);
+         }
+        }
+      }
+
+      const maxVal =  Math.max(...y);
+    $("#maxWeekDevVal").html(maxVal);
+    $("#weekMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minWeekDevVal").html(minVal);
+    $("#weekMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+   }
+
+   async function week() {
+        const ctx = document.getElementById('allRoomsWeek').getContext('2d');
+        const temp = await getWeekData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Week',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+          }
+        });
+      }
+
+	  async function getMonthData() {
+		const response = await fetch("/api/allRoomsMonth");
+		const energy = await response.json();
+		const data = energy.energyMonth.sum;
+    const rooms = energy.energyMonth.rooms;
+    let x =[];
+    let y =[];
+
+    for (let i = 0; i < rooms.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(rooms[i]._id == data[j]._id){
+
+            x.push(rooms[i].roomName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(rooms[i].roomName);
+            y.push(0);
+         }
+        }
+      }
+
+      const maxVal =  Math.max(...y);
+    $("#maxMonthDevVal").html(maxVal);
+    $("#monthMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minMonthDevVal").html(minVal);
+    $("#monthMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+   }
+
+   async function month() {
+        const ctx = document.getElementById('allRoomsMonth').getContext('2d');
+        const temp = await getMonthData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Month',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+		  },
+		  plugins: {
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+								speed: 10,
+								threshold: 10
+							},
+							zoom: {
+								enabled: true,
+								mode: 'y'
+							}
+						}
+					}
+        });
+      }
+
+  
+
+
+
+// FusionCharts.ready(async function() {
+
+//   const response = await fetch("/routines/probs");
+        
+// const energy =  await response.json();
+// console.log("KAJKNHJVCYCJHKBNKN")
+// console.log(energy)
+
+//   var getDataFromChart,
+//     productPriceChart = new FusionCharts({
+//       type: 'selectscatter',
+//       id: 'chartId',
+//       renderAt: 'chart-container',
+//       width: '800',
+//       height: '600',
+//       dataFormat: 'json',
+//       dataSource: {
+//         "chart": {
+//           //Theme
+//           "theme": "fusion",
+//           "caption": "Predicted Device Switch On Time Probabilities",
+//           "subcaption": "Using Neural Network",
+//           "yaxisname": "Probability",
+//           "xaxisname": "Time",
+//           "ynumbersuffix": " %",
+//           "showcanvasborder": "1",
+//           "canvasborderthickness": "0.4",
+//           "canvasborderalpha": "50",
+   
+//           "showformbtn": "1",
+//           "formAction": "#",
+//           "submitdataasxml": "1"
+//         },
+//         "categories": [{
+//           "verticallinecolor": "666666",
+//           "verticallinethickness": "1",
+//           "alpha": "40",
+//           "category": energy.category
+//         }],
+//         "dataset": energy.dataset
+//       },
+//       events: {
+//         "beforeRender": function(evtObj, argObj) {
+//           // creating div for controllers
+//           var controllers = document.createElement('div');
+//           controllers.setAttribute('id', 'controllers');
+//           controllers.style.display = "inline-block";
+//           controllers.innerHTML = "<div id='tableView' style='width:500px;display:none;margin-left:0px;max-height:250px;overflow:scroll;border: 1px solid #CCCCCC;margin: 3px;float: left;display:none; color: #666666;font-family:'Arial','Helvetica';font-size: 12px;'></div>";
+//           //Display container div and write table
+//           argObj.container.parentNode.insertBefore(controllers, argObj.container.nextSibling);
+//           /*
+//            * getDataFromChart method prepares the
+//            * tabular string from selection and
+//            * write in a div and display it.
+//            */
+//           getDataFromChart = function() {
+//             var i,
+//               j,
+//               str,
+//               ds = "",
+//               dataArr,
+//               flagData = false,
+//               objDataset = evtObj.sender.getJSONData && evtObj.sender.getJSONData().dataset,
+//               tableContainer = document.getElementById("tableView");
+
+//             //Form tabular string
+//             str = "<div style='margin:3px;font-family:'Arial','Helvetica';font-size: 12px;'> </div>";
+//             str += '<table border="1" cellpadding="1" cellspacing="0" bordercolor="#ffffff" width="100%">';
+//             for (i in objDataset) {
+//               dataArr = objDataset[i].data;
+//               if (dataArr.length > 0) {
+//                 flagData = true;
+//                 str += '    <tr>';
+//                 str += '        <td width="20%" style="font-weight: bold;font-size: 14px;vertical-align: top;text-align:right;padding: 3px" color="' + objDataset[i].color + '">' + objDataset[i].seriesname + '</td>';
+
+//                 ds = '<table border="1" cellpadding="1" cellspacing="0" bordercolor="' + objDataset[i].color + '" width="100%">';
+//                 ds += '<tr>';
+//                 ds += '<td width="20%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Id</td>';
+//                 ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Probability</td>';
+//                 ds += '<td width="40%" style="font-weight: bold;font-size: 12px;background-color: #EEEEEE;text-align:center"> Time</td>';
+//                 ds += '</tr>';
+//                 for (j = 0; j < dataArr.length; j++) {
+//                   var id = String(dataArr[j].id),
+//                     time = String(dataArr[j].x),
+//                     prob = String(dataArr[j].y);
+
+//                   ds += '<tr>';
+//                   ds += '<td width="20%" align="center">' + id + '</td>';
+//                   ds += '<td width="40%" align="center">' + prob + ' </td>';
+//                   ds += '<td width="40%" align="center">' + time + '</td>';
+//                   ds += '</tr>';
+//                 }
+//                 ds += '</table>';
+//                 str += '        <td width="80%" style="padding: 3px">' + ds + '</td>';
+//                 str += '    </tr>';
+//               }
+
+//             }
+//             str += '</table>';
+//             if (!flagData) {
+//               str = "No Data Selected";
+//             }
+//             tableContainer.style.display = "block";
+//             tableContainer.innerHTML = str;
+//           }
+//         },
+//         "beforeDataSubmit": function(evtObj, argObj) {
+//           getDataFromChart();
+
+//         },
+//         "dataRestored": function(evtObj, argObj) {
+//           document.getElementById("tableView").style.display = "none";
+//           document.getElementById("tableView").innerHTML = "";
+//         }
+//       }
+//     });
+//   productPriceChart.render();
+// });
+
+
+
+
+    </script>
+    </div>
+<% include ../partials/footer %>
+

@@ -1,0 +1,463 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: title, stylesheets: ['/stylesheets/glider.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css'], scripts: ['/javascripts/glider.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js']}); %>
+
+<!-- Include navigation -->
+<%- include('./partials/nav', {page: 'home'}); %>
+
+<!-- Include messages -->
+<%- messages('my_message_template', locals) %>
+
+<div class="modal fade" id="helpModel" tabindex="-1" role="dialog" aria-labelledby="helpModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content bg-eco-esteem">
+        <div class="modal-body">
+          <div class="owl-carousel owl-theme">
+            <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                    <div>
+                        <img src="https://i.imgur.com/MSseZYj.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                    </div>
+                    <h4 class="font-weight-bold text-ecogreen mb-3">Eco-Watt, Your Companion</h4>
+                    <p class="text-white">Welcome to EcoWatt, a smart-home control app that aims to help you better yourself by making more sustainable choices, helping the environment and reducing your energy spending!</p>
+                </div>
+            </div>
+              <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                <div class="">
+                  <img src="https://i.imgur.com/ckX9U4o.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                </div>
+                <h4 class="font-weight-bold text-ecogreen mb-3">Add your household</h4>
+                <p class="text-white">A smart home doesn’t only contain devices, the most important element is you, the household! In Eco-Watt you can add unique user profiles with their permissions and preferences, keeping the app personal to everyone!</p>
+                </div>
+              </div>
+              <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                <div class="">
+                <img src="https://i.imgur.com/1nwAn2q.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                </div>
+                <h4 class="font-weight-bold text-ecogreen mb-3">Add rooms and group devices</h4>
+                <p class="text-white">To assist you in keeping your devices organised, in EcoWatt you can group devices together, based on what room they are in, letting you find your devices as easily as possible.</p>
+                </div>
+            </div>
+            <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                <div class="">
+                <img src="https://i.imgur.com/lhtxX20.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                </div>
+                <h4 class="font-weight-bold text-ecogreen mb-3">Add routines to automate devices</h4>
+                <p class="text-white">Control your devices on a regular basis? Create a routine! Routines allow you to rid yourself of mundane tasks, by letting EcoWatt take care of them for you. They exist to automate devices, allowing you to focus on your day-to-day life, instead of your devices.</p>
+                </div>
+            </div>
+            <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                <div class="">
+                <img src="https://i.imgur.com/EWKF5fw.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                </div>
+                <h4 class="font-weight-bold text-ecogreen mb-3">Energy Score</h4>
+                <p class="text-white">The Energy Score provides information about where the house stands in terms of energy efficiency compared to all other houses and encourages all users to use energy vigilantly.</p>
+                </div>
+            </div>
+            <div class="help-guide px-3 pt-3">
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                <div class="">
+                <img src="https://i.imgur.com/0anmMpc.png" alt="Family" class="img-fluid mb-3" style="height: 250px; width: auto;">
+                </div>
+                <h4 class="font-weight-bold text-ecogreen mb-3">View your energy reports</h4>
+                <p class="text-white">Throughout the app, there are options to view graphical reports for various topics. These will help you to understand how and where your household is consuming energy. They will keep you informed of your usage – letting you optimise!</p>
+                </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-ecogreen btn-block" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Container starts -->
+<div id="home-section" class="bg-ecogreen-green container-fluid pt-3 position-fixed">
+<div class="home-header-section container">
+    <div class="row">
+        <div class="col-10 text-left">
+            <p id="date" class="mb-0"></p>
+            <h3 class="mb-0 font-weight-bold text-ecogreen">Hello There <span class="text-dark user-name"><%= activeUser.username %></span></h3>
+            <p class="mb-0"><%= activeHome.address.streetAdress %> <%= activeHome.address.secondaryAddress %>  <%= activeHome.address.country %></p>
+            <input type="hidden" id="homeID" name="homeID" value="<%= activeHome._id %>">
+        </div>
+        <div class="col-2 text-right">
+            <button type="button" class="btn btn-light shadow-sm p-3" data-toggle="modal" data-target="#helpModel">
+                <i class="fal fa-question-circle fa-lg"></i>
+            </button>
+        </div>
+    </div>
+    <div class="outdoor-section mb-3">
+        <div class="outdoor-information-cards">
+            <div class="d-flex justify-content-start">
+            <div class="outdoor-information-card mr-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <i class="fal fa-thermometer-half fa-2x mr-2"></i>
+                    <div class="information">
+                        <h6 class="mb-0 font-weight-bold">21<sup>o</sup> C</h6>
+                        <p class="mb-0"><small>Outdoor Temp</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="outdoor-information-card mr-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <i class="fal fa-tint fa-2x mr-2"></i>
+                    <div class="information">
+                        <h6 class="mb-0 font-weight-bold">70%</h6>
+                        <p class="mb-0"><small>Outdoor Humidity</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>  
+</div>
+
+<section class="parallax">
+    <div class="search-section d-flex container">
+        <input type="text" name="search" id="search" class="form-control form-control-lg border-0 mr-1" placeholder="Search or Say 'Eco'">
+        <button onclick="listen()" class="btn btn-light px-3 shadow-sm"> <i class="fal fa-microphone"></i></button>
+    </div>
+
+    <div class="home-energy-score-section container position-relative">
+        <div class="home-energy-score-tree">
+            <img src="/images/Green-Leaves-Falling.gif" class="img-fluid" alt="Tree Image" id="tree-img">
+        </div>
+        <div class="home-energy-score-information px-3">
+            <h6 class="font-weight-bold mb-0">Your Energy Score</h6>
+            <h1 id="energy-score" class="display-2 font-weight-bold text-dark mb-0">--</h1>
+            <p id="energy-score-desc" class="mb-2"></p>
+            <div class="indoor-section mb-3">
+                <div class="indoor-information-cards">
+                    <div class="d-flex justify-content-start indoor-information-cards-container">
+                    <div class="indoor-information-card mr-3">
+                        <div class="d-flex justify-content-start align-items-center text-left">
+                            <i class="fal fa-plug fa-2x mr-2"></i>
+                            <div class="information">
+                                <h6 id="energy-consumption" class="mb-0 font-weight-bold">-- kWh</h6>
+                                <p class="mb-0 mr-2"><small>Energy Consumption</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="indoor-information-card mr-3">
+                        <div class="d-flex justify-content-start align-items-center text-left">
+                            <i class="fal fa-pound-sign fa-2x mr-2"></i>
+                            <div class="information">
+                                <h6 id="energy-savings" class="mb-0 font-weight-bold">--</h6>
+                                <p class="mb-0"><small>Estimated Savings</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+</div>
+</div>
+
+<!-- slide menu -->
+<div class="container menu position-absolute bg-white">
+    <div class="menu-hamburger justify-content-center"></div>
+    <div class="home-status-section mb-3">
+    <h5 class="font-weight-bold">Home Status</h5>
+    <div class="home-energy-information-cards">
+        <div class="d-flex justify-content-around">
+            <div class="home-status-information-card">
+                <div class="d-flex justify-content-between">
+                    <i class="fal fa-thermometer-half fa-2x mr-2"></i>
+                    <div class="information">
+                        <h6 class="mb-0 font-weight-bold">21<sup>o</sup> C</h6>
+                        <p class="mb-0"><small>Indoor Temp.</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="home-status-information-card">
+                <div class="d-flex justify-content-between">
+                    <i class="fal fa-tint fa-2x mr-2"></i>
+                    <div class="information">
+                        <h6 class="mb-0 font-weight-bold">70%</h6>
+                        <p class="mb-0"><small>Indoor Humidity.</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="home-status-information-card">
+                <div class="d-flex justify-content-between">
+                    <i class="fal fa-tv fa-2x mr-2"></i>
+                    <div class="information">
+                        <% if(activeHome._id == "5e985d85b98ac707ed22b1c7"){ %>
+                        <h6 class="mb-0 font-weight-bold">10</h6>
+                        <%}else{ %>
+                            <h6 class="mb-0 font-weight-bold">0</h6>
+                        <%}%>
+                        <p class="mb-0"><small>Active Devices</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="favorite-routines-section">
+        <div class="header d-flex justify-content-between">
+            <h5 class="font-weight-bold">Favourite Routines</h5>
+            <a href="/routines" class="text-ecogreen">View All</a>
+        </div>
+    </div>
+<section class="glider-contain multiple mb-3">
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+
+    <div class="routine-glider">
+        <% routines.forEach(function(routine){ %>
+            <a href="/routines/<%= routine._id %>" class="btn bg-ecogreen-solid border-0 text-left text-dark mr-2">
+                <div class="d-flex">
+                    <div class="routine-info p-1 flex-fill">
+                        <i class="fal <%= routine.icon %> fa-2x mr-2"></i>
+                        <h6 class="font-weight-bold text-capitalize mb-0"><%= routine.routineName %></h6>
+                        <% if(routine.time){ %>
+                            <p class="mb-0"><small><%= routine.time %></small></p>
+                        <% } %>
+                    </div>
+                    <i class="fal fa-ellipsis-h"></i>
+                </div>
+            </a>
+        <% }) %>
+    </div>
+
+    <button class="glider-next"></button>
+
+</section>
+<div class="favorite-rooms-section">
+    <div class="header d-flex justify-content-between">
+        <h5 class="font-weight-bold">Favourite Rooms</h5>
+        <a href="/rooms" class="text-ecogreen">View All</a>
+    </div>
+</div>
+<section class="glider-contain multiple mb-5">
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+
+    <div class="rooms-glider pb-4">
+        <% rooms.forEach(function(room){ %>
+            <a href="/rooms/<%= room._id %>" class="btn bg-light border-0 text-left text-dark p-3 mr-2">
+                <div class="d-flex">
+                    <div class="routine-info flex-fill">
+                        <i class="fal <%= room.roomIcon %> fa-3x mr-2"></i>
+                        <h6 class="font-weight-bold text-capitalize mb-0"><%= room.roomName %></h6>
+                        <p class="mb-0"><small><span><%= room.roomDevices.length %></span> Devices</small></p>
+                    </div>
+                    <i class="fal fa-ellipsis-h"></i>
+                </div>
+            </a>
+        <% }) %>
+    </div>
+
+    <button class="glider-next"></button>
+
+</section>
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+    new Glider(document.querySelector('.rooms-glider'), {
+        slidesToShow: 3,
+        draggable: true,
+    });
+
+    new Glider(document.querySelector('.routine-glider'), {
+        slidesToShow: 2.5,
+        draggable: true,
+    });
+
+    $('.owl-carousel').owlCarousel({
+    margin:10,
+    items:1
+    });
+
+/*
+    $('#green-tree').click(function () {
+        $(this).toggleClass('hidden');
+        $('#orange-tree').toggleClass('hidden');
+        $('#energy-score').text('55');
+        $('#energy-score-desc').toggleClass('text-success');
+        $('#energy-score-desc').toggleClass('text-warning');
+        $('#energy-score-desc').text('You could do better!');
+        $('#home-section').toggleClass('bg-ecogreen-green');
+        $('#home-section').toggleClass('bg-ecogreen-orange');
+    });
+
+    $('#orange-tree').click(function () {
+        $(this).toggleClass('hidden');
+        $('#red-tree').toggleClass('hidden');
+        $('#energy-score').text('14');
+        $('#energy-score-desc').toggleClass('text-warning');
+        $('#energy-score-desc').toggleClass('text-danger');
+        $('#energy-score-desc').text('You really need to do better!');
+        $('#home-section').toggleClass('bg-ecogreen-orange');
+        $('#home-section').toggleClass('bg-ecogreen-red');
+    });
+
+    $('#red-tree').click(function () {
+        $(this).toggleClass('hidden');
+        $('#green-tree').toggleClass('hidden');
+        $('#energy-score').text('71');
+        $('#energy-score-desc').toggleClass('text-danger');
+        $('#energy-score-desc').toggleClass('text-success');
+        $('#energy-score-desc').text('You are doing good!');
+        $('#home-section').toggleClass('bg-ecogreen-red');
+        $('#home-section').toggleClass('bg-ecogreen-green');
+    });
+*/
+
+    function setTreeState(state) {
+        // Removing Default background colour
+        $('#home-section').removeClass('bg-ecogreen-green');
+        
+        switch(state) {
+    		case 0:
+                console.log("GREEN");
+                $('#tree-img').attr("src", "/images/Green-Leaves-Falling.gif");
+                $('#home-section').addClass('bg-ecogreen-green');
+	    		break;
+    		case 1:
+                console.log("ORANGE");
+                $('#tree-img').attr("src", "images/Orange-Leaves-Falling.gif");
+                $('#home-section').addClass('bg-ecogreen-orange');
+    			break;
+    		case 2:
+                console.log("RED");
+                $('#tree-img').attr("src", "/images/Red-Leaves-Falling.gif");
+                $('#home-section').addClass('bg-ecogreen-red');
+    			break;
+    		default:
+    			console.log("don't know whats going on");
+    			break;
+    	}
+    }
+
+
+    /* setTreeState
+	 * sets the colours of the text and the tree depending on the enrgy score.
+	 * score: { 0:"green", 1:"orange", 2:"red"}
+    */
+    function setTreeStateOld(state) {
+		
+		// Removing Default background colour
+		$('#home-section').removeClass('bg-ecogreen-green');
+
+		// Removing Default tree status
+		$('#green-tree').addClass('hidden');
+
+    	switch(state) {
+    		case 0:
+    			console.log("GREEN");
+		        $('#energy-score-desc').addClass('text-success');
+		        $('#green-tree').removeClass('hidden');
+		        $('#home-section').addClass('bg-ecogreen-green');
+
+	    		break;
+    		case 1:
+    			console.log("ORANGE");
+        		$('#energy-score-desc').addClass('text-warning');
+		        $('#orange-tree').removeClass('hidden');
+		        $('#home-section').addClass('bg-ecogreen-orange');
+    			break;
+    		case 2:
+    			console.log("RED");
+		        $('#energy-score-desc').addClass('text-danger');
+		        $('#red-tree').removeClass('hidden');
+		        $('#home-section').addClass('bg-ecogreen-red');
+    			break;
+    		default:
+    			console.log("don't know whats going on");
+    			break;
+    	}
+    }
+
+    $(document).ready(function() {
+        calculateScore();
+    });
+
+    async function calculateScore() {
+        const response = await fetch("/api/generationToday");
+        const scoresResponse = await fetch("/api/generationToday/scores");
+
+        const data = await response.json();
+        // console.log("data response")
+        console.log(data)
+
+        const scoresData = await scoresResponse.json();
+        // console.log("scores response")
+        // console.log(scoresData.scores);
+
+        const consumption = await data.energy.consumption;
+        const generation = await data.energy.generation;
+        const genSum = await data.energy.genSum;
+        const conSum = await data.energy.conSum;
+
+        const score = genSum - conSum;
+
+        let lowerScores = new Set();
+
+        for (let i = 0; i < scoresData.scores.length; i++) {
+            if(scoresData.scores[i].score < score) {
+            lowerScores.add(scoresData.scores[i]);
+            }
+        }
+        // Returns the percentile value of the home score within all scores in the given region
+        let energy_score = Math.floor(lowerScores.size / scoresData.scores.length * 100);
+
+        let score_desc = "You are doing good!";
+        let score_state = 0;
+        let notification = "success";
+
+        if(parseInt(energy_score) < 33) {
+        score_desc = "You really need to do better!";
+        score_state = 2;
+        notification = 'error';
+        } 
+        else if(parseInt(energy_score) < 67) {
+        score_desc = "You could do better!";
+        score_state = 1;
+        notification = 'warning';
+        }
+
+        let savings = Math.round((genSum-conSum)/100)/100<0?0:Math.round((genSum-conSum)/100)/100;
+
+        // Setting UI elements 
+        $("#energy-consumption").html(Math.round(conSum)/1000 + " kWh");
+        $("#energy-savings").html(savings);
+        $("#energy-score").html(energy_score);
+        $('#energy-score-desc').html(score_desc);
+        setTreeState(score_state);
+
+        new Noty({
+            type: notification,
+            layout: 'topLeft',
+            theme: 'metroui',
+            text: score_desc,
+        }).show();
+
+        updateStoredScore(energy_score);
+    }
+
+    function updateStoredScore(energy_score) {
+
+        let request = $.ajax({
+            url: "/api/energy/updateScore",
+            type: "post",
+            data: { score: energy_score }
+        });
+        
+        request.done(function (){ console.log("home energy score stored"); });
+    }
+
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<%- include('./partials/footer', {scripts: ['https://code.responsivevoice.org/responsivevoice.js', '/javascripts/voice-api.js']}) %>

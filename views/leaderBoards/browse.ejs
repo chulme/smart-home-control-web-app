@@ -1,0 +1,85 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'LeaderBoard'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'LeaderBoard'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Rooms browse section starts -->
+    <div class="room-browse-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'chart', resourceId: '', heading: 'User Consumption LeaderBoard', description: `Check your rank on ${result.date}`, backLink: '/', options: {add:false, edit:false}}); %>    
+        <!-- List rooms section start -->
+        <div class="list-rooms-section overflow-auto container container-fluid-margin">
+            <ul class="list-group" id="room-cards">
+                <% console.log("FROM BROWER") %>
+                <% console.log(result.energy) %>
+                <% var index = 0 %>
+               
+                <% result.energy.forEach(function(object, i){ %>
+                   
+                    <% if (object.user[0].length!=0 && object._id != null){ %>
+                        <% index++ %>
+                    <li class="list-group-item p-0 border-0 mb-3">
+                        <div class="room-card d-flex align-items-center card-badge">
+                       
+                            <div class="card w-100 bg-light rounded  <%= object._id == activeUser._id ? 'border shadow-sm' : 'border-0' %>" style="border-width: thick !important; border-color:#bee000 !important;">
+                                <div class="card-body">
+                                    <div class="room-header d-flex justify-content-between align-items-start">
+                                        <div class="room-title">
+                                            <h4 class="card-title font-weight-bold mb-0 text-capitalize"><%= index %>. <%= object.user[0][0].username %></h4>
+                                            <p class="mb-2 mt-0 text-secondary"> Role:  <%= object.user[0][0].role %> </p>
+                                        </div>
+                                    </div>
+                                    <div class="room-body d-flex justify-content-between align-items center">
+                                        <div class="room-description">
+                                            <p class="mb-2 "> Energy Consumption : <span class="mb-2 text-ecogreen font-weight-bold"><%= object.energySum %> W </span></p>
+                                        </div>
+                                        <div class="lol">
+                                            <% if (index == 1){ %>
+                                             
+                                            <img class="badge-pic" src ="../images/gold-medal.png" ></i>
+                                            <% }else if (index == 2){ %>
+                                              <% var flag = 1 %>
+                                            <img  class="badge-pic" src ="../images/silver-medal.png" ></i>
+                                            <% }else if (index == 3){ %>
+                                              <% var flag = 1 %>
+                                                <img class="badge-pic" src ="../images/bronze-medal.png" ></i>
+                                             <% }else if (index == result.energy.length ){ %>
+                                                    <img class="badge-pic" src ="../images/dislike.png" ></i>
+                                            <% }else { %>
+                                            <img  class="badge-pic" src ="../images/like.png" ></i>
+                                            <% } %>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </li>
+                    <% } %>
+                <% }) %>
+            </ul>
+        </div>
+        <!-- List rooms section start -->
+    </div>
+    <!-- Rooms browse section ends -->
+</div>
+<!-- Container ends -->
+         
+<!-- Extra scripts starts -->
+
+<script>
+
+$().ready(function() {
+micron.getEle(".badge-pic").interaction("swing").duration(".6").timing("ease-in");
+});
+
+$("card-badge").ready(function() {
+micron.getEle(".badge-pic").interaction("swing").duration(".6").timing("ease-in");
+});
+
+</script>
+<!-- Include footer -->
+<% include ../partials/footer %>

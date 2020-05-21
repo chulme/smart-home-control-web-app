@@ -1,0 +1,362 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="http://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
+  <title>Animated Input Spinner Demo</title>
+  <style class="cp-pen-styles">
+    * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+html, body { height: 100%; }
+
+body {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #EDF1F6;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  text-rendering: optimizelegibility;
+}
+
+.ctrl {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #D5DCE6;
+  background-color:  #BEEE00;
+  border-radius: 5px;
+  font-size: 30px;
+}
+
+.ctrl__counter {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  color:  #BEEE00;
+  text-align: center;
+  overflow: hidden;
+  font-size: 100px;
+}
+
+.ctrl__counter.is-input .ctrl__counter-num {
+  visability: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 100ms ease-in;
+  transition: opacity 100ms ease-in;
+}
+
+.ctrl__counter.is-input .ctrl__counter-input {
+  visability: visible;
+  opacity: 1;
+  -webkit-transition: opacity 100ms ease-in;
+  transition: opacity 100ms ease-in;
+}
+
+.ctrl__counter-input {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: none;
+  outline: none;
+  border: none;
+  color: #333C48;
+  font-size: 30px;
+  line-height: 100px;
+  text-align: center;
+  visability: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 100ms ease-in;
+  transition: opacity 100ms ease-in;
+}
+
+.ctrl__counter-num {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  line-height: 100px;
+  visability: visible;
+  opacity: 1;
+  -webkit-transition: opacity 100ms ease-in;
+  transition: opacity 100ms ease-in;
+}
+
+.ctrl__counter-num.is-increment-hide {
+  opacity: 0;
+  -webkit-transform: translateY(-50px);
+  transform: translateY(-50px);
+  -webkit-animation: increment-prev 100ms ease-in;
+  animation: increment-prev 100ms ease-in;
+}
+
+.ctrl__counter-num.is-increment-visible {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-animation: increment-next 100ms ease-out;
+  animation: increment-next 100ms ease-out;
+}
+
+.ctrl__counter-num.is-decrement-hide {
+  opacity: 0;
+  -webkit-transform: translateY(50px);
+  transform: translateY(50px);
+  -webkit-animation: decrement-prev 100ms ease-in;
+  animation: decrement-prev 100ms ease-in;
+}
+
+.ctrl__counter-num.is-decrement-visible {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-animation: decrement-next 100ms ease-out;
+  animation: decrement-next 100ms ease-out;
+}
+
+.ctrl__button {
+  width: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #BEEE00;
+  cursor: pointer;
+  -webkit-transition: background-color 100ms ease-in;
+  transition: background-color 100ms ease-in;
+  font-size: 100px;
+  font-weight: Bolder;
+}
+
+.ctrl__button:hover {
+  -webkit-transition: background-color 100ms ease-in;
+  transition: background-color 100ms ease-in;
+}
+
+.ctrl__button:active {
+  background-color: #BEEE00;
+  -webkit-transition: background-color 100ms ease-in;
+  transition: background-color 100ms ease-in;
+}
+
+.ctrl__button--decrement { border-radius: 5px 0 0 5px; }
+
+.ctrl__button--increment { border-radius: 0 5px 5px 0; }
+ @-webkit-keyframes 
+decrement-prev {  from {
+ opacity: 1;
+ -webkit-transform: translateY(0);
+ transform: translateY(0);
+}
+}
+ @keyframes 
+decrement-prev {  from {
+ opacity: 1;
+ -webkit-transform: translateY(0);
+ transform: translateY(0);
+}
+}
+@-webkit-keyframes 
+decrement-next {  from {
+ opacity: 0;
+ -webkit-transform: translateY(-50px);
+ transform: translateY(-50px);
+}
+}
+@keyframes 
+decrement-next {  from {
+ opacity: 0;
+ -webkit-transform: translateY(-50px);
+ transform: translateY(-50px);
+}
+}
+@-webkit-keyframes 
+increment-prev {  from {
+ opacity: 1;
+ -webkit-transform: translateY(0);
+ transform: translateY(0);
+}
+}
+@keyframes 
+increment-prev {  from {
+ opacity: 1;
+ -webkit-transform: translateY(0);
+ transform: translateY(0);
+}
+}
+@-webkit-keyframes 
+increment-next {  from {
+ opacity: 0;
+ -webkit-transform: translateY(50px);
+ transform: translateY(50px);
+}
+}
+@keyframes 
+increment-next {  from {
+ opacity: 0;
+ -webkit-transform: translateY(50px);
+ transform: translateY(50px);
+}
+}
+</style>
+</head>
+
+<body>
+  <div class="d-flex flex-column bd-highlight mb-3">
+    <div class='ctrl__button ctrl__button--increment p-2 bd-highlight'>+</div>
+
+    <div class='ctrl__counter p-2 bd-highlight'>
+      <input class='ctrl__counter-input p-2 bd-highlight' maxlength='100' type='text' value='0'>
+      <div class='ctrl__counter-num p-2 bd-highlight'>0</div>
+    </div>
+
+    <div class='ctrl__button ctrl__button--decrement p-2 bd-highlight'>&ndash;</div>
+  </div>
+  </div>
+  <script>
+    (function () {
+      'use strict';
+
+      function ctrls() {
+        var _this = this;
+
+        this.counter = 0;
+        this.els = {
+          decrement: document.querySelector('.ctrl__button--decrement'),
+          counter: {
+            container: document.querySelector('.ctrl__counter'),
+            num: document.querySelector('.ctrl__counter-num'),
+            input: document.querySelector('.ctrl__counter-input')
+          },
+          increment: document.querySelector('.ctrl__button--increment')
+        };
+
+        this.decrement = function () {
+          var counter = _this.getCounter();
+          var nextCounter = (_this.counter > 0) ? --counter : counter;
+          _this.setCounter(nextCounter);
+        };
+
+        this.increment = function () {
+          var counter = _this.getCounter();
+          var nextCounter = (counter < 9999999999) ? ++counter : counter;
+          _this.setCounter(nextCounter);
+        };
+
+        this.getCounter = function () {
+          return _this.counter;
+        };
+
+        this.setCounter = function (nextCounter) {
+          _this.counter = nextCounter;
+        };
+
+        this.debounce = function (callback) {
+          setTimeout(callback, 100);
+        };
+
+        this.render = function (hideClassName, visibleClassName) {
+          _this.els.counter.num.classList.add(hideClassName);
+
+          setTimeout(function () {
+            _this.els.counter.num.innerText = _this.getCounter();
+            _this.els.counter.input.value = _this.getCounter();
+            _this.els.counter.num.classList.add(visibleClassName);
+          }, 100);
+
+          setTimeout(function () {
+            _this.els.counter.num.classList.remove(hideClassName);
+            _this.els.counter.num.classList.remove(visibleClassName);
+          }, 200);
+        };
+
+        this.ready = function () {
+          _this.els.decrement.addEventListener('click', function () {
+            _this.debounce(function () {
+              _this.decrement();
+              _this.render('is-decrement-hide', 'is-decrement-visible');
+            });
+          });
+
+          _this.els.increment.addEventListener('click', function () {
+            _this.debounce(function () {
+              _this.increment();
+              _this.render('is-increment-hide', 'is-increment-visible');
+            });
+          });
+
+          _this.els.counter.input.addEventListener('input', function (e) {
+            var parseValue = parseInt(e.target.value);
+            if (!isNaN(parseValue) && parseValue >= 0) {
+              _this.setCounter(parseValue);
+              _this.render();
+            }
+          });
+
+          _this.els.counter.input.addEventListener('focus', function (e) {
+            _this.els.counter.container.classList.add('is-input');
+          });
+
+          _this.els.counter.input.addEventListener('blur', function (e) {
+            _this.els.counter.container.classList.remove('is-input');
+            _this.render();
+          });
+        };
+      };
+
+      // init
+      var controls = new ctrls();
+      document.addEventListener('DOMContentLoaded', controls.ready);
+    })();
+  </script>
+</body>
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+  ga('create', 'UA-46156385-1', 'cssscript.com');
+  ga('send', 'pageview');
+
+</script>
+
+</html>

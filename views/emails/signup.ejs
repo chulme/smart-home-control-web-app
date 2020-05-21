@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        header {
+            min-height: 200px;
+            padding: 2em;
+            background-color: #BEEE00;
+            text-align: center;
+        }
+
+        header #logo {
+            width: 120px;
+        }
+
+        header h1 {
+            color: white;
+            margin-bottom: 0.25em;
+        }
+
+        main {
+            padding: 2em;
+        }
+
+        main .instruction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2em;
+        }
+        
+        main .instruction img {
+            max-width: 300px;
+        }
+
+        main .instruction h3 {
+            margin-bottom: 0.25em;
+        }
+
+        footer {
+            padding: 2em;
+            background-color: #F6F6F6;
+            text-align: center;
+        }
+
+        footer h3 {
+            color:#BEEE00;
+            margin-bottom: 0.25em;
+        }
+        
+        footer a {
+            text-decoration: none;
+            color: black;
+        }
+
+
+        @media only screen and (min-width: 768px){
+            main .instruction {
+                flex-direction: row;
+            }    
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="logo" src="cid:ecowattlogo" alt="Eco Watt Logo">
+        <h1>Welcome to Eco Watt</h1>
+        <p>Hello there <span><%= name %></span>, Eco Watt is a smart home suction and your personal companion that not only helps you manage your smart home but also helps you reduce your energy spending</p>
+    </header>
+    <main>
+        <h2>To get started, follow the simple instructions</h2>
+        <div class="instructions">
+            <div class="instruction">
+                <img src="https://i.imgur.com/aVJYqJF.png" alt="">
+                <div class="text">
+                    <h3>Add your family members</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At, inventore, eligendi voluptates nulla architecto distinctio quae illo ut itaque facilis quis non nesciunt fugiat debitis deserunt! At dolorem explicabo similique!</p>
+                </div>
+            </div>
+
+            <div class="instruction">
+                <img src="https://i.imgur.com/7YTLcpN.png" alt="">
+                <div class="text">
+                    <h3>Add rooms and group devices</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At, inventore, eligendi voluptates nulla architecto distinctio quae illo ut itaque facilis quis non nesciunt fugiat debitis deserunt! At dolorem explicabo similique!</p>
+                </div>
+            </div>
+
+            <div class="instruction">
+                <img src="https://i.imgur.com/xKnUlfY.png" alt="">
+                <div class="text">
+                    <h3>Add routines to automate devices</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At, inventore, eligendi voluptates nulla architecto distinctio quae illo ut itaque facilis quis non nesciunt fugiat debitis deserunt! At dolorem explicabo similique!</p>
+                </div>
+            </div>
+
+            <div class="instruction">
+                <img src="https://i.imgur.com/5bzA2Lk.png" alt="">
+                <div class="text">
+                    <h3>View your energy reports</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. At, inventore, eligendi voluptates nulla architecto distinctio quae illo ut itaque facilis quis non nesciunt fugiat debitis deserunt! At dolorem explicabo similique!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <h3>Need any help? Contact Us</h3>
+        <a href="mailto:info@eco-watt.tech">info@eco-watt.tech</a>
+    </footer>
+</body>
+</html>

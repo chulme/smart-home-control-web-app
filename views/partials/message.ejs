@@ -1,0 +1,9 @@
+<%if (message != '') { %>
+    <script>
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: '<%= message %>',
+        }).show();
+    </script>
+<% } %>

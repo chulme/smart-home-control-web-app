@@ -1,0 +1,52 @@
+<%- include('./partials/header', {title: title}); %>
+
+<body>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        +
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">ADD DEVICE</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <button type="button" class="btn btn-success btn-block btn-lg"><img src="/images/wifi.png">
+                        <p>Search For Devices</p>
+                    </button>
+                    <a href="/qrc" class="btn btn-success btn-block btn-lg"> <img src="/images/qr.png">
+                        Scan QR Code
+                    </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <!-- <script src="
+          https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script> -->
+
+
+    <% include ./partials/footer %>
+
+    <!-- {
+            deviceName: "Phillips Hue Light",
+            deviceCategory: "light",
+            manufacturer: "Phillips",
+            macID: "v12ef76gt990pqrm1"
+        } -->

@@ -1,0 +1,60 @@
+<!-- Section header starts -->
+<div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3 shadow">
+    <div class="container">
+    <!-- Page options starts -->
+    <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+        <a href="<%= backLink %>" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+    </div>
+    <!-- Page options ends -->
+    <!-- Header text starts -->
+    <div class="header d-flex justify-content-between align-items-center">
+        <div class="header-text">
+            <h2 class="mb-0 font-weight-bold text-ecogreen"><%= heading %></h2>
+            <p class="mb-0 text-white"><%= description %></p>
+        </div>
+        <div class="resource-options d-flex">
+            <% if(activeUser.role === "manager" || activeUser.role === "unrestricted"){ %>
+            <% if(options.edit){ %>
+                <% if(resourceId != ''){ %>
+                <a href="/<%= resource %>/<%= resourceId %>/edit" class="resource-option d-flex flex-column align-items-center mr-3 text-decoration-none text-white">
+                    <i class="fal fa-sliders-h-square fa-2x mb-1"></i>
+                    <small class="mb-0 font-weight-bold text-uppercase">Edit</small>
+                </a>
+                <% } else { %>
+                <a href="#" id="edit-btn" class="resource-option d-flex flex-column align-items-center mr-3 text-decoration-none text-white">
+                    <i class="fal fa-sliders-h-square fa-2x mb-1"></i>
+                    <small class="mb-0 font-weight-bold text-uppercase">Edit</small>
+                </a>
+                <% } %>
+            <% } %>
+            <% if(options.add){ %>
+            <% if(resource == 'devices') { %>
+            <a href="/<%= resource %>/new?roomID=<%= query.roomID %>" class="resource-option d-flex flex-column align-items-center text-decoration-none text-white mr-3">
+                <i class="fal fa-plus-circle fa-2x mb-1"></i>
+                <small class="mb-0 font-weight-bold text-uppercase">Add</small>
+            </a>
+            <% } else { %>
+            <a href="/<%= resource %>/new" class="resource-option d-flex flex-column align-items-center text-decoration-none text-white mr-3">
+                <i class="fal fa-plus-circle fa-2x mb-1"></i>
+                <small class="mb-0 font-weight-bold text-uppercase">Add</small>
+            </a>
+            <% } %>
+            <% } %>
+            <% } %>
+            <% if(options.report){ %>
+            <div class="energy-report-btn">
+                <a href="<%= report %>" class="text-center text-decoration-none text-white">
+                    <div class="">
+                        <i class="fal fa-plug fa-2x text-white"></i>
+                        <i class="fal fa-question-circle text-white"></i>
+                    </div>
+                    <small class="mb-0 font-weight-bold text-uppercase">Report</small>
+                </a>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <!-- Header text ends -->
+    </div>
+</div>
+<!-- Section header ends -->

@@ -1,0 +1,14 @@
+<div id="messages">
+    <% Object.keys(messages).forEach(function (type) { %>
+        <% messages[type].forEach(function (message) { %>
+        <script>
+            new Noty({
+                type: '<%= type %>',
+                layout: 'topRight',
+                text: '<%= message %>',
+                theme: 'mint',
+            }).show();
+        </script>
+        <% }) %>
+    <% }) %>
+</div>

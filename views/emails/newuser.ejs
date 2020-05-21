@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+        }
+
+        header {
+            min-height: 200px;
+            padding: 2em;
+            background-color: #BEEE00;
+            text-align: center;
+        }
+
+        header #logo {
+            width: 120px;
+        }
+
+        header h1 {
+            color: white;
+            margin-bottom: 0.25em;
+        }
+
+        main {
+            padding: 2em;
+        }
+        
+        main .message-header {
+            margin-bottom: 1em;
+        }
+
+        main .message-header img {
+            max-width: 350px;
+        }
+
+        h2 span {
+            font-weight: normal;
+        }
+
+        .message-header,
+        .message-body {
+            text-align: center;
+        }
+ 
+        button#manage-users {
+            font-size: 24px;
+            margin-top: 1em;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #BEEE00;
+            color: white;
+        }
+
+        footer {
+            padding: 2em;
+            background-color: #F6F6F6;
+            text-align: center;
+        }
+
+        footer h3 {
+            color:#BEEE00;
+            margin-bottom: 0.25em;
+        }
+        
+        footer a {
+            text-decoration: none;
+            color: black;
+        }
+
+
+        @media only screen and (min-width: 768px){
+            main .instruction {
+                flex-direction: row;
+            }    
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="logo" src="cid:ecowattlogo" alt="Eco Watt Logo">
+        <h1>Eco-Watt</h1>
+        <p>Your Smart Home Companion</p>
+    </header>
+    <main>
+        <div class="message-header">
+            <img src="https://i.imgur.com/aVJYqJF.png" alt="">
+            <h1>A new user has been added to your house!</h1>
+            <p>Hello there <span><%= name %></span>, a new user is successfully added to your house!</p>
+        </div>
+        <div class="message-body">
+            <h1>Please Review The Changes Below,</h1>
+            <h2>Username: <span><%= username %></span></h2>
+            <h2>Permission: <span><%= permission %></span></h2>
+            <h2>Added By: <span><%= addedBy %></span></h2>
+            <button id="manage-users">Manage Users</button>
+        </div>
+    </main>
+    <footer>
+        <h3>Need any help? Contact Us</h3>
+        <a href="mailto:info@eco-watt.tech">info@eco-watt.tech</a>
+    </footer>
+</body>
+</html>

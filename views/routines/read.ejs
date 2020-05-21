@@ -1,0 +1,224 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Routine - View', scripts: ['https://cdn.jsdelivr.net/npm/sweetalert2@9']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'routines'}); %>
+
+<!-- Container start -->
+<div class="">
+    <!-- Routine read section starts-->
+    <div class="routine-read-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'routines', resourceId: '', report: '', heading: routine.routineName, description: 'View devices in routine', backLink: '/routines', options: {add:false, edit:true, report:false}}); %>
+
+        <div class="routine-information-section overflow-auto container container-fluid-margin position-relative h-100">
+            <div class="routine-status-section mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="room-status">
+                        <h5 class="font-weight-bold">Routine Status</h5>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-power-off text-ecogreen mr-3 text-dark"></i>
+                            <p class="mb-0 text-capitalize" id="routine-status-field"><%= routine.status %></p>
+                        </div>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-clock text-ecogreen mr-3 text-dark"></i>
+                            <p class="mb-0"><%= routine.time == '' ? 'Not Scheduled' : routine.time %></p>
+                        </div>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-calendar-alt text-ecogreen mr-3 text-dark"></i>
+                            <p class="mb-0">
+                                <% if(routine.frequency.length > 0){ %>
+                                <% routine.frequency.forEach(function(freq){ %>
+                                    <span><%= freq %></span>
+                                <% }) %>
+                                <% } else { %>
+                                    <span>-</span>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <button class="switch-on-off btn btn-block bg-white shadow-sm card-option d-flex align-items-center p-3 d-flex justify-content-between <%= routine.status == 'active' ? 'toggle-device-on' : '' %>" value="<%= routine._id %>" data-status="<%= routine.status %>">
+                    <span class="h6 mb-0 mr-3">Switch
+                        <%= routine.status == 'active' ? 'Off' : 'On' %></span>
+                    <i class="fal fa-power-off fa-lg"></i>
+                </button>
+            </div>
+
+            <div class="routine-devices-section">
+                <h4 class="font-weight-bold mb-0">Routine Devices:</h4>
+                <ul class="list-group" id="routine-devices">
+                    <% routine.devices.forEach(function(device){ %>
+                    <li class="list-group-item border-0 mb-3 p-0 bg-white">
+                        <div class="device-card d-flex justify-content-between">
+                            <div class="p-3 rounded text-dark w-100 mr-3 shadow-sm d-flex justify-content-between align-items-center bg-white">
+                                <div class="device-information d-flex align-items-center">
+                                    <i class="<%= device.deviceIcon %> fa-2x text-ecogreen mr-2 d-flex flex-vertical"></i>
+                                    <h4 class="mb-0">
+                                        <%= device.deviceName %>
+                                    </h4>
+                                </div>
+                                <i class="fal fa-power-off fa-lg <%= device.routineDeviceStatus == 'on' ? 'text-ecogreen' : 'text-secondary' %>"></i>
+                            </div>
+                            <div class="option hidden">
+                                <button class="delete ml-3 btn rounded text-center py-1 px-4 shadow-sm bg-danger d-flex align-items-center h-100"
+                                    value="<%= device._id %>">
+                                    <i class="fal fa-minus-circle text-white fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+
+            <i class="<%= routine.icon %> fal room-icon text-secondary position-absolute" style="font-size: 20rem; top: 0; right: 0; z-index: -1; opacity: 0.10;"></i>
+        </div>
+    </div>
+    <!-- Routine read section ends-->
+</div>
+
+<script>
+    // ===========================
+    // Switch ON/OFF Button Handler
+    // ===========================
+
+    // When switch on/off button clicked
+    $('.switch-on-off').click(function () {
+        // Toggle the color of switch on off
+        $(this).toggleClass('toggle-device-on');
+
+        // Get the routine id
+        let routineID = $(this).val();
+
+        // Get the current status
+        let status = $(this).data('status');
+
+        // Get the updates status
+        let updatedStatus = status == 'active' ? 'inactive' : 'active';
+        $(this).data('status', updatedStatus);
+        $('#routine-status-field').html(updatedStatus);
+        // $(this).parents('.card-body').find('.routine-status span').html(updatedStatus);
+        // $(this).find('span').html(updatedStatus == 'active' ? 'Switch Off' : 'Switch On');
+
+        // Log the routine status
+        console.log(routineID, status, updatedStatus);
+
+        // Sent AJAX to routine status route with the new status value
+        $.ajax({
+            url: `/routines/${routineID}/changeStatus`,
+            type: "POST",
+            data: JSON.stringify({
+                status: updatedStatus,
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+
+    // ===========================
+    // Edit Button Handler
+    // ===========================
+
+    // When edit button clicked
+    $('#edit-btn').click(function () {
+        // Get list of rooms and toggle hidden visibility
+        $('.option').toggleClass('hidden');
+    });
+
+
+    // ===========================
+    // Delete Device Handler
+    // ===========================
+
+    // When delete button clicked
+    $('.option > .delete').click(function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7DD442',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                // Get the selected device ID
+                let deviceID = $(this).val();
+
+                // Sent AJAX to room delete route with the selected room ID
+                $.ajax({
+                    url: `/devices/${deviceID}/delete`,
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (answer) {
+                        console.log(answer);
+                    },
+                    error: function (xhr, resp, text) {
+                        console.log(xhr, resp, text);
+                    }
+                });
+
+                // Update DOM to remove the room from the room list
+                $(this).parents('li').remove();
+
+                // Display success message
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    });
+
+
+
+
+    // On change status button click
+    $(".changeStatus").click(function () {
+        // Toggle status color
+        $(this).toggleClass('toggle-device-on');
+
+        // Get the device id
+        var deviceID = $(this).data('device');
+
+        // Get the status of the device
+        var status = $(this).data('status');
+
+        // Updated Status
+        var updatedStatus = status == "OFF" ? "ON" : "OFF";
+        $(this).data('status', updatedStatus);
+
+        // Log the device status
+        console.log(deviceID, status, updatedStatus);
+
+        // Make AJAX request to update the status of device in database
+        $.ajax({
+            url: '/devices/changeStatus',
+            type: "POST",
+            data: JSON.stringify({
+                deviceID: deviceID,
+                status: updatedStatus
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+    });
+
+</script>
+
+<% include ../partials/footer %>

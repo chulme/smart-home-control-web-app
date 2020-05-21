@@ -1,0 +1,38 @@
+
+<section class="glider-contain container multiple">
+    <h4 class=" mb-0 ">Frequently Used Devices</h4>
+    <p class="mb-3 text-secondary">Click to view device</p>
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+
+    <div class="devices-glider pb-4 ">
+        <% devices.forEach(function(dev){ %>
+            <a href="/devices/<%= dev._id %>" class="btn bg-ecogreen-solid border-0 text-left text-dark p-3 mr-2">
+                <div class="d-flex">
+                    <div class="device-info flex-fill">
+                        <i class="fal <%= dev.deviceIcon %> fa-3x mr-2"></i>
+                        <h6 class="font-weight-bold text-capitalize mb-0"><%= dev.deviceName %></h6>
+                        <p class="mb-0"><span><%= dev.status %></span></p>
+                    </div>
+                    <i class="fal fa-ellipsis-h"></i>
+                </div>
+            </a>
+        <% }) %>
+    </div>
+
+    <button class="glider-next"></button>
+
+</section>
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+    new Glider(document.querySelector('.devices-glider'), {
+        slidesToShow: 3,
+        draggable: true,
+    });
+
+</script>

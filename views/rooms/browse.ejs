@@ -1,0 +1,192 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Rooms', scripts: ['https://cdn.jsdelivr.net/npm/sweetalert2@9']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Rooms browse section starts -->
+    <div class="room-browse-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'rooms', resourceId: '', report: '/reports/allRoomsReport', heading: 'My Rooms', description: 'View all rooms', backLink: '/', options: {add:true, edit:true, report: true}}); %>
+        <!-- List rooms section start -->
+        <div class="list-rooms-section overflow-auto container container-fluid-margin">
+            <ul class="list-group" id="room-cards">
+                <% rooms.forEach(function(room){ %>
+                <li class=" list-group-item p-0 border-0 mb-3 bg-light rounded">
+                    <div class="room-card d-flex align-items-center">
+                        <div class="card w-100 border-0 bg-light">
+                            <div class="card-body">
+                                <div class="room-header d-flex justify-content-between align-items-start">
+                                    <div class="room-title">
+                                        <h4 class="card-title font-weight-bold mb-0 text-capitalize">
+                                            <%= room.roomName %>
+                                        </h4>
+                                        <p class="mb-2 mt-0 text-secondary">
+                                            <%= room.roomDevices.length %> devices</p>
+                                    </div>
+                                    <div>
+                                        <i class="fav-icon fas fa-heart-circle fa-lg text-secondary <%= room.favorite ? 'text-danger' : '' %>"
+                                            data-micron="tada" data-micron-timing="ease-in" data-room="<%= room._id %>"
+                                            data-favorite="<%= room.favorite %>"></i>
+                                    </div>
+                                </div>
+                                <div class="room-body d-flex justify-content-between align-items center">
+                                    <div class="room-description">
+                                        <p class="mb-0">Active Devices</p>
+                                        <% room.roomDevices.forEach(function(device){ %>
+                                        <% if(device.status=="ON"){ %>
+
+                                        <button class="btn btn-ecogreen btn-circle btn-circle-sm m-1"><i class="<%= device.deviceIcon %>"></i></button>
+                                        <% } %>
+
+                                        <% }) %>
+                                        <p class="mb-2 "> Temperature : <span class="mb-2 text-ecogreen font-weight-bold">
+                                                <%= room.roomTemp %><sup>o</sup> C </span></p>
+                                        <p class="mb-2 ">Humidity : <span class="mb-2 text-ecogreen font-weight-bold">
+                                                <%= room.humidity %> % </span></p>
+                                    </div>
+                                    <div class="room-icon">
+                                        <i class="<%= room.roomIcon %> box fa-7x icon-color"></i>
+                                    </div>
+                                </div>
+                                <div class="room-options d-flex justify-content-end align-items-center">
+                                    <a href="/rooms/<%= room._id %>" class="text-decoration-none text-dark card-option d-flex align-items-center">
+                                        <i class="fal fa-long-arrow-right fa-2x" data-micron="blink"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option hidden">
+                            <button class="delete btn btn-link" value="<%= room._id %>">
+                                <i class="fal fa-minus-circle text-danger fa-2x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+        <!-- List rooms section start -->
+    </div>
+    <!-- Rooms browse section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+
+    // ===========================
+    // Favorite Button Handler
+    // ===========================
+
+    // When favorite button clicked
+    $('.fav-icon').click(function () {
+        // Toggle the color of favorite icon
+        $(this).toggleClass('text-danger');
+
+        // Get the room id
+        let roomID = $(this).data('room');
+
+        // Get the current favorite
+        let favorite = $(this).data('favorite');
+
+        // Get the updated favorite
+        let updatedFavorite = favorite ? false : true;
+        $(this).data('favorite', updatedFavorite);
+
+        // Log the room status
+        console.log(roomID, favorite, updatedFavorite);
+
+        // Sent AJAX to room favorite route with the new favorite value
+        $.ajax({
+            url: `/rooms/${roomID}/favorite`,
+            type: "POST",
+            data: JSON.stringify({
+                favorite: updatedFavorite,
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+
+    // ===========================
+    // Room Card Handler
+    // ===========================
+
+    // When room card clicked
+    $('.room-info').click(function () {
+        let roomId = $(this).data('room');
+        window.location.href = `/rooms/${roomId}`;
+    });
+
+    // ===========================
+    // Edit Button Handler
+    // ===========================
+
+    // When edit button clicked
+    $('#edit-btn').click(function () {
+        // Get list of rooms and toggle hidden visibility
+        $('.room-card > .option').toggleClass('hidden');
+    });
+
+
+    // ===========================
+    // Delete Room Handler
+    // ===========================
+
+    // When delete button clicked
+    $('.room-card > .option > .delete').click(function () {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7DD442',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                // Get the selected room ID
+                let roomID = $(this).val();
+
+                // Sent AJAX to room delete route with the selected room ID
+                $.ajax({
+                    url: `/rooms/${roomID}/delete`,
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (answer) {
+                        console.log(answer);
+                    },
+                    error: function (xhr, resp, text) {
+                        console.log(xhr, resp, text);
+                    }
+                });
+
+                // Update DOM to remove the room from the room list
+                $(this).parents('li').remove();
+
+                // Display success message
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+
+    });
+
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

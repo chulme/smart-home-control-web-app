@@ -1,0 +1,131 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: 'Lights'}); %>
+
+<!-- Include navigation -->
+<%- include('./partials/nav', {page: 'home'}); %>
+
+<!-- Back Button -->
+<div class="container">
+
+    <div class="routines-add-section m-3">
+        <div class="section-header d-flex justify-content-between">
+            <div>
+                    <h1>Master Bed</h1>     <!-- Replace with room name -->
+                    <h2>Main Lights</h2>             <!-- Replace with device name -->
+                    <p>Add to Routine
+                        <button class="btn btn-ecogreen btn-circle btn-circle-sm border-0 mr-3"><i class="fal fa-plus"></i></button>
+                    </p>
+            </div>
+            <div class="energy-report-btn">
+                <a href="#" class="btn btn-light shadow-sm p-3">
+                    <i class="fal fa-plug fa-2x"></i>
+                    <i class="fal fa-question-circle"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mx-auto justify-content-around">
+        <div class="flex-column bd-highlight mb-3">
+            <div class="flex-row">
+                <input class="input-range" orient="vertical" type="range" step="1" value="0" min="1" max="100">
+            </div>
+            <h2>Brightness <span class="range-value"></span>%</h2>
+            
+        </div>
+        <div class="flex-column bd-highlight mb-3">
+            <div class="row p-2 border-0 shadow rounded bd-highlight">
+                <div class="col">
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #0004ff;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #7174ff;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #b6b7ff;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #e0e0ff;"></button></div>
+                </div>
+                <div class="col">
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ffa600;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ff7b00;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ff00dd;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #b700ff;"></button></div>
+                </div>
+                <div class="col">
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ffffff;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ffebb3;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ffdf86;"></button></div>
+                    <div class="flex-row"><button class="btn border-0 pt-4 pb-5 pr-3" style="background-color: #ffce47;"></button></div>
+                </div>
+            </div>
+            <h2>Select Hue</h2>
+            
+        </div>
+
+        <style>
+            .input-range {
+                -webkit-appearance: slider-vertical;
+                height: 300px;
+                width: 100%;
+                border-radius: 5px;
+                background: #d3d3d3;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+            .input-range::-webkit-slider-thumb{
+                -webkit-appearance: sliderthumb-vertical;
+
+                outline: none;
+            }
+            
+        </style>
+
+        <script>
+            var range = $('.input-range'),
+            value = $('.range-value');
+    
+            value.html(range.attr('value'));
+
+            range.on('input', function(){
+                value.html(this.value);
+            }); 
+        </script>
+    </div>
+</div>
+
+
+
+<section class="container">
+    <div class="col-sm">
+        <button class="btn-block border-0 shadow p-3 mb-5 bg-white rounded ">
+            <div class="d-flex justify-content-between">
+                <h3>ON/OFF</h3>
+                <img src="/images/shutdown.png" alt="light intensity" style="height: 2em;">
+            </div>
+        </button>
+    </div>
+    </div>
+</section>
+
+<section class="glider-contain multiple mb-5">
+    <h2>Other Devices:</h2>
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+
+    <div class="devices-glider pb-4">
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+    </div>
+
+    <button class="glider-next"></button>
+
+</section>
+
+<script>
+    new Glider(document.querySelector('.devices-glider'), {
+        slidesToShow: 3,
+        draggable: true,
+    });
+</script>
+
+<!-- Include footer -->
+<% include ./partials/footer %>

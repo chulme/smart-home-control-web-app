@@ -1,0 +1,63 @@
+<nav>
+<div class="tab-bar container">
+<!-- Reports start -->
+<% if(page == 'reports') { %>
+    <a class="tab selected" href="/reports/houseReport" data-text="Reports">
+        <span class="icon"><i class="text-ecogreen flaticon-statistics"></i></span>
+    </a>
+<% } else { %>
+    <a class="tab" href="/reports/houseReport" data-text="Reports">
+        <span class="icon"><i class="text-secondary flaticon-statistics"></i></span>
+    </a>
+<% } %>
+<!-- Reports ends -->
+
+<!-- Routines start -->
+<% if(page == 'routines') { %>
+    <a class="tab selected" href="/routines" data-text="Routines">
+        <span class="icon"><i class="text-ecogreen flaticon-calendar-1"></i></span>
+    </a>
+<% } else { %>
+    <a class="tab" href="/routines" data-text="Routines">
+        <span class="icon"><i class="text-secondary flaticon-calendar-1"></i></span>
+    </a>
+<% } %>
+<!-- Routines ends -->
+
+<!-- Routines home -->
+<% if(page == 'home') { %>
+    <a class="tab selected" href="/" data-text="Home">
+        <span class="icon"><i class="text-ecogreen flaticon-house"></i></span>
+    </a>
+<% } else { %>
+    <a class="tab" href="/" data-text="Home">
+        <span class="icon"><i class="text-secondary flaticon-house"></i></span>
+    </a>
+<% } %>
+<!-- Routines home -->
+
+<!-- Rooms start -->
+<% if(page == 'rooms') { %>
+    <a class="tab selected" href="/rooms" data-text="Rooms">
+        <span class="icon"><i class="text-ecogreen flaticon-menu-1"></i></span>
+    </a>
+<% } else { %>
+    <a class="tab" href="/rooms" data-text="Rooms">
+        <span class="icon"><i class="text-secondary flaticon-menu-1"></i></span>
+    </a>
+<% } %>
+<!-- Rooms ends -->
+
+<!-- Profile start -->
+<% if(page == 'profile') { %>
+    <a class="tab selected" href="/users/<%= activeUser._id %>" data-text="Profile">
+        <span class="icon"><i class="text-ecogreen flaticon-user"></i></span>
+    </a>
+<% } else { %>
+    <a class="tab" href="/users/<%= activeUser._id %>" data-text="Profile">
+        <span class="icon"><i class="text-secondary flaticon-user"></i></span>
+    </a>
+<% } %>
+<!-- Profile ends -->
+</div>
+</nav>

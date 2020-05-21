@@ -1,0 +1,131 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: 'Rooms'}); %>
+
+<!-- Include nav -->
+<%- include('./partials/nav', {page: 'rooms'}); %>
+
+<div class="container-fluid">
+    <main class="wrapper" style="padding-top:2em">
+
+        <section class="container" id="demo-content">
+            <div class="qr-camera text-center">
+                <h1 class="title">Add new device to <%= room %> </h1>
+                <h1 class="title">Scan QR Code from Video Camera</h1>
+                
+                <p>Point the camera towards the QR code which can be found behind the device</p>
+
+                <section class="container" id="demo-content">
+                    <div>
+                        <video id="video" style="border: 0px solid gray; width: 100%;"></video>
+                    </div>
+                    <div class="invisible">
+                        <div id="sourceSelectPanel" style="display:none">
+                            <label for="sourceSelect">Change video source:</label>
+                            <select id="sourceSelect" style="max-width:400px">
+                            </select>
+                        </div>
+
+                        <div style="display: table">
+                            <label for="decoding-style"> Decoding Style:</label>
+                            <select id="decoding-style" size="1">
+                                <option value="once">Decode once</option>
+                                <option value="continuously">Decode continuously</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div>
+                        <label>Result:</label>
+                        <pre><code id="result"></code></pre>
+                    </div>
+                </section>
+        </section>
+
+
+
+        </section>
+    </main>
+</div>
+
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+    <script type="text/javascript">
+        function decodeOnce(codeReader, selectedDeviceId) {
+            codeReader.decodeFromInputVideoDevice(selectedDeviceId, 'video').then((result) => {
+                var url_string = window.location.href;
+                    var getURL = new URL(url_string);
+                    var id = getURL.searchParams.get("roomID");
+                console.log(result);
+                document.getElementById('result').textContent = result.text; 
+                result.roomNo= id;
+
+                $.ajax({
+                url: '/devices/scanqr',
+                type : "POST",
+                contentType : 'application/json',
+                dataType : 'json',
+                data : JSON.stringify(result),
+                success : function(answer) {
+                    console.log(answer);
+                    window.location.href = `/rooms/${id}`;
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+
+                console.log(result)
+                document.getElementById('result').textContent = result.text
+
+            }).catch((err) => {
+                console.error(err)
+                document.getElementById('result').textContent = err
+            })
+        }
+
+        window.addEventListener('load', function () {
+            let selectedDeviceId;
+            const codeReader = new ZXing.BrowserQRCodeReader()
+            console.log('ZXing code reader initialized')
+
+            codeReader.getVideoInputDevices()
+                .then((videoInputDevices) => {
+                    const sourceSelect = document.getElementById('sourceSelect')
+                    selectedDeviceId = videoInputDevices[0].deviceId
+                    if (videoInputDevices.length >= 1) {
+                        videoInputDevices.forEach((element) => {
+                            const sourceOption = document.createElement('option')
+                            sourceOption.text = element.label
+                            sourceOption.value = element.deviceId
+                            sourceSelect.appendChild(sourceOption)
+                        })
+
+                        sourceSelect.onchange = () => {
+                            selectedDeviceId = sourceSelect.value;
+                        };
+
+                        const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+                        sourceSelectPanel.style.display = 'block'
+                    }
+
+                    // Start video capture to decode once on screen load
+                    const decodingStyle = decodeOnce(codeReader, selectedDeviceId);
+
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        })
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="
+              https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+
+<!-- Include footer -->
+<% include ./partials/footer %>

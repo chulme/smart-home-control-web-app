@@ -1,0 +1,158 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Refrigerator', stylesheets: ['/stylesheets/glider.min.css'], scripts: ['/javascripts/glider.min.js']}); %>
+
+<!-- Include navigation -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Refrigerator section starts -->
+    <div class="refrigerator-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'devices', resourceId: '', report: `/reports/deviceReport?deviceID=${result._id}&deviceName=${result.deviceName}`, heading: result.deviceName, description: result.room.roomName, backLink: `/rooms/${result.room._id}`, options: {add:false, edit:false, report:true}}); %>
+
+        <!-- Refrigerator control section starts -->
+        <div class="refrigerator-control-section overflow-auto container container-fluid-margin position-relative">
+            <div class="control-mode-section d-flex justify-content-around my-3">
+
+                <div class="control-section d-flex flex-column justify-content-between align-items-center">
+                    <div class="control d-flex flex-column align-items-center">
+                        <button class="plus tempBut btn border-0 p-4 mb-4 bg-transparent rounded text-ecogreen " id="but" ><i class="fal fa-plus fa-3x text-ecogreen"></i></button>
+                    
+                        <h2 class="d-flex align-items-center" id="hola"><input class="counter" type="text" value="<%= result.temp %>" />°C</h2>
+            
+                        <button class="minus tempBut btn border-0 p-4 mb-4 bg-transparent rounded text-ecogreen " id="butt" ><i class="fal fa-minus fa-3x text-ecogreen" ></i></button>
+                    </div>
+                    <div class="label">
+                        <h2>Temp</h2>
+                    </div>
+                </div>
+    
+                <div class="mode-section d-flex flex-column justify-content-between align-items-center">
+                    <div class="modes d-flex flex-column align-items-center">
+                        <button value="freez" id="freez" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon"><i class="fal fa-snowflake fa-3x"></i></button>
+
+                        <button id="fan" value="fan" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon"><i class="fal fa-fan fa-3x"></i></button>
+
+                        <button id="wet" value="wet" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon"><i class="fal fa-tint fa-3x"></i></button>
+                    </div>
+                    <div class="label">
+                        <h2>Mode</h2>
+                    </div>
+                </div>
+    
+            </div>
+            <i class="<%= result.deviceIcon %> fal room-icon text-secondary position-absolute" style="font-size: 20rem; top: 0; right: 0; z-index: -1; opacity: 0.10;"></i>
+            <%- include('./partials/deviceStatus', {status: result.status, device: result._id}); %>
+            <%- include('./partials/freqUsedDevices', { devices: result.devices}); %>
+        </div>
+        <!-- Refrigerator control section ends -->
+    </div>
+    <!-- Refrigerator section ends -->
+</div>
+<!-- Container ends -->
+
+<script>
+    $(document).ready(function() {
+        let device = JSON.parse('<%-JSON.stringify(result)%>');
+            let updateDev = {};
+            updateDev.deviceID = device._id;
+
+        $('.tempBut').click(function(e) {
+            micron.getEle("#hola").interaction("bounce").duration(".45").timing("ease-out"); 
+            var button_classes, value = +$('.counter').val();
+            button_classes = $(e.currentTarget).prop('class');
+            if (button_classes.indexOf('plus') !== -1) 
+            {
+            micron.getEle("#but").interaction("blink").duration(".45").timing("ease-out"); 
+            value = (value) + 1;
+            } else {
+             micron.getEle("#butt").interaction("blink").duration(".45").timing("ease-out");
+            value = (value) - 1;
+            }
+            value = value < -4 ? -4 : value;
+            value = value > 7 ? 7 : value;
+            $('.counter').val(value);
+
+            updateDev.temp =  $('.counter').val();
+
+            console.log("NOOOO I WONT")
+            console.log(updateDev)
+
+            $.ajax({
+                url:  `/devices/${updateDev.deviceID}/changeTemp`,
+                type: "POST",
+                data: JSON.stringify(updateDev),
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                success: function (answer) {
+                    console.log(answer);
+                },
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+
+        });
+        $('.counter').click(function() {
+            $(this).focus().select();
+            updateDev.temp =  $('.counter').val();
+
+            $.ajax({
+                url:  `/devices/${updateDev._id}/changeTemp`,
+                type: "POST",
+                data: JSON.stringify(updateDev),
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                success: function (answer) {
+                    console.log(answer);
+                },
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+        });
+    });
+</script>
+
+<script>
+
+    $(document).ready(function() {
+
+        let device = JSON.parse('<%-JSON.stringify(result)%>');
+        let lala = {};
+        lala.deviceID = device._id;
+
+        $(`#${device.mode}`).addClass('text-ecogreen');
+
+        $('.mode').click(function() {
+           
+           $('.mode').removeClass('text-ecogreen');
+           lala.mode= $(this).val();
+           console.log("WWWWWw");
+           console.log(lala);
+           $(this).toggleClass('text-ecogreen');
+
+                    $.ajax({
+                        url:  `/devices/${lala.deviceID}/changeMode`,
+                        type: "POST",
+                        data: JSON.stringify(lala),
+                        dataType: "json",
+                        contentType: "application/json",
+                        cache: false,
+                        success: function (answer) {
+                            console.log(answer);
+                        },
+                        error: function (xhr, resp, text) {
+                            console.log(xhr, resp, text);
+                        }
+                    })
+          });
+
+    });
+
+</script>
+
+<!-- Include footer -->
+<% include ../partials/footer %>

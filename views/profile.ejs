@@ -1,0 +1,58 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: title}); %>
+
+<!-- Include messages -->
+<%- messages('my_message_template', locals) %>
+
+<!-- Container starts -->
+<div class="container-fluid">
+    <div class="profile-section text-center m-4">
+        <div class="header mb-3">
+            <h2 class="text-ecogreen font-weight-bold mb-0">Who is using</h2>
+            <p class="mb-0 text-secondary">Select your profile</p>
+        </div>
+        <ul class="p-0 row" id="profile-cards">
+            <% users.forEach(function(user){ %>
+            <li class="list-group-item p-0 border-0 mb-3 col-6 col-md-3">
+                <div class="profile-card">
+                    <button class="profile btn btn-ecogreen rounded mb-3 border-0" value="<%= user._id %>"><i class="fal fa-user fa-5x p-4 text-white"></i></button>
+                    <h6 class="mb-0"><%= user.username %></h6>
+                    <h6 class="mb-0 text-secondary"><%= user.accessGroup %></h6>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+    $(".profile").click(function(){
+        // Get the id of the selected user
+        let selectedProfile = $(this).val();
+        
+        // Disable other users to prevent users from clicking multiple profiles
+        $(".profile").not($(this)).prop('disabled', true);
+
+        // Make a ajax request to set the active user
+        $.ajax({
+            url: '/users',
+            type : "POST",
+            contentType : 'application/json', 
+            dataType : 'json',
+            data : JSON.stringify({selectedProfile: selectedProfile}),
+            success : function(answer) {
+                window.location.href = '/';
+            },
+            error: function(xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+</script>
+
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ./partials/footer %>

@@ -1,0 +1,200 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Lights', stylesheets: ['/stylesheets/glider.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.css', '/stylesheets/iro-colorpicker.css'], scripts: ['/javascripts/glider.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js', 'https://cdn.jsdelivr.net/npm/@jaames/iro/dist/iro.min.js']}); %>
+
+<!-- Include navigation -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Lights section starts -->
+    <div class="lights-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'devices', resourceId: '', report: `/reports/deviceReport?deviceID=${result._id}&deviceName=${result.deviceName}`, heading: result.deviceName, description: result.room.roomName, backLink: `/rooms/${result.room._id}`, options: {add:false, edit:false, report:true}}); %>
+
+        <!-- Lights control section -->
+        <div class="lights-control-section overflow-auto container container-fluid-margin position-relative">
+            <div class="row mx-auto mb-3">
+                <div class="row d-flex align-items-center w-100 justify-content-between">
+                    <div class="col-md-6 text-center">
+                        <div class=" mb-3 d-flex flex-column align-items-center ">
+                            <div class=" mb-3 d-flex align-items-center">
+                                <i class="fal fa-adjust"></i>
+                                <h6 class="m-0 ml-2">Brightness</h6>
+                            </div>
+                            <input type="range" min="0" max="100" class="slider" step="2" id="lalala"
+                            value="<%=result.brightness%>" data-orientation="vertical" class="mb-2">
+                            <div>
+                                <output><%= result.brightness %></output><span style="font-size: 15px;">%</span>
+                            </div>
+                            
+                        </div>
+    
+                    </div>
+                    <div class="col-md-6 text-center d-flex flex-column align-items-center">
+                        <div class="mb-3 d-flex align-items-center">
+                            <i class="fal fa-paint-brush"></i>
+                            <h6 class="m-0 ml-2">Select Hue</h6>
+                        </div>
+                        <div class="colorPicker" id="newColor"></div>
+                        <div id="colorValue" hidden ></div>
+                        <div id="showColor" w-1 h-1></div>
+                        <div class="d-flex align-center align-items-center mb-2">
+                        <p class="mr-2 mb-0">Selected Color: </p>
+                        <div id="square"></div>
+                    </div>
+                    </div>
+                      </div>
+            </div>  
+            <input type="hidden" name="devID" id="devID" value="<%=result._id%>">
+            <input type="hidden" name="color" id="color" value="<%=result.color%>">
+            <i class="<%= result.deviceIcon %> fal room-icon text-secondary position-absolute" style="font-size: 20rem; top: 0; right: 0; z-index: -1; opacity: 0.10;"></i>
+            <%- include('./partials/deviceStatus', {status: result.status, device: result._id}); %>
+            <%- include('./partials/freqUsedDevices', { devices: result.devices}); %>
+        </div>
+    </div>   
+    <!-- Lights section ends -->
+</div>
+<!-- Container ends -->
+
+<script>
+
+var $element = $('input[type="range"]');
+var $output = $('output');
+
+function updateOutput(el, val) {
+    el.textContent = val;
+ }
+
+function update(val){
+    let device = JSON.parse('<%-JSON.stringify(result)%>');
+    console.log("OHOHOOOOOOOOOOOOOOOOOO");
+    device.brightness = val;
+    // $.post(`/devices/${device._id}/changeBrightness`, device);
+    // // socket.on('message', addToDiv);
+    // socket.on('message', function (data) {
+    //     console.log("PLIS WORK");
+    //   console.log(data);
+    //   addToDiv();
+    // });
+   
+  $.ajax({
+            url: `/devices/${device._id}/changeBrightness`,
+            type: "POST",
+            data: JSON.stringify(device),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+               
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+}
+
+$element
+  .rangeslider({
+    polyfill: false,
+    onInit: function() {
+      updateOutput($output[0], this.value);
+    }
+  })
+  .on('input', function() {
+    updateOutput($output[0], this.value);
+  })
+  .on('change', function() {
+    update(this.value);
+    console.log(this.value)
+  });
+
+
+  $(".changeStatus").click(function () {
+        $('.status').toggleClass('text-ecogreen');
+
+        var statVal = $('.getStatus').val();
+        console.log(statVal);
+        $('.getStatus').val(statVal == 'ON' ? 'OFF' : 'ON');
+        
+        
+        let device = JSON.parse('<%-JSON.stringify(result)%>');
+
+   
+        var status = $().val();
+
+        let lala = {};
+        lala.deviceID = device._id;
+        lala.status =  $('.getStatus').val();
+
+        $.ajax({
+            url: '/devices/changeStatus',
+            type: "POST",
+            data: JSON.stringify(lala),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+                //window.location.href = `/devices/${device._id}`;
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+
+    })
+</script>
+
+<script>
+    var col = $("#color").val();
+
+if(col==null){
+  col = "rgb(255,0,0)";
+}
+
+var colorPicker = new iro.ColorPicker(".colorPicker", {
+  width: 200,
+  color:col,
+  borderWidth: 1,
+  borderColor: "#fff",
+});
+  
+var value = document.getElementById("colorValue");
+  
+// https://iro.js.org/guide.html#color-picker-events
+colorPicker.on(["color:init", "color:change"], function(color){
+  // Show the current color in different formats
+  // Using the selected color: https://iro.js.org/guide.html#selected-color-api
+  value.innerHTML = color.rgbString;
+  $("#square").css("background-color", color.rgbString);
+
+});
+
+colorPicker.on(["color:init", "input:end"], function(color){
+  let dev ={};
+  dev._id = $("#devID").val();
+  console.log("FFFFFFFFFFFFF");
+  console.log(dev._id);
+  dev.color = color.rgbString;
+
+  $("#square").css("background-color", color.rgbString);
+  
+  $.ajax({
+    url: `/devices/${dev._id}/changeColor`,
+    type: "POST",
+    data: JSON.stringify(dev),
+    dataType: "json",
+    contentType: "application/json",
+    cache: false,
+    success: function (answer) {
+        console.log(answer);
+        window.location.href = `/devices/${dev._id}`;
+    },
+    error: function (xhr, resp, text) {
+        console.log(xhr, resp, text);
+    }
+  })
+});
+</script>
+<!-- Include footer -->
+<%- include('../partials/footer', {scripts: []}) %>

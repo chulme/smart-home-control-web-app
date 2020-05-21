@@ -1,0 +1,71 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Rooms - Edit'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="container-fluid">
+    <!-- Rooms add section starts -->
+    <div class="rooms-add-section m-3">
+        <div class="section-header">
+            <h1 class="mb-0">Edit Room</h1>
+            <p class="text-secondary">Update your preferences</p>
+        </div>
+
+        <form action="/rooms/<%= result._id %>" method="POST" required>
+            <div class="form-group">
+                <label class="h4 font-weight-bold" for="room-name">Room Name</label>
+                <input type="text" name="roomName" class="form-control form-control-lg border-0" id="room-name" aria-describedby="room-name" placeholder="Room Name">
+            </div>
+
+        <label class="h4 font-weight-bold" for="room-name">Select icon</label>
+          <!-- SELECT element -->
+            <form action="/rooms" method="POST" required>
+            <select id="myselect" name="myselect" class="myselect">
+                <option value="">No icon</option>
+                <option>eco-015-curtain</option>
+                <option>eco-016-desk-lamp</option>
+                <option>eco-017-door</option>
+                <option>eco-018-dressing-table</option>
+                <option>eco-019-fan</option>
+                <option>eco-020-fence</option>
+                <option>eco-021-fridge</option>
+                <option>eco-022-garage</option>
+                <option>eco-023-recycle-bin</option>
+                <option>eco-024-house</option>
+                <option>eco-025-iron</option>
+                <option>eco-026-ironing-board</option>
+                <option>eco-027-key</option>
+                <option>eco-028-kitchen</option>
+                <option>eco-029-ceiling-light</option>
+                <option>eco-030-mailbox</option>
+                <option>eco-031-microwave</option>
+                <option>eco-032-mirror</option>
+                <option>eco-033-oven</option>
+                <option>eco-034-phone</option>
+                <option>eco-035-picture</option>
+            </select>
+
+    <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Update Room</button>
+        </form>
+    </div>
+    <!-- Rooms add section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+
+<script type="text/javascript">
+    // Make sure to fire only when the DOM is ready
+    jQuery(document).ready(function($) {
+        $('#myselect').fontIconPicker({
+            emptyIcon : false,
+            theme: 'fip-bootstrap'
+        });
+    });
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

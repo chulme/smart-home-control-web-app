@@ -1,0 +1,257 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Routines', scripts: ['https://cdn.jsdelivr.net/npm/sweetalert2@9']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'routines'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Routines browse section starts -->
+    <div class="routine-browse-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'routines', resourceId: '', report: '/reports/allRoutinesReport', heading: 'My Routines', description: 'View all routines', backLink: '/', options: {add:true, edit:true, report:true}}); %>
+
+        <!-- List routine section start -->
+        <div class="list-routine-section overflow-auto container container-fluid-margin">
+            <ul class="list-group" id="routine-cards">
+                <% routines.forEach(function(routine){ %>
+                <li class="list-group-item p-0 border-0 mb-3 bg-light rounded">
+                    <div class="routine-card d-flex align-items-center">
+                        <div class="card w-100 bg-light border-0 bg-light">
+                            <div class="card-body">
+                                <div class="routine-header d-flex justify-content-between align-items-start">
+                                    <div class="routine-title">
+                                        <h4 class="card-title font-weight-bold mb-0 text-capitalize">
+                                            <%= routine.routineName %>
+                                        </h4>
+                                        <p class="mb-2 mt-0 text-secondary">
+                                            <%= routine.devices.length %> devices</p>
+                                    </div>
+                                    <div>
+                                        <i class="fav-icon fas fa-heart-circle fa-lg text-secondary <%= routine.favorite ? 'text-danger' : '' %>"
+                                            data-micron="tada" data-micron-timing="ease-in" data-routine="<%= routine._id %>"
+                                            data-favorite="<%= routine.favorite %>"></i>
+                                    </div>
+                                </div>
+                                <div class="routine-body d-flex justify-content-between align-items-center">
+                                    <div class="routine-description">
+                                        <h5 class="mb-2 routine-status">Routine Status: <span class="text-ecogreen">
+                                                <%= routine.status %></span></h5>
+                                        <% if (routine.time != "") { %>
+                                        <h5 class="mb-2">Schedule Time: <span class="text-ecogreen">
+                                                <%= routine.time %> </span></h5>
+                                        <div class="routine-frequency mb-1">
+                                            <% routine.frequency.forEach(function(freq){ %>
+                                            <button class="btn btn-ecogreen font-weight-normal small border-0 mb-1">
+                                                <%= freq.substring(0,2) %></button>
+                                            <% }) %>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="routine-icon">
+                                        <i class=" <%= routine.icon %> fa-7x icon-color"></i>
+                                    </div>
+                                </div>
+                                <div class="routine-options d-flex justify-content-between align-items-center">
+                                    <button class="switch-on-off btn bg-white shadow-sm card-option d-flex align-items-center p-3 <%= routine.status == 'active' ? 'toggle-device-on' : '' %>"
+                                        data-micron="blink" id="switch-on-off-<%= routine._id %>" value="<%= routine._id %>"
+                                        data-status="<%= routine.status %>">
+                                        <span class="h6 mb-0 mr-3" data-micron="blink" data-micron-bind="true"
+                                            data-micron-id="switch-on-off-<%= routine._id %>">Switch
+                                            <%= routine.status == 'active' ? 'Off' : 'On' %></span>
+                                        <i class="fal fa-power-off fa-lg" data-micron="blink" data-micron-bind="true"
+                                            data-micron-id="switch-on-off-<%= routine._id %>"></i>
+                                    </button>
+                                    <a href="/routines/<%= routine._id %>" class="text-decoration-none text-dark card-option d-flex align-items-center">
+                                        <i class="fal fa-long-arrow-right fa-2x" data-micron="blink"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option hidden">
+                            <button class="delete btn btn-link" value="<%= routine._id %>">
+                                <i class="fal fa-minus-circle text-danger fa-2x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+        <!-- List routine section ends -->
+    </div>
+    <!-- Routines browse section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+
+    // ===========================
+    // Switch ON/OFF Button Handler
+    // ===========================
+
+    // When switch on/off button clicked
+    $('.switch-on-off').click(function () {
+        // Toggle the color of switch on off
+        $(this).toggleClass('toggle-device-on');
+
+        // Get the routine id
+        let routineID = $(this).val();
+
+        // Get the current status
+        let status = $(this).data('status');
+
+        // Get the updates status
+        let updatedStatus = status == 'active' ? 'inactive' : 'active';
+        $(this).data('status', updatedStatus);
+        $(this).parents('.card-body').find('.routine-status span').html(updatedStatus);
+        $(this).find('span').html(updatedStatus == 'active' ? 'Switch Off' : 'Switch On');
+
+        // Log the routine status
+        console.log(routineID, status, updatedStatus);
+
+        // Sent AJAX to routine status route with the new status value
+        $.ajax({
+            url: `/routines/${routineID}/changeStatus`,
+            type: "POST",
+            data: JSON.stringify({
+                status: updatedStatus,
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+
+    // ===========================
+    // Favorite Button Handler
+    // ===========================
+
+    // When favorite button clicked
+    $('.fav-icon').click(function () {
+        // Toggle the color of favorite icon
+        $(this).toggleClass('text-danger');
+
+        // Get the routine id
+        let routineID = $(this).data('routine');
+
+        // Get the current favorite
+        let favorite = $(this).data('favorite');
+
+        // Get the updated favorite
+        let updatedFavorite = favorite ? false : true;
+        $(this).data('favorite', updatedFavorite);
+
+        // Log the routine status
+        console.log(routineID, favorite, updatedFavorite);
+
+        // Sent AJAX to routine favorite route with the new favorite value
+        $.ajax({
+            url: `/routines/${routineID}/favorite`,
+            type: "POST",
+            data: JSON.stringify({
+                favorite: updatedFavorite,
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+
+    // ===========================
+    // Edit Button Handler
+    // ===========================
+
+    // When edit button clicked
+    $('#edit-btn').click(function () {
+        // Get list of routines and toggle hidden visibility
+        $('.routine-card > .option').toggleClass('hidden');
+    });
+
+    // ===========================
+    // Delete Routine Handler
+    // ===========================
+
+    // When delete button clicked
+    $('.routine-card > .option > .delete').click(function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7DD442',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                // Get the selected routine ID
+                let routineID = $(this).val();
+
+                // Sent AJAX to routine delete route with the selected routine ID
+                $.ajax({
+                    url: `/routines/${routineID}/delete`,
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (answer) {
+                        console.log(answer);
+                    },
+                    error: function (xhr, resp, text) {
+                        console.log(xhr, resp, text);
+                    }
+                });
+
+                // Update DOM to remove the routine from the routines list
+                $(this).parents('li').remove();
+
+                // Display success message
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    });
+
+
+
+
+    $(document).ready(function () {
+
+        //show notification only 20% of the time
+        if (Math.random() > 0.2) return;
+
+        // console.log('show noty');
+        var n = new Noty({
+            text: 'We have created a routine based on your behaviour, do you want to check it out?',
+            buttons: [
+                Noty.button('YES', 'btn btn-success', function () {
+                    console.log('redirect to /routines/suggested');
+                    window.location.href = '/routines/suggested';
+                }),
+
+                Noty.button('NO', 'btn btn-error', function () {
+                    console.log('do nothing');
+                    n.close();
+                })
+            ]
+        });
+        n.show();
+    });
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

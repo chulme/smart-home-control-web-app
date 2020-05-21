@@ -1,0 +1,61 @@
+<!-- Accessibility user profile -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'User - Accessibility'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Accessibility user section starts -->
+    <div class="accessibility-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/users/<%= user._id %>" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h2 class="mb-0 font-weight-bold text-ecogreen">Accessibility Settings</h2>
+                <p class="mb-0 text-white">Set Accessibility Options</p>
+            </div>
+            <!-- Header text ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- Accessibility user form section start -->
+        <div class="accessibility-user-form-section overflow-auto container container-fluid-margin h-100">
+            <!-- Accessibility section starts -->
+            <div class="accessibility-section">
+                <form action="/users/<%= user._id %>/accessibility" method="post">
+                    <div class="color-theme">
+                        <div class="form-group">
+                            <label class="h4 font-weight-bold" for="color-theme">Color Theme</label>
+                            <select class="form-control form-control-lg border-0" id="color-theme" name="colorTheme">
+                            <option value="light" <%= !user.settings.darkmode ? 'selected' : ''%>>Light</option>
+                            <option value="dark" <%= user.settings.darkmode ? 'selected' : ''%>>Dark</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Update Settings</button>
+                </form>
+            </div>
+            <!-- User section ends -->
+        </div>
+        <!-- Add user form section ends -->
+    </div>
+    <!-- Add user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

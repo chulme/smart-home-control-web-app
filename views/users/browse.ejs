@@ -1,0 +1,91 @@
+<!-- Browse user profiles -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Profile - Browse'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Browse user section starts -->
+    <div class="browse-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-end align-items-center">
+                <div class="logout d-flex align-items-center">
+                    <form action="/auth/logout" method="post">
+                        <button type="submit" class="btn">
+                            <div class="logout d-flex align-items-center text-white">
+                                <p class="mb-0 mr-2">Logout</p>
+                                <i class="fal fa-sign-out-alt fa-2x"></i>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h4 class="mb-0 font-weight-bold text-ecogreen">Who is using?</h4>
+                <p class="mb-0 text-white">Select your profile</p>
+            </div>
+            <!-- Header text ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- User list section start -->
+        <div class="user-list-section overflow-auto container container-fluid-margin">
+            <!-- Users starts -->
+            <div class="users container container-fluid-margin overflow-auto mt-3">
+                <% users.forEach(function(user) { %>
+                    <!-- User starts -->
+                    <div class="user text-center">
+                        <button class="profile rounded border-0 mb-2" data-user-id="<%= user._id %>" style="background-color: <%= user.avatarColor ? user.avatarColor : '#BEEE00' %>;">
+                            <i class="fal fa-user fa-5x p-4 text-white"></i>
+                        </button>
+                        <h6 class="text-bold"><%= user.username %></h6>
+                    </div>
+                    <!-- User ends -->
+                <% }) %>
+            </div>
+            <!-- Users ends -->
+        </div>
+        <!-- User list section ends -->
+    </div>
+    <!-- Browse user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+
+// Profile on click
+$('.profile').click(function() {
+
+    // Get the user ID from the 
+    const userId = $(this).data('user-id');
+
+    // Make a ajax request to set the active user
+    $.ajax({
+    url: '/users/browse',
+    type : "POST",
+    contentType : 'application/json', 
+    dataType : 'json',
+    data : JSON.stringify({userId: userId}),
+    success : function(result) {
+        console.log(result);
+        window.location.href = '/';
+    },
+    error: function(xhr, res, text) {
+        console.log(xhr, res, text);
+    }
+    });
+
+});
+
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>
+

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+        }
+
+        header {
+            min-height: 200px;
+            padding: 2em;
+            background-color: #BEEE00;
+            text-align: center;
+        }
+
+        header #logo {
+            width: 120px;
+        }
+
+        header h1 {
+            color: white;
+            margin-bottom: 0.25em;
+        }
+
+        main {
+            padding: 2em;
+        }
+        
+        main .message-header {
+            margin-bottom: 1em;
+        }
+
+        main .message-header img {
+            max-width: 350px;
+        }
+
+        h1, h2 {
+            margin-bottom: 1rem;
+        }
+
+        h2 span {
+            font-weight: normal;
+        }
+
+        .text-ecogreen {
+            color: #BEEE00;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .reports {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .report {
+            margin-bottom: 3rem;
+        }
+
+        .report img{
+            max-width: 100%;
+            height: auto;
+        }
+
+        .message-header,
+        .message-body {
+            text-align: center;
+        }
+ 
+        button#manage-users {
+            font-size: 24px;
+            margin-top: 1em;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #BEEE00;
+            color: white;
+        }
+
+        .report-header {
+            margin-bottom: 3rem;
+        }
+
+        footer {
+            padding: 2em;
+            background-color: #F6F6F6;
+            text-align: center;
+        }
+
+        footer h3 {
+            color:#BEEE00;
+            margin-bottom: 0.25em;
+        }
+        
+        footer a {
+            text-decoration: none;
+            color: black;
+        }
+
+
+        @media only screen and (min-width: 768px){
+            .reports {
+                flex-direction: row;
+            }  
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="logo" src="cid:ecowattlogo" alt="Eco Watt Logo">
+        <h1>Eco-Watt</h1>
+        <p>Your Smart Home Companion</p>
+    </header>
+    <main>
+        <div class="report-header text-center">
+            <h1 class="text-ecogreen">Week Energy Usage Analytics</h1>
+            <p>Date: <span><%= date %></span></p>
+        </div>
+        <div class="reports">            
+            <% reports.forEach(function(report){ %>
+                <div class="report text-center">
+                    <h2 class="text-ecogreen"><%=report.title%></h2>
+                    <img id="logo" src="cid:<%=report.filename%>" alt="Eco Watt Logo">
+                </div>
+            <% }) %>
+        </div>
+        <div class="analysis">
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error hic deserunt quas omnis vel doloribus, corporis asperiores voluptatibus dolorem nam laboriosam? A alias, possimus amet ullam suscipit culpa quia dolore!</p>
+        </div>
+    </main>
+    <footer>
+        <h3>Need any help? Contact Us</h3>
+        <a href="mailto:info@eco-watt.tech">info@eco-watt.tech</a>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!-- Add new user profile -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Profile - Read'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Add user section starts -->
+    <div class="add-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/users/manage" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h2 class="mb-0 font-weight-bold text-ecogreen">New Home User</h2>
+                <p class="mb-0 text-white">Add a new home user</p>
+            </div>
+            <!-- Header text ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- Add user form section start -->
+        <div class="add-user-form-section overflow-auto container container-fluid-margin">
+            <!-- User section starts -->
+            <div class="user-section">
+                <form action="/users/" method="post">
+                    <!-- User details starts -->
+                    <div class="user-details d-flex align-items-center mb-3">
+                        <!-- User avatar starts -->
+                        <div class="user-avatar mr-4">
+                            <div id="avatar" class="profile-card profile bg-ecogreen-solid rounded border-0 position-relative">
+                                <i class="fal fa-user fa-5x p-4 text-white"></i>
+                                <div class="user-edit-icon bg-danger position-absolute rounded bg-eco-esteem">
+                                    <i class="fal fa-paint-brush text-white"></i>
+                                </div>
+                            </div>
+                            <input type="color" name="avatarColor" id="avatar-color" class="hidden" value="#bee000">
+                        </div>
+                        <!-- User avatar ends -->
+                        <!-- User information starts -->
+                        <div class="user-information w-100">
+                            <div class="form-group">
+                                <label class="h4 font-weight-bold" for="username">Username</label>
+                                <input type="text" name="username" class="form-control form-control-lg border-0" id="username" aria-describedby="username" placeholder="Username" required>
+                            </div>
+                            <div class="location d-flex">
+                                <i class="fal fa-map-marker-alt mr-2"></i>
+                                <p class="mb-0"><%= activeHome.address.streetAdress %> <%= activeHome.address.secondaryAddress %>  <%= activeHome.address.country %></p>
+                            </div>
+                        </div>
+                        <!-- User information ends -->
+                    </div>
+                    <!-- User details ends -->
+                    <!-- User role starts -->
+                    <div class="user-role">
+                        <div class="form-group">
+                            <label class="h4 font-weight-bold" for="role">User Role</label>
+                            <div class="role-desc-section">
+                                <p class="text-secondary">Restricted - The restricted user has permission to control home devices.</p>
+                                <p class="text-secondary">Unrestricted - The unrestricted user has permission to control and manage home devices.</p>
+                                <p class="text-secondary">Manager - The manager has permission to control and manage home devices as well as users.</p>
+                            </div>
+                            <select class="form-control form-control-lg border-0 mb-1" id="role" name="role">
+                                <option value="restricted">Restricted</option>
+                                <option value="unrestricted">Unrestricted</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- User role ends -->
+                    <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Add User</button>
+                </form>
+            </div>
+            <!-- User section ends -->
+        </div>
+        <!-- Add user form section ends -->
+    </div>
+    <!-- Add user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+    // Get the avatar element
+    let elAvatar = $("#avatar");
+
+    // Get the avatar color selector element
+    let elAvatarColorSelector = $("#avatar-color");
+
+    // When avatar element clicked
+    $(elAvatar).click(function() {
+        // Open the avatar color selector
+        $(elAvatarColorSelector).click();
+
+        // Avatar color selector on change
+        $(elAvatarColorSelector).change(function() {
+            // Set the background color of the avatar
+            $(elAvatar).css("background-color",$(this).val());
+        });
+    });
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

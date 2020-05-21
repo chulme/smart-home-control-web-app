@@ -1,0 +1,532 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Routines - New', stylesheets: ['/stylesheets/jquery.fonticonpicker.min.css', '/stylesheets/jquery.fonticonpicker.bootstrap.min.css', '/stylesheets/anypicker.css', '/stylesheets/anypicker-font.css', '/stylesheets/uiswitch.css', '/stylesheets/checkbox.css']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'routines'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Routines add section starts -->
+    <div class="routine-add-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'routines', resourceId: '', report: '', heading: 'Add Routine', description: 'Add a new custom routine', backLink: '/routines', options: {add:false, edit:false, report:false}}); %>
+
+        <!-- Routine form section start -->
+        <div class="routine-form-section overflow-auto container container-fluid-margin">
+            <!-- Routine add form start -->
+            <form id="routine-form">
+                <div class="form-group">
+                    <label class="h4 font-weight-bold" for="routine-name">Routine Name</label>
+                    <input type="text" name="routineName" class="form-control form-control-lg border-0" id="routine-name" aria-describedby="routine-name" placeholder="Routine Name" required>
+                </div>
+    
+                <div class="form-group">
+                    <div class="">
+                        <label class="h4 font-weight-bold" for="routine-icon">Icon</label>
+                        <div>
+                        <select id="routine-icon" name="icon" class="myselect">
+                            <option value="">No icon</option>
+                            <option>eco-015-curtain</option>
+                            <option>eco-016-desk-lamp</option>
+                            <option>eco-017-door</option>
+                            <option>eco-018-dressing-table</option>
+                            <option>eco-019-fan</option>
+                            <option>eco-020-fence</option>
+                            <option>eco-021-fridge</option>
+                            <option>eco-022-garage</option>
+                            <option>eco-023-recycle-bin</option>
+                            <option>eco-024-house</option>
+                            <option>eco-025-iron</option>
+                            <option>eco-026-ironing-board</option>
+                            <option>eco-027-key</option>
+                            <option>eco-028-kitchen</option>
+                            <option>eco-029-ceiling-light</option>
+                            <option>eco-030-mailbox</option>
+                            <option>eco-031-microwave</option>
+                            <option>eco-032-mirror</option>
+                            <option>eco-033-oven</option>
+                            <option>eco-034-phone</option>
+                            <option>eco-035-picture</option>
+                            <option>eco-005-bathroom</option>
+                            <option>eco-029-ceiling-light</option>
+                            <option>eco-030-mailbox</option>
+                            <option>eco-031-microwave</option>
+                            <option>eco-032-mirror</option>
+                            <option>eco-033-oven</option>
+                            <option>eco-034-phone</option>
+                            <option>eco-035-picture</option>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <div class="d-flex justify-content-between">
+                        <label class="h4 font-weight-bold" for="scheduled">Schedule Routine</label>
+                        <!-- <input id="scheduled" name="scheduled" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios" required> -->
+    
+                        <input id="scheduled" name="scheduled" type="checkbox" class="uiswitch custom">
+                    </div>
+                </div>
+    
+                <div class="form-group schedule-form-group hidden">
+                    <label class="h4 font-weight-bold" for="schedule-time">Schedule Time</label>
+                    <input id="scheduled-time" name="time" class="form-control form-control-lg border-0" type="text" placeholder="--:-- --" autocomplete="off" disabled>
+                </div>
+    
+                <div class="form-group schedule-form-group hidden">
+                    <div class="d-flex flex-column justify-content-between">
+                        <label class="h4 font-weight-bold" for="frequency">Frequency</label>
+                        <div id="frequency-message" class="text-danger hidden">
+                            Please select at least 1 day!
+                        </div>
+                        <div class="pt-2 d-flex justify-content-between">
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Sun" disabled>
+                                <span class="checkmark p-2 rounded">Sun</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Mon" disabled>
+                                <span class="checkmark p-2 rounded">Mon</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Tue" disabled>
+                                <span class="checkmark p-2 rounded">Tue</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Wed" disabled>
+                                <span class="checkmark p-2 rounded">Wed</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Thu" disabled>
+                                <span class="checkmark p-2 rounded">Thu</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Fri" disabled>
+                                <span class="checkmark p-2 rounded">Fri</span>
+                            </label>
+                            <label class="container-checkbox">
+                                <input type="checkbox" name="frequency" value="Sat" disabled>
+                                <span class="checkmark p-2 rounded">Sat</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="routine-duration" class="h4 font-weight-bold">Turn Off In</label>
+    
+                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="w-100 mr-3">
+                        <label for="routine-duration-hour" class="h6 font-weight-bold">Hours</label>
+                        <input type="number" name="routineDurationHours" class="form-control form-control-lg border-0" id="routine-duration-hour" aria-describedby="routine-duration-hour" placeholder="Hours" min="0" max="24" value="0" required="">
+                    </div>
+                    <div class="w-100">
+                        <label for="routine-duration-minutes" class="h6 font-weight-bold">Minutes</label>
+                        <input type="number" name="routineDurationMinutes" class="form-control form-control-lg border-0" id="routine-duration-minutes" aria-describedby="routine-duration-minutes" placeholder="Minutes" min="0" max="60" value="0" required="">
+                    </div>
+                    </div>
+                </div>
+    
+                <label class="h4 font-weight-bold" for="device-list">Devices</label>
+                <div id="device-list-message" class="text-danger hidden">
+                    Please add at least one device!
+                </div>
+                <!-- Button trigger modal -->
+    
+                <!-- Add routine device button starts -->
+                <button type="button" class="btn btn-block p-3 bg-light rounded mb-3" data-toggle="modal" data-target="#add-device-model">
+                    <div class="add-device-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <i class="fas fa-plus-circle fa-2x fa-fw" aria-hidden="true"></i>
+                            <h4 class="mb-0 font-weight-bold text-ecogreen">Add Device</h4>
+                        </div>
+                    </div>
+                </button>
+                <!-- Add routine device button ends -->
+    
+                <!-- List routine devices starts -->
+                <ul class="list-group" id="device-list">
+                </ul>
+                <!-- List routine devices ends -->
+    
+                <input id="submit" type="submit" class="btn btn-ecogreen btn-lg btn-block border-0" value="Create Routine">
+            </form>
+            <!-- Routine add form ends -->
+        </div>
+        <!-- Routine form section ends -->
+    </div>
+    <!-- Device modal starts -->
+    <div class="modal" id="add-device-model" tabindex="-1" role="dialog" aria-labelledby="add-device-model-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+            <h5 class="modal-title" id="add-device-model-label">Select Room</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group w-90">
+                    <label for="select-room">Select Room</label>
+                    <select class="form-control" id="select-room">
+                        <option disabled selected>Select a Room</option>
+                        <% rooms.forEach(function(room){ %>
+                        <option value="<%= room._id %>"><%= room.roomName %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group w-90">
+                    <label for="select-device">Select Device</label>
+                    <select class="form-control" id="select-device" disabled>
+                    </select>
+                </div>
+
+                <div class="form-group w-90">
+                    <label for="select-status">Status</label>
+                    <select class="form-control" id="select-status" disabled>
+                        <option value="on">On</option>
+                        <option value="off">Off</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-block btn-ecogreen border-0" id="add-device" data-dismiss="modal">Add device</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Device modal ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+
+    function addPanEventListener(myElement) {
+    var tempScrollTop = $(window).scrollTop();
+    let mc = new Hammer(myElement);
+    mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+    mc.on('panleft', function(e){
+        tempScrollTop = $(window).scrollTop();
+        $(myElement).css('left', e.deltaX);
+        $(myElement).children(".delete-msg").animate({opacity: 1}, 250);
+    });
+
+    mc.on('panend', function(e){
+        $(window).scrollTop(tempScrollTop);
+        if(e.deltaX <= -myElement.parentElement.offsetWidth+50){
+            myElement.parentElement.removeChild(myElement);
+        }
+        else {
+            $(myElement).css('left', 0);
+            $(myElement).children(".delete-msg").stop(true,true);
+            $(myElement).children(".delete-msg").animate({opacity: 0}, 250);
+        }
+    });
+    }
+
+    $(document).ready(function(){
+        // click on button submit
+        $("#submit").on('click', function(){
+
+            let valid = true;
+
+            $('input[required]').each(function(index) {
+                if($(this).val() === "") {
+                    console.log("Form not valid!");
+                    valid = false;
+                }
+                if ($('#device-list>li').length == 0) {
+                    $('#device-list-message').toggleClass('hidden');
+                    console.log("Devices not valid!");
+                    valid = false;
+                }
+                if ($('#scheduled').prop('checked') && $("input:checkbox:checked[name='frequency']").length == 0) {
+                    $('#frequency-message').toggleClass('hidden');
+                    console.log("Frequency not valid!");
+                    valid = false;
+                }
+            });
+
+            if(valid){
+            let routineData = {};
+            routineData.routineName = $('#routine-name').val();
+            routineData.time = $('#scheduled-time').val();
+            routineData.durationTime = $('#routine-duration-hour').val() + ":" + $('#routine-duration-minutes').val() ;
+            routineData.frequency = [];
+            routineData.devices = [];
+            routineData.icon = $('#routine-icon').val();
+            routineData.favorite = true;
+
+            $("input:checkbox[name='frequency']").each(function(index) {
+                if($(this).prop("checked") == true) {
+                    routineData.frequency.push($(this).val());
+                }
+            });
+
+            $('#device-list>li').each(function(index) {
+                routineData.devices.push({
+                    roomID : $(this).find('.room-id').val(),
+                    deviceID : $(this).find('.device-id').val(),
+                    deviceStatus : $(this).find('.device-status')[0].innerText.toUpperCase(),
+                });
+            });
+
+            // send ajax
+            $.ajax({
+                url: '/routines',
+                type : "POST",
+                contentType : 'application/json',
+                dataType : 'json',
+                data : JSON.stringify(routineData),
+                success : function(answer) {
+                    console.log(answer);
+                    window.location.href = '/routines';
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+            } else {
+                console.log("Form fail");
+                return;
+            }
+        });
+    });
+
+    $(document).ready(function()
+    {
+        $('#routine-icon').fontIconPicker({
+            emptyIcon : false,
+            theme: 'fip-bootstrap'
+        });
+
+        $("#scheduled-time").AnyPicker(
+        {
+            mode: "datetime",
+
+            dateTimeFormat: "HH:mm",
+
+            intervals: {
+                h: 1,
+                m: 1
+            },
+
+            roundOff: false
+        });
+    });
+
+  $(function() {
+    $('#scheduled').change(function() {
+       let scheduled = $(this).prop('checked'); 
+       $('.schedule-form-group').toggleClass('hidden');
+        if (scheduled) {
+            $('#scheduled-time').prop('disabled', false);
+            $('#scheduled-time').prop('required', true);
+        } else {
+            $('#scheduled-time').prop('disabled', true);
+            $('#scheduled-time').removeAttr('required');
+        }
+
+        $("input:checkbox[name='frequency']").each(function(index) {
+            $(this).prop('disabled', scheduled ? false : true);
+        });
+    });
+
+    // Function to get list of devices on selecting the room
+    $('#select-room').change(function() {
+        // Get the list of all rooms with device information
+        let rooms = JSON.parse('<%-JSON.stringify(rooms)%>');
+
+        console.log(rooms);
+
+        // Get the selected room's id
+        let roomId = $(this).val();
+
+        // Find the room object who's id matches the one of the selected room
+        let roomObj = rooms.find(function(room){
+            return room._id === roomId;
+        });
+
+        // Get the list of devices
+        let roomDevices = roomObj.roomDevices;
+
+        // If the list of devices is not empty
+        if (roomDevices.length>0) {
+            // Reset the device selector and enable it
+            $('#select-device').empty().prop('disabled', false);
+            $('#select-status').prop('disabled', false);
+
+            // For each devices append device to the select device field
+            roomDevices.forEach(function(device){
+                $('#select-device').append($('<option>',{
+                    value: device._id,
+                    text: device.deviceName
+                }));
+            });
+        }
+        // If no devices
+        else {
+            // Reset the device selector and disable it
+            $('#select-device').empty().prop('disabled', true);
+            $('#select-status').prop('disabled', true);
+        }
+    });
+
+    $('#add-device').click(function(){
+        // Get the list of all rooms with device information
+        let rooms = JSON.parse('<%-JSON.stringify(rooms)%>');
+
+        // Get the selected room's id
+        let roomId = $('#select-room').val();
+
+        // Get the selected room
+        let room = rooms.find(function(room){return room._id === roomId});
+
+        // Get the selected device's id
+        let deviceId = $('#select-device').val();
+
+        // Get the selected device
+        let device = room.roomDevices.find(function(device){return device._id === deviceId});
+
+        let deviceState = $('#select-status').val();
+
+        if (room && device) {
+            let newDevice = `<li id="${roomId}" class="list-group-item p-0 border-0 mb-3" name="test" value="hello-world">
+                    <div class="device-card p-3 rounded" style="background-color: #f8f9fa">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="${device.deviceIcon} fa-2x fa-fw mr-3" aria-hidden="true"></i>
+                                <div class="device-card-information">
+                                    <p class="mb-0 text-secondary room-name">${room.roomName}</p>
+                                    <input type="hidden" class="room-id" value="${device.roomNo}">
+                                    <h4 class="mb-0 font-weight-bold device-name">${device.deviceName}</h4>
+                                    <input type="hidden" class="device-id" value="${deviceId}">
+                                    <p class="mb-0 text-secondary device-status">${deviceState}</p>
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <a class="text-ecogreen font-weight-bold h5">EDIT</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delete-msg p-3 bg-danger d-flex align-items-center position-absolute rounded" style="min-height: 108px; left: 0; right: 0; top: 0; bottom: 0; opacity: 0;">
+                        <h4 class="mb-0 text-white font-weight-bold">DELETE</h4>
+                    </div>
+                </li>`;
+
+            if($('#device-list').children(`#${deviceId}`).length === 0){
+                // $('#exampleModal').modal('hide');
+                $('#device-list').append(newDevice);
+                addPanEventListener($('#device-list').children().last()[0]);
+            }
+        }
+    });
+  });
+
+  $(document).ready(function() {
+	<% if(suggestion) { %>
+
+    // console.log("new routine suggestion");
+
+	let routine = JSON.parse('<%-JSON.stringify(routine)%>');
+	// console.log(routine);
+
+    // Display the schedule options 
+    $('.schedule-form-group').toggleClass('hidden');
+
+	// Changing routine name
+	$('#routine-name').prop('placeholder', routine.routineName);
+
+	// Schedule Routine
+    $('#scheduled').prop("checked",true); 
+
+    $('#scheduled-time').prop('disabled', false);
+    $('#scheduled-time').prop('required', true);
+
+
+    // Set routine suggested time
+    let time = $('#scheduled-time').val(routine.time);
+    // console.log($('#scheduled-time'));
+
+
+    // Set routine suggested day
+    $("input:checkbox[name='frequency']").each(function(index) {
+        $(this).prop('disabled', false);
+
+        let day = $(this).val();
+    	if(day.toUpperCase() == routine.frequency[0].toUpperCase()) {
+    		$(this).prop('checked', true);
+    	}
+    	else {
+    		$(this).prop('checked', false);
+    	}
+    });
+
+    // Setting routine suggested devices
+    routine.devices.forEach(function(device) {
+    	addDevice(device);
+        console.log(device);
+    });
+
+  	<% } %>
+  });
+
+	function addDevice(new_device) {
+
+	    // Get the list of all rooms with device information
+	    let rooms = JSON.parse('<%-JSON.stringify(rooms)%>');
+
+	    // Get the selected room's id
+	    let roomId = new_device.roomNo;
+
+	    // Get the selected room
+	    let room = rooms.find(function(room){return room._id === roomId});
+
+	    // Get the selected device's id
+	    let deviceId = new_device._id;
+
+	    // Get the selected device
+	    let device = room.roomDevices.find(function(device){return device._id === deviceId});
+
+	    let deviceState = "ON";
+
+	    if (room && device) {
+	        let newDeviceHTML = `<li id="${roomId}" class="list-group-item p-0 border-0 mb-3" name="test" value="hello-world">
+	                <div class="device-card p-3 rounded" style="background-color: #f8f9fa">
+	                    <div class="d-flex justify-content-between align-items-center">
+	                        <div class="d-flex align-items-center">
+	                            <i class="${device.deviceIcon} fa-2x fa-fw mr-3" aria-hidden="true"></i>
+	                            <div class="device-card-information">
+	                                <p class="mb-0 text-secondary room-name">${room.roomName}</p>
+	                                <input type="hidden" class="room-id" value="${device.roomNo}">
+	                                <h4 class="mb-0 font-weight-bold device-name">${device.deviceName}</h4>
+	                                <input type="hidden" class="device-id" value="${deviceId}">
+	                                <p class="mb-0 text-secondary device-status">${deviceState}</p>
+	                            </div>
+	                        </div>
+	                        <div class="actions">
+	                            <a class="text-ecogreen font-weight-bold h5">EDIT</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="delete-msg p-3 bg-danger d-flex align-items-center position-absolute rounded" style="min-height: 108px; left: 0; right: 0; top: 0; bottom: 0; opacity: 0;">
+	                    <h4 class="mb-0 text-white font-weight-bold">DELETE</h4>
+	                </div>
+	            </li>`;
+
+	        if($('#device-list').children(`#${deviceId}`).length === 0){
+	            // $('#exampleModal').modal('hide');
+	            $('#device-list').append(newDeviceHTML);
+	            addPanEventListener($('#device-list').children().last()[0]);
+	        }
+	    }
+	}
+
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<%- include('../partials/footer', {scripts: ['/javascripts/jquery.fonticonpicker.min.js', '/javascripts/anypicker.js']}) %>

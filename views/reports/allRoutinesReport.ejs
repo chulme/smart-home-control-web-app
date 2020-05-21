@@ -1,0 +1,394 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'allRoutinesReport', scripts: ['https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js', 'https://cdn.jsdelivr.net/npm/chart.js@2.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4']}); %>
+
+
+<!-- Import nav bar -->
+<%- include('../partials/nav', {page: 'reports'}); %>
+
+
+<div class="container mt-4">
+<!-- Container starts -->
+<div class="container-fluid">
+    <!-- Routines add section starts -->
+    <div class="report-section mb-2">
+        <div class="section-header">
+          <h2 class="text-ecogreen font-weight-bold">Energy Report for All Routines</h2>
+            <div class="d-flex justify-content-between align-items-top">
+            <p class="text-secondary">View Energy Consumption comparison for each routine</p>
+            <!-- <i class="fa fa-plus-circle fa-3x fa-fw btn-ecogreen" aria-hidden="true"></i> -->
+        </div>
+    </div>
+</div>
+
+
+<div class="dropdown show bg-ecogreen-solid m-2">
+  <a class="btn dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Report Type
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="/reports/houseReport">House Report</a>
+    <a class="dropdown-item" href="/reports/allRoomsReport">All Rooms Report</a>
+    <a class="dropdown-item" href="/reports/userReport">All Users Report</a>
+    <a class="dropdown-item" href="/reports/peakTimeReport">Peak Prediction Report</a>
+    <a class="dropdown-item" href="/leaderBoards">Users Leader Board</a>
+    <a class="dropdown-item" href="/scoreBoard">Home Leader Board</a>
+  </div>
+  </div>
+
+<!-- Tabs -->
+<section id="tabs">
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+				<nav>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link  active" id="today" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Today</a>
+						<a class="nav-item nav-link" id="week" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">This Week</a>
+						<a class="nav-item nav-link" id="month" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">This Month</a>
+					</div>
+				</nav>
+				<div class="d-flex tab-content py-3 justify-content-center" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All Routines Energy Information for the today</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Room consuming Min energy today was</h6>
+                    <p class="card-text"><span id="todayMinDev" class="text-secondary"></span> : <span id="minDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Routine consuming Max energy today was</h6>
+                      <p class="card-text"><span id="todayMaxDev" class="text-secondary"></span> : <span id="maxDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+           
+            <canvas id="allRoutinesToday" width="400" height="500"></canvas>
+	
+
+					</div>
+					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            
+            
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All Routines Energy Information for the Week</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Routine consuming Min energy in the Week was</h6>
+                    <p class="card-text"><span id="weekMinDev" class="text-secondary"></span> : <span id="minWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Routine consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="weekMaxDev" class="text-secondary"></span> : <span id="maxWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+            <canvas id="allRoutinesWeek" width="400" height="500"></canvas>
+                 
+					</div>
+					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+            
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">All Routines Energy Information for the Month</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Routine consuming Min energy in the Month was</h6>
+                    <p class="card-text"><span id="monthMinDev" class="text-secondary"></span> : <span id="minMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Routine consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="monthMaxDev" class="text-secondary"></span> : <span id="maxMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+						<canvas id="allRoutinesMonth" width="400" height="500"></canvas>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+        </div>
+        
+        
+	</div>
+</section>
+<!-- Container ends -->
+</div>
+
+<script>
+	document.getElementById("week").addEventListener("click", week);
+	document.getElementById("month").addEventListener("click", month);
+   document.getElementById("today").addEventListener("click", setup);
+  
+  window.addEventListener('load', setup);
+
+      async function setup() {
+
+        const ctx = document.getElementById('allRoutinesToday').getContext('2d');
+        const globalTemps = await getData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: globalTemps.x,
+            datasets: [
+              {
+                label: 'Energy in Watts',
+                data: globalTemps.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {}
+        });
+	  }
+
+ async function getData() {
+
+		const response = await fetch("/api/allRoutinesToday");
+		const routineData = await response.json();
+		console.log("123456789");
+	
+	const data = routineData.routineData.energy;
+    const routines = routineData.routineData.routines;
+    console.log(data)
+    console.log(routines)
+
+
+        const x = [];
+        const y = [];
+
+      for (let i = 0; i < routines.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(routines[i]._id == data[j]._id){
+
+            x.push(routines[i].routineName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(routines[i].routineName);
+            y.push(0);
+         }
+        }
+      }
+
+    console.log("QOQOQOOQOOQOO")
+    console.log(x);
+    console.log(y);
+
+    const maxVal =  Math.max(...y);
+    $("#maxDayDevVal").html(maxVal);
+    $("#todayMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minDayDevVal").html(minVal);
+    $("#todayMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+
+   }
+
+   async function getWeekData() {
+		const response = await fetch("/api/allRoutinesWeek");
+		const energy = await response.json();
+    const data = energy.energyWeek.sum;	
+    const routines = energy.energyWeek.routines;	
+
+		   const x = [];
+        const y = [];
+
+        for (let i = 0; i < routines.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(routines[i]._id == data[j]._id){
+
+            x.push(routines[i].routineName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(routines[i].routineName);
+            y.push(0);
+         }
+        }
+      }
+
+      const maxVal =  Math.max(...y);
+    $("#maxWeekDevVal").html(maxVal);
+    $("#weekMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minWeekDevVal").html(minVal);
+    $("#weekMinDev").html(x[y.indexOf(minVal)]);
+
+
+        return { x, y };
+   }
+
+   async function week() {
+        const ctx = document.getElementById('allRoutinesWeek').getContext('2d');
+        const temp = await getWeekData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Week',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+          }
+        });
+      }
+
+	  async function getMonthData() {
+		const response = await fetch("/api/allRoutinesMonth");
+		const energy = await response.json();
+		const data = energy.energyMonth.sum;
+    const routines = energy.energyMonth.routines;
+    let x =[];
+    let y =[];
+
+    for (let i = 0; i < routines.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if(routines[i]._id == data[j]._id){
+
+            x.push(routines[i].routineName);
+            y.push(data[j].energySum);
+            break;
+         }
+         else if(j==data.length-1){
+            x.push(routines[i].routineName);
+            y.push(0);
+         }
+        }
+      }
+
+
+      const maxVal =  Math.max(...y);
+    $("#maxMonthDevVal").html(maxVal);
+    $("#monthMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minMonthDevVal").html(minVal);
+    $("#monthMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+   }
+
+   async function month() {
+        const ctx = document.getElementById('allRoutinesMonth').getContext('2d');
+        const temp = await getMonthData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Month',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+		  },
+		  plugins: {
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+								speed: 10,
+								threshold: 10
+							},
+							zoom: {
+								enabled: true,
+								mode: 'y'
+							}
+						}
+					}
+        });
+      }
+
+
+    </script>
+    </div>
+<% include ../partials/footer %>
+

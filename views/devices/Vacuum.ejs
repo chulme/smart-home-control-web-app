@@ -1,0 +1,159 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Vacuum', stylesheets: ['/stylesheets/glider.min.css'], scripts: ['/javascripts/glider.min.js']}); %>
+
+<!-- Include navigation -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Vacuum section starts -->
+    <div class="vacuum-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'devices', resourceId: '', report: `/reports/deviceReport?deviceID=${result._id}&deviceName=${result.deviceName}`, heading: result.deviceName, description: result.room.roomName, backLink: `/rooms/${result.room._id}`, options: {add:false, edit:false, report:true}}); %>
+
+        <!-- Vacuum control section starts -->
+        <div class="vacuum-control-section overflow-auto container container-fluid-margin position-relative">
+            
+            <div class="control-mode-section d-flex justify-content-around my-3">
+
+                <div class="control-section d-flex flex-column justify-content-between align-items-center">
+                    <div class="control d-flex flex-column align-items-center">
+                        <button class="plus speedBut btn border-0 p-4 mb-4 bg-transparent rounded text-ecogreen " id="but" ><i class="fal fa-plus fa-3x text-ecogreen"></i></button>
+                    
+                        <h2 class="d-flex align-items-center" id="hola"><input class="counter" type="text" value="<%= result.speed %>" /></h2>
+            
+                        <button class="minus speedBut btn border-0 p-4 mb-4 bg-transparent rounded text-ecogreen " id="butt" ><i class="fal fa-minus fa-3x text-ecogreen" ></i></button>
+                    </div>
+                    <div class="label">
+                        <h2>Speed</h2>
+                    </div>
+                </div>
+    
+                <div class="mode-section d-flex flex-column justify-content-between align-items-center">
+                    <div class="modes d-flex flex-column align-items-center">
+                        <button value="low" id="low" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon">LOW</button>
+
+                        <button id="medium" value="medium" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon">MED</button>
+
+                        <button id="high" value="high" class="mode border-0 shadow p-3 mb-4 btn btn-light rounded device-mode-icon">HIGH</button>
+                    </div>
+                    <div class="label">
+                        <h2>Mode</h2>
+                    </div>
+                </div>
+    
+            </div>
+            <i class="<%= result.deviceIcon %> fal room-icon text-secondary position-absolute" style="font-size: 20rem; top: 0; right: 0; z-index: -1; opacity: 0.10;"></i>
+            <%- include('./partials/deviceStatus', {status: result.status, device: result._id}); %>
+            <%- include('./partials/freqUsedDevices', { devices: result.devices}); %>
+        </div>
+        <!-- Vacuum control section starts -->
+    </div>
+    <!-- Vacuum section ends -->
+</div>
+<!-- Container ends -->
+
+<script>
+    $(document).ready(function() {
+        let device = JSON.parse('<%-JSON.stringify(result)%>');
+            let updateDev = {};
+            updateDev.deviceID = device._id;
+
+        $('.speedBut').click(function(e) {
+            micron.getEle("#hola").interaction("bounce").duration(".45").timing("ease-out"); 
+            var button_classes, value = +$('.counter').val();
+            button_classes = $(e.currentTarget).prop('class');
+            if (button_classes.indexOf('plus') !== -1) 
+            {
+            micron.getEle("#but").interaction("blink").duration(".45").timing("ease-out"); 
+            value = (value) + 2;
+            } else {
+             micron.getEle("#butt").interaction("blink").duration(".45").timing("ease-out");
+            value = (value) - 2;
+            }
+            value = value < 0 ? 0 : value;
+            value = value > 100 ? 100 : value;
+            $('.counter').val(value);
+
+            updateDev.speed =  $('.counter').val();
+
+            console.log("NOOOO I WONT")
+            console.log(updateDev)
+
+            $.ajax({
+                url:  `/devices/${updateDev.deviceID}/changeSpeed`,
+                type: "POST",
+                data: JSON.stringify(updateDev),
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                success: function (answer) {
+                    console.log(answer);
+                },
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+
+        });
+        $('.counter').click(function() {
+            $(this).focus().select();
+            updateDev.speed =  $('.counter').val();
+
+            $.ajax({
+                url:  `/devices/${updateDev._id}/changeSpeed`,
+                type: "POST",
+                data: JSON.stringify(updateDev),
+                dataType: "json",
+                contentType: "application/json",
+                cache: false,
+                success: function (answer) {
+                    console.log(answer);
+                },
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+        });
+    });
+</script>
+
+<script>
+
+    $(document).ready(function() {
+
+        let device = JSON.parse('<%-JSON.stringify(result)%>');
+        let lala = {};
+        lala.deviceID = device._id;
+
+        $(`#${device.mode}`).addClass('text-ecogreen');
+
+        $('.mode').click(function() {
+           
+           $('.mode').removeClass('text-ecogreen');
+           lala.mode= $(this).val();
+           console.log("WWWWWw");
+           console.log(lala);
+           $(this).toggleClass('text-ecogreen');
+
+                    $.ajax({
+                        url:  `/devices/${lala.deviceID}/changeMode`,
+                        type: "POST",
+                        data: JSON.stringify(lala),
+                        dataType: "json",
+                        contentType: "application/json",
+                        cache: false,
+                        success: function (answer) {
+                            console.log(answer);
+                        },
+                        error: function (xhr, resp, text) {
+                            console.log(xhr, resp, text);
+                        }
+                    })
+          });
+
+    });
+
+</script>
+    
+<!-- Include footer -->
+<% include ../partials/footer %>

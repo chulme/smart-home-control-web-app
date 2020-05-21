@@ -1,0 +1,117 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: 'Blinds'}); %>
+
+<!-- Include navigation -->
+<%- include('./partials/nav', {page: 'home'}); %>
+
+<!-- Back Button -->
+<div class="container">
+
+    <div class="routines-add-section m-3">
+        <div class="section-header d-flex justify-content-between">
+            <div>
+                    <h1>Master Bed</h1>     <!-- Replace with room name -->
+                    <h2>Blinds</h2>             <!-- Replace with device name -->
+                    <p>Add to Routine
+                        <button class="btn btn-ecogreen btn-circle btn-circle-sm border-0 mr-3"><i class="fal fa-plus"></i></button>
+                    </p>
+            </div>
+            <div class="energy-report-btn">
+                <a href="#" class="btn btn-light shadow-sm p-3">
+                    <i class="fal fa-plug fa-2x"></i>
+                    <i class="fal fa-question-circle"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mx-auto justify-content-around">
+        <div class="flex-column bd-highlight mb-3">
+            <button class="plus btn border-0 p-4 mb-4 bg-transparent rounded"><i class="fal fa-plus fa-3x"></i></button>
+            <h2 class="d-flex align-items-center"><input class="counter" type="text" value="0"/>°</h2>
+            <button class="minus btn border-0 p-4 mb-4 bg-transparent rounded"><i class="fal fa-minus fa-3x"></i></button>
+
+            <div class="column justify-content-center">
+                <h2>Angle</h2>
+            </div>
+
+            <style>
+            .counter{
+                height:60px;
+                width: 70px;
+                text-align: center;
+                border: none;
+                font-size: 40px;
+            }
+            </style>
+
+            <script>
+            $(document).ready(function() {
+                $('button').click(function(e) {
+                    var button_classes, value = +$('.counter').val();
+                    button_classes = $(e.currentTarget).prop('class');
+                    if (button_classes.indexOf('plus') !== -1) {
+                    value = (value) + 1;
+                    } else {
+                    value = (value) - 1;
+                    }
+                    value = value < 0 ? 0 : value;
+                    value = value > 90 ? 90 : value;
+                    $('.counter').val(value);
+                });
+                $('.counter').click(function() {
+                    $(this).focus().select();
+                });
+            });
+            </script>
+        </div>
+
+        <div class="flex-column bd-highlight mb-4"></div>
+
+        <div class="flex-column bd-highlight mb-4">
+            <div class="p-2 bd-highlight"><button class="btn border-0 shadow p-3 mb-4 bg-white rounded"><img src="/images/fan.png" alt="light intensity" style="height: 3em;"></i></button></div>
+            <div class="p-2 bd-highlight"><button class="btn border-0 shadow p-3 mb-4 bg-white rounded "><img src="/images/snowflake.png" alt="light intensity" style="height: 3em;"></button></div>
+            <h2>Mode</h2>
+        </div>
+    </div>
+</div>
+
+
+
+<section class="container">
+    <div class="col-sm">
+        <button class="btn-block border-0 shadow p-3 mb-5 mt-5 bg-white rounded ">
+            <div class="d-flex justify-content-between">
+                <h3>ON/OFF</h3>
+                <img src="/images/shutdown.png" alt="light intensity" style="height: 2em;">
+            </div>
+        </button>
+    </div>
+    </div>
+</section>
+
+<section class="glider-contain multiple mb-5">
+    <h2>Other Devices:</h2>
+    <!--next and previous js functions needed to make carousel work-->
+    <button class="glider-prev"></button>
+
+    <div class="devices-glider pb-4">
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+        <div><h2>Insert Devices Here</h2></div>
+    </div>
+
+    <button class="glider-next"></button>
+
+</section>
+
+<script>
+    new Glider(document.querySelector('.devices-glider'), {
+        slidesToShow: 3,
+        draggable: true,
+    });
+</script>
+
+<!-- Include footer -->
+<% include ./partials/footer %>

@@ -1,0 +1,119 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: title}); %>
+
+<!-- Container starts -->
+<div class="bg-eco-esteem h-100">
+    <div class="ecowatt-branding text-center pt-3">
+        <div class="ecowatt-logo">
+            <img src="/images/Eco-Watt-Logo-05.png" alt="Eco Watt Logo" style="width: 150px;">
+        </div>
+        <div class="ecowatt-desc" style="margin-top: -1em;">
+            <h4 class="font-weight-bold text-ecogreen mb-0">Eco-Watt</h4>
+            <p class="text-white">Your Smart Home Companion</p>
+        </div>
+    </div>
+    <div class="login-form-section text-center d-flex flex-column">
+        <div class="header mb-3">
+            <h2 class="text-ecogreen font-weight-bold mb-0">Create Account</h2>
+            <p class="mb-0 text-white">and control your house</p>
+        </div>
+        <form class="mb-3 container" action="/auth/signup" method="POST">
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4"><i class="fal fa-user" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="form-control form-control-lg border-0" placeholder="Username" name="username" minlength="5" required>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4"><i class="fal fa-envelope" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="form-control form-control-lg border-0" placeholder="Email Address" name="email" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4"><i class="fal fa-calendar" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="textbox-n form-control form-control-lg border-0" placeholder="Date of birth" name="dateofbirth" onfocus="(this.type='date')" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4"><i class="fal fa-lock" aria-hidden="true"></i></div>
+                </div>
+                <input type="password" class="form-control form-control-lg border-0" placeholder="Password" name="password" minlength="5" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4"><i class="fal fa-lock" aria-hidden="true"></i></div>
+                </div>
+                <input type="password" class="form-control form-control-lg border-0" placeholder="Re-Enter Password" name="repassword" minlength="5" required>
+            </div>
+            <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0">Sign Up</button>
+        </form>
+        <p class="text-center text-white mb-0">Already Have an Account? <a href="/auth/login" class="textSign">Login</a></p>
+    </div>
+</div>
+<!-- Container ends
+
+<!-- Container starts -->
+<!-- <div class="bg-eco-esteem h-100">
+    <div class="ecowatt-branding text-center pt-5">
+        <div class="ecowatt-logo">
+            <img src="/images/Eco-Watt-Logo-05.png" alt="Eco Watt Logo" style="width: 150px;">
+        </div>
+        <div class="ecowatt-desc" style="margin-top: -1em;">
+            <h4 class="font-weight-bold text-ecogreen mb-0">Eco-Watt</h4>
+            <p class="text-white">Your Smart Home Companion</p>
+        </div>
+    </div>
+    <div class="signup-form-section text-center m-4 d-flex flex-column">
+        <div class="header mb-3">
+            <h2 class="text-ecogreen font-weight-bold mb-0">Create Account</h2>
+            <p class="mb-0 text-secondary">and control your house</p>
+        </div>
+
+        <form action="/auth/signup" method="POST">
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary pl-2 pl-2"><i class="fal fa-user" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="form-control form-control-lg border-0" placeholder="Username" name="username" minlength="5" required>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary pl-2 pl-2"><i class="fal fa-envelope" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="form-control form-control-lg border-0" placeholder="Email Address" name="email" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary pl-2 pl-2"><i class="fal fa-calendar" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="textbox-n form-control form-control-lg border-0" placeholder="Date of birth" name="dateofbirth" onfocus="(this.type='date')" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary pl-2 pl-2"><i class="fal fa-lock" aria-hidden="true"></i></div>
+                </div>
+                <input type="password" class="form-control form-control-lg border-0" placeholder="Password" name="password" minlength="5" required>
+            </div>
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary pl-2 pl-2"><i class="fal fa-lock" aria-hidden="true"></i></div>
+                </div>
+                <input type="password" class="form-control form-control-lg border-0" placeholder="Re-Enter Password" name="repassword" minlength="5" required>
+            </div>
+            <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0">Sign Up</button>
+        </form>
+        <p class="text-center text-secondary">Already Have an Account? <a href="/auth/login" class="textSign">Login</a></p>
+    </div>
+</div> -->
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ./partials/footer %>

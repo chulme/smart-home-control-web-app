@@ -1,0 +1,26 @@
+<!-- Script include starts -->
+
+<!-- Bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha256-oKpAiD7qu3bXrWRVxnXLV1h7FlNV+p5YJBIr8LOCFYw=" crossorigin="anonymous"></script>
+
+<!-- Micron -->
+<script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
+
+<!-- Noty -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha256-ITwLtH5uF4UlWjZ0mdHOhPwDpLoqxzfFCZXn1wE56Ps=" crossorigin="anonymous"></script>
+
+<!-- Hammer JS -->
+<script type="text/javascript" src="/javascripts/hammer.min.js"></script>
+
+<!-- Include scripts as passed by pages -->
+<% var scripts = scripts ? scripts : [] %>
+<% scripts.forEach(function(script){ %>
+<script src="<%= script %>"></script>
+<% }) %>
+
+<!-- Script include ends -->
+
+<!-- <script src="/dist/bundle.js"></script> -->
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: title}); %>
+
+<!-- Include navigation -->
+<% include('./partials/nav', {page: 'home'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <div class="home-section bg-ecogreen container-fluid mt-3">
+        <div class="home-header-section mb-3">
+            <div class="d-flex justify-content-between">
+                <div class="home-info">
+                    <p class="mb-0">Monday, 25th October</p>
+                    <h2 class="mb-0 font-weight-bold text-ecogreen">Hello There <span class="text-dark">Jake</span></h2>
+                    <p class="mb-0">256 Hill Road</p>
+                </div>
+                <div class="energy-report-btn">
+                    <a href="#" class="btn btn-light shadow-sm p-3">
+                        <i class="fal fa-plug fa-2x"></i>
+                        <i class="fal fa-question-circle"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="outdoor-section mb-3">
+            <div class="outdoor-information-cards">
+                <div class="d-flex justify-content-start">
+                <div class="outdoor-information-card mr-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <i class="fal fa-thermometer-half fa-2x mr-2"></i>
+                        <div class="information">
+                            <h6 class="mb-0 font-weight-bold">21<sup>o</sup> C</h6>
+                            <p class="mb-0">Outdoor Temp.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="outdoor-information-card mr-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <i class="fal fa-tint fa-2x mr-2"></i>
+                        <div class="information">
+                            <h6 class="mb-0 font-weight-bold">70%</h6>
+                            <p class="mb-0">Outdoor Humidity.</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>  
+        </div>
+        <div class="search-section mb-3">
+            <input type="text" name="search" id="search" class="form-control form-control-lg border-0" placeholder="Search or Say 'Eco'">
+        </div>
+        <div class="home-energy-score-section">
+            <div class="d-flex justify-content-end align-items-center">
+                <img src="/images/Green-Leaves-Falling.gif" class="img-fluid position-relative eco-tree" alt="Tree">
+                <div class="d-flex flex-column align-items-center justify-content-end">
+                    <div class="d-flex flex-column align-items-center">
+                        <h6 class="mb-0 font-weight-bold">Your Energy Score</h6>
+                        <h1 class="display-2 font-weight-bold text-dark mb-0">71</h1>
+                        <p class="text-success">You are doing good!</p>
+                    </div>
+                    <div class="home-energy-section">
+                        <div class="home-energy-information-cards">
+                            <div class="d-flex justify-content-end">
+                                <div class="home-energy-information-card">
+                                    <div class="d-flex justify-content-between">
+                                        <i class="fal fa-plug fa-2x mr-2"></i>
+                                        <div class="information">
+                                            <h6 class="mb-0 font-weight-bold">220 kWh</h6>
+                                            <p class="mb-0">Energy Consumption</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="home-energy-information-card">
+                                    <div class="d-flex justify-content-between">
+                                        <i class="fal fa-coin fa-2x mr-2"></i>
+                                        <div class="information">
+                                            <h6 class="mb-0 font-weight-bold">£ 3.20</h6>
+                                            <p class="mb-0">Estimated Savings</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home-status-section bg-light position-absolute p-3 border-">
+            <h4 class="font-weight-bold">Home Status</h4>
+            <div class="home-energy-information-cards">
+                <div class="d-flex justify-content-between">
+                    <div class="home-status-information-card">
+                        <div class="d-flex justify-content-between">
+                            <i class="fal fa-thermometer-half fa-2x mr-2"></i>
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold">21<sup>o</sup> C</h6>
+                                <p class="mb-0">Indoor Temp.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-status-information-card">
+                        <div class="d-flex justify-content-between">
+                            <i class="fal fa-tint fa-2x mr-2"></i>
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold">70%</h6>
+                                <p class="mb-0">Indoor Humidity.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-status-information-card">
+                        <div class="d-flex justify-content-between">
+                            <i class="fal fa-tv fa-2x mr-2"></i>
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold">10</h6>
+                                <p class="mb-0">Active Devices</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ./partials/footer %>

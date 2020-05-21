@@ -1,0 +1,115 @@
+<!-- Edit selected user profile -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Profile - Edit'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Edit user section starts -->
+    <div class="edit-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/users/manage" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h2 class="mb-0 font-weight-bold text-ecogreen">Edit Home User</h2>
+                <p class="mb-0 text-white">Edit the select user profile</p>
+            </div>
+            <!-- Header text ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- Edit user form section start -->
+        <div class="edit-user-from-section overflow-auto container container-fluid-margin h-100">
+            <!-- User section starts -->
+            <div class="user-section">
+                <form action="/users/<%= user._id %>" method="post" class="mb-5">
+                    <!-- User details starts -->
+                    <div class="user-details d-flex align-items-center mb-3">
+                        <!-- User avatar starts -->
+                        <div class="user-avatar mr-4">
+                            <div id="avatar" class="profile-card profile rounded border-0 position-relative" style="background-color: <%= user.avatarColor ? user.avatarColor : '#BEEE00' %>;">
+                                <i class="fal fa-user fa-5x p-4 text-white"></i>
+                                <div class="user-edit-icon bg-danger position-absolute rounded bg-eco-esteem">
+                                    <i class="fal fa-paint-brush text-white"></i>
+                                </div>
+                            </div>
+                            <!-- <p class="mb-0 text-center">Click to select avatar color</p> -->
+                            <input type="color" name="avatarColor" id="avatar-color" class="hidden" value="<%=  user.avatarColor %>">
+                        </div>
+                        <!-- User avatar ends -->
+                        <!-- User information starts -->
+                        <div class="user-information w-100">
+                            <div class="form-group">
+                                <label class="h4 font-weight-bold" for="username">Username</label>
+                                <input type="text" name="username" class="form-control form-control-lg border-0" id="username" aria-describedby="username" placeholder="Username" value="<%= user.username %>" required>
+                            </div>
+                            <div class="location d-flex">
+                                <i class="fal fa-map-marker-alt mr-2"></i>
+                                <p class="mb-0"><%= homeAddress %></p>
+                            </div>
+                        </div>
+                        <!-- User information ends -->
+                    </div>
+                    <!-- User details ends -->
+                    <!-- User role starts -->
+                    <div class="user-role">
+                        <div class="form-group">
+                            <label class="h4 font-weight-bold" for="role">User Role</label>
+                            <p></p>
+                            <select class="form-control form-control-lg border-0" id="role" name="role">
+                            <% if(changeRole) { %>
+                                <option value="restricted" <%= user.role === "restricted" ? "selected" : "" %>>Restricted</option>
+                                <option value="unrestricted" <%= user.role === "unrestricted" ? "selected" : "" %>>Unrestricted</option>
+                            <% } %>
+                            <option value="manager" <%= user.role === "manager" ? "selected" : "" %>>Manager</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- User role ends -->
+                    <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Update User</button>
+                </form>
+                <form action="/users/<%= user._id %>/delete" method="post">
+                    <button type="submit" class="btn btn-block link text-danger">Delete User</button>
+                </form>
+            </div>
+            <!-- User section ends -->
+        </div>
+        <!-- Edit user form section ends -->
+    </div>
+    <!-- Edit user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+    // Get the avatar element
+    let elAvatar = $("#avatar");
+
+    // Get the avatar color selector element
+    let elAvatarColorSelector = $("#avatar-color");
+
+    // When avatar element clicked
+    $(elAvatar).click(function() {
+        // Open the avatar color selector
+        $(elAvatarColorSelector).click();
+
+        // Avatar color selector on change
+        $(elAvatarColorSelector).change(function() {
+            // Set the background color of the avatar
+            $(elAvatar).css("background-color",$(this).val());
+        });
+    });
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

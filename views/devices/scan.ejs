@@ -1,0 +1,90 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: ''}); %>
+
+<div id="loadingDiv" class="container-fluid">
+    <div class="text-center p-4 d-flex flex-column position-absolute absolute-stretched justify-content-center align-items-center">
+        <div class="header">
+            <h2 class="text-ecogreen font-weight-bold">Searching Nearby Devices</h2>
+        </div>
+        <div class="loadingio-spinner-ripple-z3d59dt5hq"><div class="ldio-ojfmdinss2">
+            <div></div><div></div>
+            </div></div>
+        <p>Please make sure your device is ON</p>
+    </div>
+</div>
+
+<div id="scanned-device-list" class="container-fluid hidden">
+    <div class="scanned-device-section m-3">
+        <div class="header">
+            <h1>Select Device</h1>
+            <p class="text-secondary">to add to <%= room %> </p>
+        </div>
+        <div class="scanned-devices">
+            <% devices.forEach(function(device){ %>
+                <div class="card bg-light border-0 mb-3" id="result">
+                    <div class="card-body">
+                        <a href="#" class="stretched-link info-card " ><input value="<%= device._id %>" type="hidden" ></a>
+                        <div class=" d-flex justify-content-between">
+                            <div class="room-info">
+                                <h4 class="card-title font-weight-bold mb-0"><%= device.deviceName %></h4>
+                                <p class="mb-0">Category : <%= device.deviceCategory %></p>
+                            </div>
+                            <i class=" <%= device.deviceIcon %> fa-5x icon-color"></i></a> 
+                        </div>      
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+<script>
+  
+    setTimeout(function() {
+        $("#loadingDiv").toggleClass("hidden");
+        $("#scanned-device-list").toggleClass("hidden");
+        // document.getElementById("loadingDiv").
+        // document.getElementById("list").style.display="block";
+    }, 3000);
+
+    var url_string = window.location.href;
+    var getURL = new URL(url_string);
+    var id = getURL.searchParams.get("roomID");
+
+    // document.getElementById('result').textContent = result.text; 
+    // result.roomNo= id;
+
+
+    $(".info-card").click(function(){
+        console.log($(this).children().val());
+        var deviceID= $(this).children().val();
+        let devices = JSON.parse('<%-JSON.stringify(devices)%>');
+        console.log(devices);
+        let device = devices.find(function(dev){
+            console.log(dev._id);
+            return dev._id == deviceID;
+        });
+        device.roomNo= id;
+
+        $.ajax({
+                url: '/devices/addDev',
+                type : "POST",
+                contentType : 'application/json',
+                dataType : 'json',
+                data : JSON.stringify(device),
+                success : function(answer) {
+                    console.log(answer);
+                    window.location.href = `/rooms/${id}`;
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+
+    })
+
+
+</script>
+
+
+
+<% include ../partials/footer %>

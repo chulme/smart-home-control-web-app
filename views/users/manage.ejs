@@ -1,0 +1,68 @@
+<!-- Manage user profiles -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Profile - Manage'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Browse user section starts -->
+    <div class="browse-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/users/<%= activeUser._id %>" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h4 class="mb-0 font-weight-bold text-ecogreen">Manage Home Users</h4>
+                <p class="mb-0 text-white">Select a profile to manage</p>
+            </div>
+            <!-- Header text ends -->
+        </div>
+        <!-- Section header ends -->
+        <!-- User list section start -->
+        <div class="user-list-section overflow-auto container-fluid">
+            <!-- Users starts -->
+            <div class="users container-fluid overflow-auto">
+                <!-- Add users starts -->
+                <div class="user text-center mb-3">
+                    <a href="/users/add" class="btn bg-eco-esteem rounded border-0 mb-2 position-relative">
+                        <i class="fal fa-plus fa-5x p-4 text-white"></i>
+                    </a>
+                    <h6 class="mb-0 font-weight-bold">Add New <br> Home User</h6>
+                </div>
+                <!-- Add users ends -->
+                <% users.forEach(function(user) { %>
+                <!-- User starts -->
+                <div class="user text-center mb-3">
+                    <a href="/users/<%= user._id %>/edit" class="btn profile rounded border-0 mb-2 position-relative" style="background-color: <%= user.avatarColor ? user.avatarColor : '#BEEE00' %>;">
+                        <i class="fal fa-user fa-5x p-4 text-white"></i>
+                        <div class="user-edit-icon bg-danger position-absolute rounded bg-eco-esteem">
+                            <i class="fal fa-pencil-alt text-white"></i>
+                        </div>
+                    </a>
+                    <h6 class="mb-0 font-weight-bold"><%= user.username %></h6>
+                    <p class="mb-0 text-eco text-capitalize"><%= user.role %></p>
+                </div>
+                <!-- User ends -->
+                <% }) %>
+            </div>
+            <!-- Users ends -->
+        </div>
+        <!-- User list section ends -->
+    </div>
+    <!-- Browse user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>
+

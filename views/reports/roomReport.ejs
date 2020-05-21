@@ -1,0 +1,646 @@
+<%- include('../partials/header', {title: 'roomReport', scripts: ['https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js', 'https://cdn.jsdelivr.net/npm/chart.js@2.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0', 'https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4']}); %>
+
+<!-- Import nav bar -->
+<%- include('../partials/nav', {page: 'reports'}); %>
+
+<div class="container mt-4">
+<!-- Container starts -->
+<div class="container-fluid">
+    <!-- Routines add section starts -->
+    <div class="report-section mb-2">
+        <div class="section-header">
+            <h2 class="text-ecogreen font-weight-bold">Energy Report for <%= roomName %></h2>
+            <input value="<%= roomID %>" id="roomID" hidden>
+            <input value="<%= roomName %>" id="roomName" hidden>
+            <div class="d-flex justify-content-between align-items-top">
+            <p class="text-secondary">View Energy Consumption comparison for <%= roomName %> </p>
+            <!-- <i class="fa fa-plus-circle fa-3x fa-fw btn-ecogreen" aria-hidden="true"></i> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Tabs -->
+<section id="tabs">
+	<div class="container mt-0">
+		<div class="row">
+			<div class="col">
+				<nav>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link  active" id="today" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Today</a>
+						<a class="nav-item nav-link" id="week" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">This Week</a>
+						<a class="nav-item nav-link" id="month" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">This Month</a>
+					</div>
+				</nav>
+				<div class="d-flex tab-content py-3 justify-content-center" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+         
+            <div class="Info mt-2">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="card bg-ecogreen-solid  m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Total Consumption of Room Today </h6>
+                      <span id="totalEnergy" class="text-secondary"></span> kW</h5>
+                    </div>
+                  <div>
+                    <i class="fal fa-battery-bolt fa-3x"></i>
+                  </div>
+                    
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Device consuming Min energy Today was</h6>
+                    <p class="card-text"><span id="todayMinDev" class="text-secondary"></span> : <span id="minDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-4" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Device consuming Max energy Today was</h6>
+                      <p class="card-text"><span id="todayMaxDev" class="text-secondary"></span> : <span id="maxDayDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+        
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                </div>
+					
+
+            <h4 class="m-2">Consumption of each room device Today </h4>
+            <canvas id="roomToday" width="300" height="500"></canvas>
+	
+
+					</div>
+					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            
+<div class="Info mt-2">
+	<h6 class="font-weight-bold">Room Energy Information for the Week</h6>
+	<div class="row">
+		<div class="col-sm-3">
+		  <div class="card bg-ecogreen-solid  m-2">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+					<h6 class="card-title text-secondary font-weight-bold">Total Consumption of Room for the Week </h6>
+					<p class="card-text"><span id="totalWeek" class="text-secondary"></span> kW </p>
+				</div>
+			<div>
+        <i class="fal fa-battery-bolt fa-3x"></i>
+			</div>
+			  
+			</div>
+		  </div>
+    </div>
+    
+    
+		<div class="col-sm-3">
+		  <div class="card bg-ecogreen-solid  m-2">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+        <h6 class="card-title text-secondary font-weight-bold">Min Consumption of Room in the Week was</h6>
+        <p class="card-text"><span id="minWeek" class="text-secondary"></span> kW</p>on <span id="weekMinDay" class="text-secondary"></span> </p>
+				</div>
+				<div>
+          <i class="fal fa-battery-empty fa-3x"></i>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<div class="col-sm-3" >
+			<div class="card bg-ecogreen-solid m-2">
+				<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+				  <h6 class="card-title text-secondary font-weight-bold">Max Consumption of Room for the Week</h6>
+          <p class="card-text"><span id="maxWeek" class="text-secondary"></span> kW</p>on <span id="weekMaxDay" class="text-secondary"></span> </p>
+				</div>
+
+				  <div>
+            <i class="fal fa-battery-full fa-3x"></i>
+				</div>
+			  </div>
+			</div>
+      </div>
+      <div class="col-sm-3" >
+        <div class="card bg-ecogreen-solid m-2">
+          <div class="card-body d-flex justify-content-between align-items-center">
+          <div class="">
+            <h6 class="card-title text-secondary font-weight-bold">Average Consumption of Room for the Week</h6>
+            <p class="card-text"> <span id="avgWeek" class="text-secondary"></span> kW </p>
+          </div>
+  
+            <div>
+              <i class="fal fa-battery-half fa-3x"></i>
+          </div>
+          </div>
+        </div>
+        </div>
+	  </div>
+</div>
+<h4 class="m-2">Consumption of the room for the week </h4>
+
+            <canvas id="roomWeek" width="300" height="500"></canvas>
+
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">Room Device Energy Information for the Week</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Device consuming Min energy in the Week was</h6>
+                    <p class="card-text"><span id="weekMinDev" class="text-secondary"></span> : <span id="minWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Device consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="weekMaxDev" class="text-secondary"></span> : <span id="maxWeekDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+
+            <h4 class="m-2">Consumption of each room device for the Week</h4>
+            <canvas id="chartWeek" width="300" height="500"></canvas>
+                 
+					</div>
+					<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                      
+<div class="Info mt-2">
+	<h6 class="font-weight-bold">Room Energy Information for the Month</h6>
+	<div class="row">
+		<div class="col-sm-3">
+		  <div class="card bg-ecogreen-solid  m-2">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+					<h6 class="card-title text-secondary font-weight-bold">Total Consumption of Room for the Month </h6>
+					<p class="card-text"><span id="totalMonth" class="text-secondary"></span> kW </p>
+				</div>
+			<div>
+        <i class="fal fa-battery-bolt fa-3x"></i>
+			</div>
+			  
+			</div>
+		  </div>
+		</div>
+		<div class="col-sm-3">
+		  <div class="card bg-ecogreen-solid  m-2">
+			<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+        <h6 class="card-title text-secondary font-weight-bold">Min Consumption of Room in the Month was</h6>
+        <p class="card-text"><span id="minMonth" class="text-secondary"></span> kW</p>on <span id="monthMinDay" class="text-secondary"></span> </p>
+				</div>
+				<div>
+          <i class="fal fa-battery-empty fa-3x"></i>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<div class="col-sm-3" >
+			<div class="card bg-ecogreen-solid m-2">
+				<div class="card-body d-flex justify-content-between align-items-center">
+				<div class="">
+				  <h6 class="card-title text-secondary font-weight-bold">Max Consumption of Room for the Month</h6>
+          <p class="card-text"><span id="maxMonth" class="text-secondary"></span> kW</p>on <span id="monthMaxDay" class="text-secondary"></span> </p>
+				</div>
+
+				  <div>
+            <i class="fal fa-battery-full fa-3x"></i>
+				</div>
+			  </div>
+			</div>
+      </div>
+      <div class="col-sm-3" >
+        <div class="card bg-ecogreen-solid m-2">
+          <div class="card-body d-flex justify-content-between align-items-center">
+          <div class="">
+            <h6 class="card-title text-secondary font-weight-bold">Average Consumption of Room for the Month was</h6>
+            <p class="card-text"> <span id="avgMonth" class="text-secondary"></span> kW </p>
+          </div>
+  
+            <div>
+              <i class="fal fa-battery-half fa-3x"></i>
+          </div>
+          </div>
+        </div>
+        </div>
+	  </div>
+</div>
+            <h4 class="m-2">Total Consumption of Room for the Month </h4>
+            <canvas id="chartMonth" width="300" height="500"></canvas>
+            
+            <div class="Info mt-2">
+              <h6 class="font-weight-bold">Room Device Energy Information for the Month</h6>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="card bg-ecogreen-solid m-2">
+                  <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                    <h6 class="card-title text-secondary font-weight-bold"> Device consuming Min energy in the Month was</h6>
+                    <p class="card-text"><span id="monthMinDev" class="text-secondary"></span> : <span id="minMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+                    <div>
+                      <i class="fal fa-battery-empty fa-3x"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-6" >
+                  <div class="card bg-ecogreen-solid  m-2">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="">
+                      <h6 class="card-title text-secondary font-weight-bold">Device consuming Max energy in the Week was</h6>
+                      <p class="card-text"><span id="monthMaxDev" class="text-secondary"></span> : <span id="maxMonthDevVal" class="text-secondary"></span> kW</p> </p>
+                    </div>
+            
+                      <div>
+                        <i class="fal fa-battery-full fa-3x"></i>
+
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </div>
+            </div>
+            <h4 class="m-2">Consumption of each room device for the Month</h4>
+
+						<canvas id="roomMonth" width="300" height="500"></canvas>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+        </div>
+        
+        
+	</div>
+</section>
+<!-- Container ends -->
+</div>
+
+<script>
+  document.getElementById("week").addEventListener("click", week);
+	document.getElementById("week").addEventListener("click", weekDev);
+  
+  document.getElementById("month").addEventListener("click", month);
+	document.getElementById("month").addEventListener("click", monthDev);
+  
+   document.getElementById("today").addEventListener("click", setup);
+  
+  window.addEventListener('load', setup);
+  window.addEventListener('load', getTotal);
+
+
+  
+const roomID = $("#roomID").val();
+const roomName= $("#roomName").val();
+
+      async function setup() {
+
+        const ctx = document.getElementById('roomToday').getContext('2d');
+        const globalTemps = await getData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: globalTemps.x,
+            datasets: [
+              {
+                label: 'Energy in Watts',
+                data: globalTemps.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {}
+        });
+    }
+    
+    async function getTotal(){
+
+
+		const totalResponse = await fetch(`/api/roomToday?roomID=${roomID}`);
+    const totalEnergy = await totalResponse.json();
+    const totalData = totalEnergy.energy.sum[0].energySum;	
+    console.log("tot")
+
+    console.log(totalData)
+    $("#totalEnergy").html(totalData); 
+
+    }
+
+ async function getData() {
+
+		const response = await fetch(`/api/roomDevicesToday?roomID=${roomID}&roomName=${roomName}`);
+		const roomData = await response.json();
+	
+    const data = roomData.roomData.energy;
+    console.log("123456789");
+    console.log(data)
+
+        const x = [];
+        const y = [];
+
+      for (let i = 0; i < data.length; i++) {
+            x.push(data[i]._id);
+            y.push(data[i].energySum)/1000;
+
+      }
+
+      const maxVal =  Math.max(...y);
+    $("#maxDayDevVal").html(maxVal);
+    $("#todayMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minDayDevVal").html(minVal);
+    $("#todayMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+
+   }
+
+   async function getWeekData() {
+		const response = await fetch(`/api/roomDevicesWeek?roomID=${roomID}&roomName=${roomName}`);
+		const energy = await response.json();
+    const data = energy.energyWeek.sum;	
+    let i = 0;
+
+    const y = [0,0,0,0,0,0,0];
+    var total = 0;
+		var x = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+		data.forEach(obj => {
+      y[obj._id] = obj.energySum/1000;
+      total += obj.energySum/1000;
+      i++;
+		});
+  
+    $("#totalWeek").html(total); 
+
+    const maxVal =  Math.max(...y);
+    $("#maxWeek").html(maxVal);
+    console.log("lol")
+    console.log(maxVal)
+    console.log(x[y.indexOf(maxVal)])
+
+    $("#weekMaxDay").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minWeek").html(minVal);
+    $("#weekMinDay").html(x[y.indexOf(minVal)]);
+
+    const average = total/i;
+    $("#avgWeek").html(average);
+
+
+        return { x, y };
+
+   }
+
+   async function week() {
+        const ctx = document.getElementById('roomWeek').getContext('2d');
+        const temp = await getWeekData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Week',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+          }
+        });
+      }
+
+	  async function getMonthData() {
+		const response = await fetch(`/api/roomMonth?roomID=${roomID}&roomName=${roomName}`);
+		const energy = await response.json();
+		const data = energy.energyMonth.sum;
+		const y = [];
+    var x = [];
+    var total =0;
+    var i =0;
+    
+
+    for (let i = 1; i <= energy.energyMonth.month; i++) {
+      var date = i + energy.energyMonth.monthName;
+            x.push(date);
+            y.push(0);
+      }
+
+      data.forEach(obj => {
+      y[moment(obj._id).format('D')-1] = obj.energySum;
+      total+=obj.energySum;
+      i++;
+		});
+
+      console.log("JJJJJJJJ")
+      console.log(x,y)
+    
+    $("#totalMonth").html(total); 
+
+    const maxVal =  Math.max(...y);
+    $("#maxMonth").html(maxVal);
+    $("#monthMaxDay").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minMonth").html(minVal);
+    $("#monthMinDay").html(x[y.indexOf(minVal)]);
+
+    const average = total/i;
+    $("#avgMonth").html(average);
+      
+        return { x, y };
+   }
+
+   async function month() {
+        const ctx = document.getElementById('chartMonth').getContext('2d');
+        const temp = await getMonthData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Month',
+                data: temp.y,
+                fill: false,
+                borderColor: '#0a8364',
+                backgroundColor: "#0a8364",
+                borderWidth: 1
+              }
+            ]
+		  },
+		  plugins: {
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+								speed: 10,
+								threshold: 10
+							},
+							zoom: {
+								enabled: true,
+								mode: 'y'
+							}
+						}
+					}
+        });
+      }
+
+
+    async function getWeekDevData() {
+		const response = await fetch(`/api/roomWeek?roomID=${roomID}&roomName=${roomName}`);
+		const energy = await response.json();
+    const data = energy.energyWeek.sum;	
+    const y = [];
+    const x = [];
+
+
+    for (let i = 0; i < data.length; i++) {
+            x.push(data[i]._id);
+            y.push(data[i].energySum/1000);
+      }
+
+    const maxVal =  Math.max(...y);
+    $("#maxWeekDevVal").html(maxVal);
+    $("#weekMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minWeekDevVal").html(minVal);
+    $("#weekMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+   }
+
+   async function weekDev() {
+
+    const ctx = document.getElementById('chartWeek').getContext('2d');
+  
+
+        const temp = await getWeekDevData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Week',
+                data: temp.y,
+                fill: false,
+                borderColor: '#0a8364',
+                backgroundColor: "#0a8364",
+                borderWidth: 1
+              }
+            ]
+          }
+        });
+      }
+
+
+      
+	  async function getMonthDevData() {
+		const response = await fetch(`/api/roomDevicesMonth?roomID=${roomID}&roomName=${roomName}`);
+		const energy = await response.json();
+		const data = energy.energyMonth.sum;
+	
+		const y = [];
+		var x = [];
+      for (let index = 0; index < data.length; index++) {
+     
+			x.push(data[index]._id);
+			y.push(data[index].energySum/1000);
+			
+		}
+    const maxVal =  Math.max(...y);
+    $("#maxMonthDevVal").html(maxVal);
+    $("#monthMaxDev").html(x[y.indexOf(maxVal)]);
+
+    const minVal = Math.min(...y);
+    $("#minMonthDevVal").html(minVal);
+    $("#monthMinDev").html(x[y.indexOf(minVal)]);
+
+        return { x, y };
+   }
+
+   async function monthDev() {
+        const ctx = document.getElementById('roomMonth').getContext('2d');
+        const temp = await getMonthDevData();
+        const myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: temp.x,
+            datasets: [
+              {
+                label: 'Energy This Month',
+                data: temp.y,
+                fill: false,
+                borderColor: 'rgba(190, 224, 0, 1)',
+                backgroundColor: 'rgba(190, 224, 0, 1)',
+                borderWidth: 1
+              }
+            ]
+		  },
+		  plugins: {
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+								speed: 10,
+								threshold: 10
+							},
+							zoom: {
+								enabled: true,
+								mode: 'y'
+							}
+						}
+					}
+        });
+	  }
+
+    </script>
+    </div>
+<% include ../partials/footer %>
+

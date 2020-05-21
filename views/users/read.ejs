@@ -1,0 +1,188 @@
+<!-- Read/View selected user profile -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Profile - Read'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- Read user section starts -->
+    <div class="read-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+                <form action="/auth/logout" method="post">
+                    <button type="submit" class="btn">
+                        <div class="logout d-flex align-items-center text-white">
+                            <p class="mb-0 mr-2">Logout</p>
+                            <i class="fal fa-sign-out-alt fa-2x"></i>
+                        </div>
+                    </button>
+                </form>
+            </div>
+            <!-- Page options ends -->
+            <!-- User section starts -->
+            <div class="user-section">
+                <!-- User details starts -->
+                <div class="user-details d-flex align-items-center mb-3">
+                    <!-- User avatar starts -->
+                    <div class="user-avatar mr-3">
+                        <div class="profile-card profile rounded border-0" style="background-color: <%= user.avatarColor ? user.avatarColor : '#BEEE00' %>;">
+                            <i class="fal fa-user fa-5x p-4 text-white"></i>
+                        </div>
+                    </div>
+                    <!-- User avatar ends -->
+                    <!-- User information starts -->
+                    <div class="user-information">
+                        <h3 class="font-weight-bold text-ecogreen"><%= user.username %></h3>
+                        <div class="role d-flex">
+                            <i class="fal fa-tag mr-2"></i>
+                            <p class="mb-0 text-capitalize"><%= user.role %></p>
+                        </div>
+                        <div class="location d-flex">
+                            <i class="fal fa-map-marker-alt mr-2"></i>
+                            <p class="mb-0"><%= homeAddress %></p>
+                        </div>
+                    </div>
+                    <!-- User information ends -->
+                </div>
+                <!-- User details ends -->
+                <!-- Home details starts -->
+                <div class="home-details">
+                    <!-- Home information cards starts -->
+                    <div class="home-information-cards d-flex justify-content-between align-items-center">
+                        <!-- Home information card starts -->
+                        <div class="home-information-card d-flex justify-content-between align-items-center mr-3">
+                            <!-- icon starts -->
+                            <div class="icon">
+                                <i class="fal fa-users fa-2x mr-2"></i>
+                            </div>
+                            <!-- icon ends -->
+                            <!-- information starts -->
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold"><%= userCount %></h6>
+                                <p class="mb-0"><small>Users</small></p>
+                            </div>
+                            <!-- information ends -->
+                        </div>
+                        <!-- Home information card ends -->
+                        <!-- Home information card starts -->
+                        <div class="home-information-card d-flex justify-content-between align-items-center mr-3">
+                            <!-- icon starts -->
+                            <div class="icon">
+                                <i class="fal fa-lightbulb fa-2x mr-2"></i>
+                            </div>
+                            <!-- icon ends -->
+                            <!-- information starts -->
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold"><%= deviceCount %></h6>
+                                <p class="mb-0"><small>Devices</small></p>
+                            </div>
+                            <!-- information ends -->
+                        </div>
+                        <!-- Home information card ends -->
+                        <!-- Home information card starts -->
+                        <div class="home-information-card d-flex justify-content-between align-items-center mr-3">
+                            <!-- icon starts -->
+                            <div class="icon">
+                                <i class="fal fa-calendar-alt fa-2x mr-2"></i>
+                            </div>
+                            <!-- icon ends -->
+                            <!-- information starts -->
+                            <div class="information">
+                                <h6 class="mb-0 font-weight-bold"><%= routineCount %></h6>
+                                <p class="mb-0"><small>Routines</small></p>
+                            </div>
+                            <!-- information ends -->
+                        </div>
+                        <!-- Home information card ends -->
+                    </div>
+                    <!-- Home information cards ends -->
+                </div>
+                <!-- Home details ends -->
+            </div>
+            <!-- User section ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- Settings section start -->
+        <div class="settings-section overflow-auto container container-fluid-margin ">
+            <!-- Settings starts -->
+            <div class="settings list-group list-group-flush">
+                <!-- Check if the user is a manager -->
+                <% if(user.role === "manager"){ %>
+                <!-- Account settings start -->
+                <a href="/users/<%= user._id %>/edit" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
+                    <div class="left d-flex align-items-center">
+                        <i class="fal fa-cogs fa-2x mr-3 text-secondary"></i>
+                        <p class="mb-0">Account Settings</p>
+                    </div>
+                    <div class="right">
+                        <i class="fal fa-chevron-right fa-2x text-secondary"></i>
+                    </div>
+                </a>
+                <!-- Account settings ends -->
+                <!-- Manage users start -->
+                <a href="/users/manage" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
+                    <div class="left d-flex align-items-center">
+                        <i class="fal fa-users fa-2x mr-3 text-secondary"></i>
+                        <p class="mb-0">Manage Home Users</p>
+                    </div>
+                    <div class="right">
+                        <i class="fal fa-chevron-right fa-2x text-secondary"></i>
+                    </div>
+                </a>
+                <!-- Manage users ends -->
+                <!-- Report & data collection settings starts -->
+                <a href="/users/datacollection" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
+                    <div class="left d-flex align-items-center">
+                        <i class="fal fa-chart-bar fa-2x mr-3 text-secondary"></i>
+                        <p class="mb-0">Report &amp; Data Collection Settings</p>
+                    </div>
+                    <div class="right">
+                        <i class="fal fa-chevron-right fa-2x text-secondary"></i>
+                    </div>
+                </a>
+                <!-- Report & data collection settings ends -->
+                <!-- Notification settings starts -->
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
+                    <div class="left d-flex align-items-center">
+                        <i class="fal fa-bell fa-2x mr-3 text-secondary"></i>
+                        <p class="mb-0">Notification Settings</p>
+                    </div>
+                    <div class="right">
+                        <i class="fal fa-chevron-right fa-2x text-secondary"></i>
+                    </div>
+                </a>
+                <!-- Notification settings ends -->
+                <% } %>
+                <!-- Accessibility settings starts -->
+                <a href="/users/<%= user._id %>/accessibility" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-white">
+                    <div class="left d-flex align-items-center">
+                        <i class="fal fa-universal-access fa-2x mr-3 text-secondary"></i>
+                        <p class="mb-0">Accessibility Settings</p>
+                    </div>
+                    <div class="right">
+                        <i class="fal fa-chevron-right fa-2x text-secondary"></i>
+                    </div>
+                </a>
+                <!-- Accessibility settings ends -->
+            </div>
+            <!-- Settings ends -->
+        </div>
+        <!-- Settings section ends -->
+    </div>
+    <!-- Read user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

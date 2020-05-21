@@ -1,0 +1,187 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Rooms - View', scripts: ['https://cdn.jsdelivr.net/npm/sweetalert2@9']}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container start -->
+<div class="">
+    <!-- Room read section starts-->
+    <div class="rooms-read-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'devices', resourceId: '', report: `/reports/roomReport?roomID=${result._id}&roomName=${result.roomName}`, heading: result.roomName, description: 'View devices in room', backLink: '/rooms', options: {add:true, edit:true, report:true}, query: {roomID: result._id}}); %>
+
+        <div class="room-information-section overflow-auto container container-fluid-margin position-relative">
+            <div class="room-status-section mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="room-status">
+                        <h5 class="font-weight-bold">Room Status</h5>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-thermometer-three-quarters text-ecogreen mr-3 text-dark"></i>
+                            <p class="mb-0">
+                                <%= result.temp %><sup>o</sup></p>
+                        </div>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-tint text-ecogreen mr-3 text-dark"></i>
+                            <p class="mb-0">
+                                <%= result.humidity %>%</p>
+                        </div>
+                        <div class="p-2 bd-highlight d-flex align-items-center">
+                            <i class="fal fa-2x fa-plug text-ecogreen mr-3 text-dark"></i>
+                            <input value="<%= result._id %>" id="roomIDNo" hidden>
+                            <p class="mb-0"><span id="power"></span> W</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room-devices-section">
+                <h4 class="font-weight-bold mb-0">My Devices:</h4>
+                <p class="text-secondary">Click on the device for device settings</p>
+                <ul class="list-group" id="room-devices">
+                    <% result.devices.forEach(function(device){ %>
+                    <li class="list-group-item border-0 mb-3 p-0 bg-white">
+                        <div class="device-card d-flex justify-content-between">
+                            <a href="/devices/<%= device._id %>" class="btn p-3 rounded text-dark w-100 mr-3 shadow-sm bg-white">
+                                <div class="device-information d-flex align-items-center">
+                                    <i class="<%= device.deviceIcon %> fa-2x text-ecogreen mr-2 d-flex flex-vertical"></i>
+                                    <h4 class="mb-0">
+                                        <%= device.deviceName %>
+                                    </h4>
+                                </div>
+                            </a>
+                            <button class="changeStatus btn btn-white device-options rounded text-center py-1 px-4 d-flex align-items-center shadow-sm <%= device.status.toUpperCase()=='ON' ? 'toggle-device-on' : '' %>"
+                                data-device="<%= device._id %>" data-status="<%= device.status %>">
+                                <i class="fal fa-power-off fa-lg"></i>
+                            </button>
+                            <div class="option hidden">
+                                <button class="delete ml-3 btn rounded text-center py-1 px-4 shadow-sm bg-danger d-flex align-items-center h-100"
+                                    value="<%= device._id %>">
+                                    <i class="fal fa-minus-circle text-white fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+
+            <i class="<%= result.roomIcon %> fal room-icon text-secondary position-absolute" style="font-size: 20rem; top: 0; right: 0; z-index: -1; opacity: 0.10;"></i>
+        </div>
+    </div>
+    <!-- Room read section ends-->
+</div>
+
+<script>
+    // ===========================
+    // Get Room Energy Consumption
+    // ===========================
+
+    $(document).ready(async function(){
+        const roomID= $("#roomIDNo").val();
+        console.log(roomID)
+        const response = await fetch(`/api/roomToday?roomID=${roomID}`);
+        const roomData = await response.json();
+        const data = roomData.energy.sum[0].energySum;
+        $("#power").html(data);
+    });
+
+    // ===========================
+    // Edit Button Handler
+    // ===========================
+
+    // When edit button clicked
+    $('#edit-btn').click(function () {
+        // Get list of rooms and toggle hidden visibility
+        $('.option').toggleClass('hidden');
+    });
+
+
+    // ===========================
+    // Delete Device Handler
+    // ===========================
+
+    // When delete button clicked
+    $('.option > .delete').click(function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7DD442',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                // Get the selected device ID
+                let deviceID = $(this).val();
+
+                // Sent AJAX to room delete route with the selected room ID
+                $.ajax({
+                    url: `/devices/${deviceID}/delete`,
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (answer) {
+                        console.log(answer);
+                    },
+                    error: function (xhr, resp, text) {
+                        console.log(xhr, resp, text);
+                    }
+                });
+
+                // Update DOM to remove the room from the room list
+                $(this).parents('li').remove();
+
+                // Display success message
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    });
+
+
+
+
+    // On change status button click
+    $(".changeStatus").click(function () {
+        // Toggle status color
+        $(this).toggleClass('toggle-device-on');
+
+        // Get the device id
+        var deviceID = $(this).data('device');
+
+        // Get the status of the device
+        var status = $(this).data('status');
+
+        // Updated Status
+        var updatedStatus = status == "OFF" ? "ON" : "OFF";
+        $(this).data('status', updatedStatus);
+
+        // Log the device status
+        console.log(deviceID, status, updatedStatus);
+
+        // Make AJAX request to update the status of device in database
+        $.ajax({
+            url: '/devices/changeStatus',
+            type: "POST",
+            data: JSON.stringify({
+                deviceID: deviceID,
+                status: updatedStatus
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+    });
+
+</script>
+
+<% include ../partials/footer %>

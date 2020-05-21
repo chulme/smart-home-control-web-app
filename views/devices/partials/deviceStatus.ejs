@@ -1,0 +1,51 @@
+
+
+<section class="container">
+
+    <button class="changeStatus btn btn-white btn-block border-0 shadow p-3 mb-5 d-flex align-items-center rounded justify-content-between <%= status=='ON' ? 'toggle-device-on' : '' %>" data-device="<%= device %>" data-status="<%= status %>">
+        <h3 class="mb-0">ON/OFF</h3>
+        <i class="fal fa-power-off"></i>
+    </button>
+    </section>
+    
+    <script>
+    // On change status button click
+    $(".changeStatus").click(function () {
+        // Toggle status color
+        $(this).toggleClass('toggle-device-on');
+    
+        // Get the device id
+        var deviceID = $(this).data('device');
+    
+        // Get the status of the device
+        var status = $(this).data('status');
+    
+        // Updated Status
+        var updatedStatus = status == "OFF" ? "ON" : "OFF";
+        $(this).data('status', updatedStatus);
+    
+        // Log the device status
+        console.log(deviceID, status, updatedStatus);
+    
+        // Make AJAX request to update the status of device in database
+        $.ajax({
+            url: '/devices/changeStatus',
+            type: "POST",
+            data: JSON.stringify({
+                deviceID: deviceID,
+                status: updatedStatus
+            }),
+            dataType: "json",
+            contentType: "application/json",
+            cache: false,
+            success: function (answer) {
+                console.log(answer);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+    });
+    
+    </script>
+    

@@ -1,0 +1,58 @@
+<!-- Data Collection user profile -->
+
+<!-- Include header -->
+<%- include('../partials/header', {title: 'User - Data Collection'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'profile'}); %>
+
+<!-- Container starts -->
+<div class="">
+    <!-- DataCollection user section starts -->
+    <div class="data-user-section position-fixed d-flex flex-column w-100 h-100">
+        <!-- Section header starts -->
+        <div class="section-header px-4 py-3 bg-eco-esteem text-white mb-3">
+            <div class="container">
+            <!-- Page options starts -->
+            <div class="page-options mb-3 d-flex justify-content-between align-items-center">
+                <a href="/users/<%= activeUser._id %>" class="text-white"><i class="fal fa-arrow-left fa-2x"></i></a>
+            </div>
+            <!-- Page options ends -->
+            <!-- Header text starts -->
+            <div class="header-text text-center mb-3">
+                <h2 class="mb-0 font-weight-bold text-ecogreen">Data Collection Settings</h2>
+                <p class="mb-0 text-white">Set Data Collection Frequency</p>
+            </div>
+            <!-- Header text ends -->
+            </div>
+        </div>
+        <!-- Section header ends -->
+        <!-- Accessibility user form section start -->
+        <div class="accessibility-user-form-section overflow-auto container container-fluid-margin h-100">
+            <!-- Accessibility section starts -->
+            <div class="accessibility-section">
+                <form action="/users/datacollection" method="post">
+                    <div class="color-theme">
+                        <div class="form-group">
+                            <label class="h4 font-weight-bold" for="color-theme">Data Collection Frequency (Minutes)</label>
+                            <input type="number" min="1" step="1" class="form-control form-control-lg border-0" id="collection-frequency" name="datacollectionFrequency" value=<%= datacollectionFrequency %>>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0 mt-3">Update Frequency</button>
+                </form>
+            </div>
+            <!-- User section ends -->
+        </div>
+        <!-- Add user form section ends -->
+    </div>
+    <!-- Add user section ends -->
+</div>
+<!-- Container ends -->
+
+<!-- Extra scripts starts -->
+<script>
+</script>
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ../partials/footer %>

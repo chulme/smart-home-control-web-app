@@ -1,0 +1,34 @@
+<!-- Include header -->
+<%- include('../partials/header', {title: 'Rooms - View'}); %>
+
+<!-- Include nav -->
+<%- include('../partials/nav', {page: 'rooms'}); %>
+
+<!-- Container start -->
+<div class="">
+    <!-- Add device section starts -->
+    <div class="add-device-section position-fixed d-flex flex-column w-100 h-100">
+        <%- include('../partials/section-header', {resource: 'devices', resourceId: '', heading: 
+        `Add a device to ${room.roomName}`, description: 'Click on the follow option to add a device', backLink: `/rooms/${room._id}`, options: {add:false, edit:false}}); %>
+        <!-- Add device option section starts -->
+        <div class="add-device-option-section overflow-auto container container-fluid-margin position-relative">
+            <div class="option">
+                <a href="/devices/scan?roomID=<%= room._id %>&room=<%= room.roomName%>" class="btn bg-ecogreen-solid btn-block btn-lg border-0">
+                    <i class="fal fa-house-signal fa-5x mb-3 text-white"></i>
+                    <h4 class="mb-0 font-weight-bold text-dark">Search For Devices</h4>
+                    <small class="mb-0 text-secondary">Add device which are connected to your home wifi</small>
+                </a>
+                <a href="/qrc?roomID=<%= room._id %>&room=<%= room.roomName%>" class="btn bg-ecogreen-solid btn-block btn-lg border-0">
+                    <i class="fal fa-qrcode fa-5x mb-3 text-white"></i>
+                    <h4 class="mb-0 font-weight-bold text-dark">Scan QR Code</h4>
+                    <small class="mb-0 text-secondary">Add device by scanning to QR code on the device</small>
+                </a>
+            </div>
+        </div>
+        <!-- Add device option section ends -->
+    </div>
+    <!-- Add device section end -->
+
+
+</div>
+<!-- Container ends -->

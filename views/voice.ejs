@@ -1,0 +1,32 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: 'Voice'}); %>
+
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	  <header class="mdl-layout__header">
+	    <div class="mdl-layout__header-row">
+	      <!-- Title -->
+	      <span class="mdl-layout-title">My Virtual Assistant</span>
+	      <!-- Add spacer, to align navigation to the right -->
+	      <div class="mdl-layout-spacer"></div>
+	    </div>
+	  </header>
+	  <main class="mdl-layout__content">
+	    <div class="page-content">
+	    	<br>
+			
+					<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="listen()">
+					  <i class="material-icons">mic</i>
+					</button>
+					<hr>
+					<span id="stuff"></span>
+			
+	    </div>
+	  </main>
+	</div>
+	
+</body>
+
+
+
+<!-- Include footer -->
+<% include ./partials/footer %>

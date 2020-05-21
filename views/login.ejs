@@ -1,0 +1,61 @@
+<!-- Include header -->
+<%- include('./partials/header', {title: title}); %>
+
+<!-- Include messages -->
+<%- messages('my_message_template', locals) %>
+
+<!-- Container starts -->
+<div class="bg-eco-esteem h-100">
+    <div class="ecowatt-branding text-center pt-5">
+        <div class="ecowatt-logo">
+            <img src="/images/Eco-Watt-Logo-05.png" alt="Eco Watt Logo" style="width: 150px;">
+        </div>
+        <div class="ecowatt-desc" style="margin-top: -1em;">
+            <h4 class="font-weight-bold text-ecogreen mb-0">Eco-Watt</h4>
+            <p class="text-white">Your Smart Home Companion</p>
+        </div>
+    </div>
+    <div class="login-form-section text-center d-flex flex-column">
+        <div class="header mb-3">
+            <h2 class="text-ecogreen font-weight-bold mb-0">Welcome Back</h2>
+            <p class="mb-0 text-white">Login with your account</p>
+        </div>
+        <form class="mb-3 container" action="/auth/login" method="POST">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4">
+                        <i class="fal fa-user" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <input type="text" class="form-control form-control-lg border-0" id="user1" placeholder="Username" name="username" minlength="5" required>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text bg-light border-0 text-secondary px-4">
+                        <i class="fal fa-lock" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <input type="password" class="form-control form-control-lg border-0" id="pass1" placeholder="Password" name="password" minlength="5" required>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3">
+                <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="remember-me" id="remember-me">
+                <label for="remember-me m-0" class="form-check-label text-white">Remember me</label>
+                </div>
+                <a href="#" class="text-white">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-ecogreen btn-lg btn-block border-0">Login</button>
+        </form>
+        <p class="text-center text-white">Don't Have an Account? <a href="/auth/signup" class="textSign">Sign Up</a></p>
+    </div>
+</div>
+<!-- Container ends
+
+<!-- Extra scripts starts -->
+<!-- Extra scripts ends -->
+
+<!-- Include footer -->
+<% include ./partials/footer %>

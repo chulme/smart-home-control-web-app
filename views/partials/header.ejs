@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- <meta property="og:url"                content="https://ecowatt.azurewebsites.net/images/badge.png" />
+  <meta property="og:type"               content="article" />
+  <meta property="og:title"              content="When Great Minds Don’t Think Alike" />
+  <meta property="og:description"        content="How much does culture influence creative thinking?" />
+  <meta property="og:image"              content="https://ecowatt.azurewebsites.net/images/badge.png" /> -->
+  
+  <title><%= title %></title>
+  
+  <!-- Stylesheet include starts -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous" />
+
+  <!-- Micron CSS -->
+  <link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
+  
+  <!-- Font Awesome Pro CSS -->
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="/fontawesome/css/light.min.css">
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+  
+  <!-- Eco watt menu icons CSS -->
+  <link rel='stylesheet' href='/stylesheets/eco-menu.css'/>
+  <link rel='stylesheet' href='/stylesheets/eco-watt.css'/>
+  
+  <!-- Flaticon custom icon CSS -->
+  <link rel="stylesheet" href="/font/flaticon.css">
+
+  <!-- Noty CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha256-soW/iAENd5uEBh0+aUIS1m2dK4K6qTcB9MLuOnWEQhw=" crossorigin="anonymous" />
+
+  <!-- map  -->
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/19.2.7/css/dx.common.css"  />
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/19.2.7/css/dx.material.lime.light.css"  />
+
+
+
+
+  <!-- Include stylesheet as passed by pages -->
+  <% var stylesheets = stylesheets ? stylesheets : [] %>
+  <% stylesheets.forEach(function(stylesheet){ %>
+    <link rel="stylesheet" type="text/css" href="<%= stylesheet %>" />
+  <% }) %>
+  
+  <!-- Navigation CSS -->
+  <link rel="stylesheet" href="/stylesheets/nav.css">
+
+  <link rel="stylesheet" href="/stylesheets/eco-background.css">
+  
+  <% if(locals.activeUser){ %>
+  <% if(locals.activeUser.settings.darkmode == true) { %>
+    <!-- <link rel='stylesheet' href='/stylesheets/bootstrap.min.css'/> -->
+    <link rel='stylesheet' href='/stylesheets/bootstrap-dark.css'/>
+  <% } %>
+  <% } %>
+
+  <!-- Custom stylesheet -->
+  <!-- NOTE: Must be the last included to help override -->
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+  
+  <!-- Stylesheet include ends -->
+
+  <!-- Script include starts -->
+
+
+  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+	<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+
+  <!-- JQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  <script src="https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"></script>
+
+  <script src="https://cdn3.devexpress.com/jslib/19.2.7/js/dx.all.js" ></script>
+
+  <!-- html2canvas -->
+  <script src="/javascripts/html2canvas.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+  <!-- Include scripts as passed by pages -->
+  <% var scripts = scripts ? scripts : [] %>
+  <% scripts.forEach(function(script){ %>
+  <script src="<%= script %>"></script>
+  <% }) %>
+
+  <!-- Script include ends -->
+  
+  <!-- Date formatting script -->
+  <!-- <script src="/javascripts/dateFormat.js"></script> -->
+  <!-- <script src="/dist/bundle.js"></script> -->
+  
+  <!-- <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5e70ebf85f15980012f63995&product=image-share-buttons" async="async"></script> -->
+
+</head>
+<body>
