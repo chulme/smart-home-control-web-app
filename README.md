@@ -12,6 +12,8 @@ It alerts the users if the energy consumption is high and provides suggestions f
 
 It also provides in-depth information access to some users while restricting others. The system should be used by all members of the household, irrespective of age.
 
+![Sitemap](https://i.imgur.com/27Xk0zd.png)
+
 ## Installation
 To host the EcoWatt application, you must first install Node.js on the server
 https://nodejs.org/
@@ -25,4 +27,11 @@ This will install all the necessary Node.js modules to host the application.
 After this step, the server is now ready to host the application. Enter the following to
 start hosting
 
-sitemap
+## Screenshots
+![Register](https://i.imgur.com/YHOzjPD.png)
+![Home](https://i.imgur.com/1kFQK0B.png)
+![Account](https://i.imgur.com/L5g5g3i.png)
+![Rooms](https://i.imgur.com/UgaVuac.png)
+![AC](https://i.imgur.com/PSJyusw.png)
+![Routines](https://i.imgur.com/rW9qLqq.png)
+![Reports](https://i.imgur.com/jUnrm5x.png)
