@@ -28,10 +28,17 @@ After this step, the server is now ready to host the application. Enter the foll
 start hosting
 
 ## Screenshots
+Below are a few screenshots of the main application pages.
 ![Register](https://i.imgur.com/YHOzjPD.png)
+
 ![Home](https://i.imgur.com/1kFQK0B.png)
+
 ![Account](https://i.imgur.com/L5g5g3i.png)
+
 ![Rooms](https://i.imgur.com/UgaVuac.png)
+
 ![AC](https://i.imgur.com/PSJyusw.png)
+
 ![Routines](https://i.imgur.com/rW9qLqq.png)
+
 ![Reports](https://i.imgur.com/jUnrm5x.png)
